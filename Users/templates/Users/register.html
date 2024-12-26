@@ -8,8 +8,17 @@
 
     <div class="auth-container">
         <h2 class="text-center mb-4">Create Your Account</h2>
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
         {% endif %}
         <form method="post" action="{% url 'Users:register' %}" enctype="multipart/form-data">
             {% csrf_token %}

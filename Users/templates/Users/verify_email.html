@@ -1,0 +1,26 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Email Verification
+{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        <h2 class="text-center mb-4">Email Verification</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                <p>Please check your email for the verification link. The link will expire in 24 hours.</p>
+                <p>You need to verify your email before you can log in.</p>
+            </div>
+        {% endif %}
+        <div class="text-center mt-3">
+            <a href="{% url 'Users:login' %}" class="btn btn-primary">Go to Login</a>
+        </div>
+    </div>
+{% endblock %}
