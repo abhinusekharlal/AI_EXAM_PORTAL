@@ -1,0 +1,39 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        <h2 class="text-center mb-4">Login to Exam Monitoring System</h2>
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'Users:login' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                {{ form.password }}
+            </div>
+            
+            {% comment %} <div class="mb-3">
+                <label for="face_image" class="form-label">Facial Recognition (Optional)</label>
+                <input type="file" class="form-control" id="face_image" name="face_image" accept="image/*">
+                <small class="form-text text-muted">Upload a clear photo of your face for additional authentication</small>
+            </div> {% endcomment %}
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        
+        <div class="text-center mt-3">
+            <p>Don't have an account? <a href="{% url 'Users:register' %}">Register here</a></p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+
+    <div class="auth-container">
+        <h2 class="text-center mb-4">Create Your Account</h2>
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'Users:register' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username }}
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Password</label>
+                {{ form.password1 }}
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_user_type" class="form-label">User Type</label>
+                {{ form.user_type }}
+            </div>
+            
+            {% comment %} <div class="mb-3">
+                <label for="id_face_recognition_image" class="form-label">Facial Recognition Image</label>
+                <input type="file" class="form-control" id="id_face_recognition_image" 
+                    name="face_recognition_image" accept="image/*">
+                <small class="form-text text-muted">
+                    Upload a clear, front-facing photo for facial recognition. 
+                    This will be used to verify your identity during exams.
+                </small>
+            </div>
+             {% endcomment %}
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+        
+        <div class="text-center mt-3">
+            <p>Already have an account? <a href="{% url 'Users:login' %}">Login here</a></p>
+        </div>
+    </div>
+
+{% endblock %}
