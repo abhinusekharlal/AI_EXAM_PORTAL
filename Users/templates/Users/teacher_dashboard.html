@@ -1,0 +1,75 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Teacher Dashboard
+{% endblock %}
+
+
+{% block content %}
+    <div id="teacher-dashboard" class="auth-container">
+        <h2 id="teacher-dashboard-title" class="text-center mb-4">Teacher Dashboard</h2>
+        <section id="user-info" class="user-info">
+            <h2 id="welcome-teacher">Welcome, Dr. John Doe</h2>
+            <p id="teacher-role">Role: Teacher</p>
+        </section><br>
+
+        <section id="exam-management" class="exam-management">
+            <h3 id="upcoming-exams-title">Upcoming Exams</h3>
+            <button id="create-exam" class="btn">Create Exam</button>
+            <ul id="upcoming-exams-list">
+                <li id="exam1">Math 101 - <span>12/12/2024</span> - <button>Edit</button> <button>Delete</button></li>
+                <li id="exam2">Physics 102 - <span>15/12/2024</span> - <button>Edit</button> <button>Delete</button></li>
+            </ul>
+            <button id="upload-questions" class="btn">Upload Exam Questions</button>
+            <button id="set-parameters" class="btn">Set Exam Parameters</button>
+        </section><br>
+
+        <section id="class-management" class="class-management">
+            <h3 id="classes-overview-title">Classes Overview</h3>
+            <button id="create-class" class="btn">Create New Class</button>
+            <ul id="classes-list">
+                <li id="class1">Class A - <span>25 Students</span> <button>Manage Students</button></li>
+                <li id="class2">Class B - <span>30 Students</span> <button>Manage Students</button></li>
+            </ul>
+            <button id="send-invitations" class="btn">Send Invitations</button>
+        </section><br>
+
+        <section id="student-monitoring" class="student-monitoring">
+            <h3 id="live-monitoring-title">Live Monitoring</h3>
+            <button id="access-monitoring" class="btn">Access Monitoring</button>
+            <ul id="monitoring-list">
+                <li id="student1">Student 1 - <span>Active</span> - <button>Send Warning</button> <button>Pause Exam</button></li>
+                <li id="student2">Student 2 - <span>Active</span> - <button>Send Warning</button> <button>Pause Exam</button></li>
+            </ul>
+        </section><br>
+
+        <section id="performance-analysis" class="performance-analysis">
+            <h3 id="performance-analysis-title">Student Performance</h3>
+            <ul id="performance-list">
+                <li id="performance1">Math 101 - Average Score: 85% <button>View Report</button></li>
+                <li id="performance2">Physics 102 - Average Score: 78% <button>View Report</button></li>
+            </ul>
+            <button id="review-incidents" class="btn">Review Flagged Incidents</button>
+        </section><br>
+
+        <section id="activity-log" class="activity-log">
+            <h3 id="activity-log-title">Activity Log</h3>
+            <ul id="activity-log-list">
+                <li id="log1">12/12/2024 - Warning sent to Student 1</li>
+                <li id="log2">15/12/2024 - Exam paused for Student 2</li>
+            </ul>
+        </section><br>
+
+        <section id="feedback-section" class="feedback-section">
+            <h3 id="feedback-title">Feedback</h3>
+            <textarea id="feedback-textarea" placeholder="Provide your feedback here..."></textarea>
+            <button id="submit-feedback" class="btn">Submit Feedback</button>
+        </section><br>
+
+        <section id="help-support" class="help-support">
+            <h3 id="help-support-title">Help and Support</h3>
+            <a id="faqs" href="#">FAQs</a>
+            <a id="contact-support" href="#">Contact Support</a>
+        </section><br>
+    </div>
+{% endblock %}

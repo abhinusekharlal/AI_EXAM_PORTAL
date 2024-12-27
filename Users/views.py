@@ -7,6 +7,7 @@ from django.contrib import messages
 from datetime import timedelta
 from .models import User
 from .forms import UserForm, LoginForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
@@ -81,3 +82,18 @@ def login(request):
 
 def email_verification_sent(request):
     return render(request, 'Users/email_verification_sent.html')
+
+@login_required
+def student_dashboard(request):
+    if request.user.user_type != 'student':
+        return redirect('Users:access_denied')
+    return render(request, 'Users/student_dashboard.html')
+
+@login_required
+def teacher_dashboard(request):
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
+    return render(request, 'Users/teacher_dashboard.html')
+
+def access_denied(request):
+    return render(request, 'Users/access_denied.html')

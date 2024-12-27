@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Users.middleware.RoleBasedAccessControlMiddleware',
 ]
 
 ROOT_URLCONF = 'AI_EXAM_PORTAL.urls'

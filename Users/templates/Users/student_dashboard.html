@@ -1,0 +1,65 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Student Dashboard
+{% endblock %}
+
+
+{% block content %}
+    <div id="student-dashboard" class="auth-container">
+        <h2 id="student-dashboard-title" class="text-center mb-4">Student Dashboard</h2>
+        <div id="student-info" class="student-info">
+            <div>
+                <h2 id="student-welcome">Welcome, John Doe</h2>
+                <p id="student-uid">UID: 123456</p>
+                <p id="student-classes">Enrolled Classes: Software Engineering, Data Science</p>
+            </div>
+            <div>
+                <p id="next-exam">Next Exam: Design Principles</p>
+                <p id="countdown" class="timer">Countdown: 02:15:30</p>
+            </div>
+        </div>
+
+        <div id="upcoming-exams" class="student-info">
+            <div>
+                <h2 id="upcoming-exams-title">Upcoming Exams</h2>
+                <p id="exam1">Software Engineering - 20th July, 10:00 AM (Duration: 2 hrs)</p>
+                <p id="exam2">Design Principles - 25th July, 11:00 AM (Duration: 1.5 hrs)</p>
+            </div>
+        </div>
+
+        <div id="past-results" class="student-info">
+            <div>
+                <h2 id="past-results-title">Past Exam Results</h2>
+                <p id="result1">Software Process II - Score: 85% <br><a href="#" class="view-report-btn">View Report</a></p><br>
+                <p id="result2">Agile Basics - Score: 78%<br><a href="#" class="view-report-btn">View Report</a></p>
+            </div>
+        </div>
+
+        <div id="exam-schedule" class="box">
+            <h3 id="exam-schedule-title" class="section-title">Exam Schedule</h3>
+            <div id="calendar-view" class="calendar-view">
+                <table>
+                    <tr>
+                        <th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th>
+                    </tr>
+                    <tr>
+                        <td>Software Eng.</td><td></td><td>Design Principles</td><td></td><td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="feedback" class="box">
+            <h3 id="feedback-title" class="section-title">Feedback</h3>
+            <textarea id="feedback-textarea" class="feedback-textarea" placeholder="Provide your feedback here..."></textarea>
+            <button id="submit-feedback" class="feedback-btn">Submit Feedback</button>
+        </div>
+
+        <div id="help-support" class="help">
+            <h3 id="help-support-title" class="section-title">Help & Support</h3>
+            <p id="faqs">FAQs for common queries</p>
+            <button id="contact-support" class="help-btn">Contact Support</button>
+        </div>
+    </div>
+{% endblock %}
