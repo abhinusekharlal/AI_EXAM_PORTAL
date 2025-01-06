@@ -20,6 +20,7 @@ from Users import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Users.urls')),
+    path('', include('Users.urls', namespace='Users')),
+    path('', include('classroom.urls', namespace='classroom')),
     path('verify-email/<str:token>/', views.verify_email, name='verify-email'),
 ]
