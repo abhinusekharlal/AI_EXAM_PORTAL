@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.core.mail import send_mail
@@ -68,26 +68,36 @@ def login(request):
             if user is not None:
                 if not user.is_active:
                     return render(request, 'Users/login.html', 
-                                {'form': form, 'error': 'Please verify your email first.'})
+                                  {'form': form, 'error': 'Please verify your email first.'})
                 auth_login(request, user)
                 return redirect('Users:index')
             else:
                 return render(request, 'Users/login.html', 
-                            {'form': form, 'error': 'Invalid credentials'})
-        else:
-            return render(request, 'Users/login.html', {'form': form})
+                              {'form': form, 'error': 'Invalid credentials'})
     else:
         form = LoginForm()
     return render(request, 'Users/login.html', {'form': form})
 
 def email_verification_sent(request):
     return render(request, 'Users/email_verification_sent.html')
-
+def logout_view(request):
+    logout(request)
+    return redirect('Users:index')
 @login_required
 def student_dashboard(request):
     if request.user.user_type != 'student':
         return redirect('Users:access_denied')
-    return render(request, 'Users/student_dashboard.html')
+    context = {
+        'groups': request.user.groups.all(),
+        'permissions': request.user.user_permissions.all(),
+        'is_student': request.user.is_student(),
+        'is_teacher': request.user.is_teacher(),
+        'student_name': request.user.get_full_name(),
+        'email': request.user.email,
+        'username': request.user.username,
+        'uuid': request.user.id,
+    }
+    return render(request, 'Users/student_dashboard.html', context)
 
 @login_required
 def teacher_dashboard(request):

@@ -27,3 +27,10 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+    # ...existing code...
+
+    def is_student(self):
+        return self.user_type == 'student'
+    
+    def is_teacher(self):
+        return self.user_type == 'teacher'
