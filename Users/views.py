@@ -7,11 +7,21 @@ from django.contrib import messages
 from datetime import timedelta
 from .models import User
 from .forms import UserForm, LoginForm
+from classroom.models import Classroom, Exam
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
     return render(request, "Users/index.html")
+
+@login_required
+def dashboard(request, username):
+    if request.user.user_type == 'student':
+        return student_dashboard(request, username)
+    elif request.user.user_type == 'teacher':
+        return teacher_dashboard(request, username)
+    else:
+        return redirect('Users:access_denied')
 
 def register(request):
     if request.method == 'POST':
@@ -84,9 +94,12 @@ def logout_view(request):
     logout(request)
     return redirect('Users:index')
 @login_required
-def student_dashboard(request):
+def student_dashboard(request, username):
     if request.user.user_type != 'student':
         return redirect('Users:access_denied')
+    
+    enrolled_classes = Classroom.objects.filter(students=request.user)
+    upcoming_exams = Exam.objects.filter(exam_class__students=request.user).order_by('exam_date')
     context = {
         'groups': request.user.groups.all(),
         'permissions': request.user.user_permissions.all(),
@@ -96,14 +109,41 @@ def student_dashboard(request):
         'email': request.user.email,
         'username': request.user.username,
         'uuid': request.user.id,
+        'classrooms': enrolled_classes,
+        'upcoming_exams': upcoming_exams,
     }
     return render(request, 'Users/student_dashboard.html', context)
 
 @login_required
-def teacher_dashboard(request):
+def teacher_dashboard(request, username):
     if request.user.user_type != 'teacher':
         return redirect('Users:access_denied')
-    return render(request, 'Users/teacher_dashboard.html')
+    
+    classrooms = Classroom.objects.filter(teacher=request.user)
+    upcoming_exams = Exam.objects.filter(exam_class__teacher=request.user).order_by('exam_date')
+    
+    context = {
+        'groups': request.user.groups.all(),
+        'permissions': request.user.user_permissions.all(),
+        'is_student': request.user.is_student(),
+        'is_teacher': request.user.is_teacher(),
+        'teacher_name': request.user.get_full_name(),
+        'email': request.user.email,
+        'username': request.user.username,
+        'uuid': request.user.id,
+        'classrooms': classrooms,
+        'upcoming_exams': upcoming_exams,
+    }
+    return render(request, 'Users/teacher_dashboard.html', context)
 
+
+@login_required
+def submit_feedback(request):
+    if request.method == 'POST':
+        feedback = request.POST['feedback']
+        request.user.feedback = feedback
+        request.user.save()
+        return redirect('Users:dashboard', username=request.user.username)
+    return render(request, 'Users/submit_feedback.html')
 def access_denied(request):
     return render(request, 'Users/access_denied.html')

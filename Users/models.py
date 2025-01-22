@@ -27,7 +27,7 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
-    # ...existing code...
+    classrooms = models.ManyToManyField('classroom.Classroom', related_name='enrolled_students')
 
     def is_student(self):
         return self.user_type == 'student'

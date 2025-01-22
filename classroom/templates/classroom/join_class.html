@@ -1,0 +1,23 @@
+{% extends 'Users/layout.html' %}
+{% load form_tags %}
+
+{% block title %}
+    Join Class
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Join a Class</h2>
+        <form method="post" action="{% url 'classroom:join_class' %}">
+            {% csrf_token %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <div class="mb-3">
+                <label for="id_class_code" class="form-label">Class Code</label>
+                {{ form.class_code|add_class:"form-control" }}
+            </div>
+            <button type="submit" class="btn btn-primary">Join Class</button>
+        </form>
+    </div>
+{% endblock %}

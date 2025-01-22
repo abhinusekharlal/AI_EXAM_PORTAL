@@ -1,0 +1,52 @@
+/**
+Exam_Schedule.html
+ */
+/* Custom Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+button {
+    background-color: #f55454;
+    color: white;
+    border: none;
+    position: relative;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color .3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.table-status {
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.status-published {
+    background-color: #e0f7e9;
+    color: #28a745;
+}
+
+.status-review {
+    background-color: #fff3cd;
+    color: #ffc107;
+}
+
+.draggable-section {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+}
+
+.draggable-section:hover {
+    background-color: #f4f4f4;
+}

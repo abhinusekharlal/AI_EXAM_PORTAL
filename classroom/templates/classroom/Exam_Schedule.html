@@ -1,0 +1,35 @@
+{% extends 'classroom/layout.html' %}
+
+{% block title %}
+    Exam Paper Management
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Exam Sections -->
+                <h5 class="mt-5">Software Engineering - Phase 01</h5>
+                <!-- <p>Drag the sections and breaks to rearrange:</p> -->
+                <div id="sections" class="table-status">
+                    <div class="draggable-section status-published">
+                        <strong>Exam 1:</strong> Software Processes <br>
+                        <span>30 Questions | Break: 5 minutes</span>
+                        <button class="btn btn-danger btn-sm">-Delete</button>
+                    </div>
+                    <div class="draggable-section status-review">
+                        <strong>Exam 2:</strong> Object-Oriented Programming <br>
+                        <span>30 Questions | Break: 5 minutes</span>
+                        <button class="btn btn-danger btn-sm">-Delete</button>
+                    </div>
+                    <div class="draggable-section status-published">
+                        <strong>Exam 3:</strong> Android Programming with Java <br>
+                        <span>30 Questions</span>
+                        <button class="btn btn-danger btn-sm">-Delete</button>
+                    </div>
+                    <button class="btn btn-primary btn-sm">+ Add Exam</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

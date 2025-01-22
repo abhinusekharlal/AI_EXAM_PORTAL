@@ -1,0 +1,24 @@
+{% extends 'Users/layout.html' %}
+{% load form_tags %}
+
+{% block title %}
+    Create Class
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Create a New Class</h2>
+        <form method="post" action="{% url 'classroom:create_class' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_class_name" class="form-label">Class Name</label>
+                {{ form.class_name|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+                <label for="id_class_description" class="form-label">Class Description</label>
+                {{ form.class_description|add_class:"form-control" }}
+            </div>
+            <button type="submit" class="btn btn-primary">Create Class</button>
+        </form>
+    </div>
+{% endblock %}

@@ -9,32 +9,39 @@
     <div id="teacher-dashboard" class="auth-container">
         <h2 id="teacher-dashboard-title" class="text-center mb-4">Teacher Dashboard</h2>
         <section id="user-info" class="user-info">
-            <h2 id="welcome-teacher">Welcome, Dr. John Doe</h2>
+            <h2 id="welcome-teacher">Welcome, {{ teacher_name }}</h2>
             <p id="teacher-role">Role: Teacher</p>
         </section><br>
 
         <section id="exam-management" class="exam-management">
             <h3 id="upcoming-exams-title">Upcoming Exams</h3>
-            <button id="create-exam" class="btn">Create Exam</button>
+            <a href="{% url 'classroom:add_exam' %}" id="create-exam" class="btnc">Create New Quiz</a>
             <ul id="upcoming-exams-list">
-                <li id="exam1">Math 101 - <span>12/12/2024</span> - <button>Edit</button> <button>Delete</button></li>
-                <li id="exam2">Physics 102 - <span>15/12/2024</span> - <button>Edit</button> <button>Delete</button></li>
+                {% for exam in upcoming_exams %}
+                    <li id="exam{{ forloop.counter }}">{{ exam.exam_name }} - <span>{{ exam.exam_date }}</span> - <button>Edit</button> <button>Delete</button></li>
+                {% endfor %}
             </ul>
-            <button id="upload-questions" class="btn">Upload Exam Questions</button>
-            <button id="set-parameters" class="btn">Set Exam Parameters</button>
+            {% comment %} <button id="upload-questions" class="btn">Upload Exam Questions</button>
+            <button id="set-parameters" class="btn">Set Exam Parameters</button> {% endcomment %}
         </section><br>
 
         <section id="class-management" class="class-management">
             <h3 id="classes-overview-title">Classes Overview</h3>
-            <button id="create-class" class="btn">Create New Class</button>
+            <a href="{% url 'classroom:create_class' %}" id="create-class" class="btnc">Create New Class</a>
             <ul id="classes-list">
-                <li id="class1">Class A - <span>25 Students</span> <button>Manage Students</button></li>
-                <li id="class2">Class B - <span>30 Students</span> <button>Manage Students</button></li>
+                {% for classroom in classrooms %}
+                    <li id="class{{ forloop.counter }}">{{ classroom.class_name }} ({{ classroom.class_code }}) - <span>{{ classroom.students.count }} Students</span> 
+                        <a href="{% url 'classroom:manage_students' classroom.id %}" class="btnc">Manage Students</a>
+                        <form method="post" action="{% url 'classroom:delete_class' classroom.id %}" style="display:inline;" class="delete-class-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm delete-class-btn">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
             </ul>
-            <button id="send-invitations" class="btn">Send Invitations</button>
         </section><br>
 
-        <section id="student-monitoring" class="student-monitoring">
+        {% comment %} <section id="student-monitoring" class="student-monitoring">
             <h3 id="live-monitoring-title">Live Monitoring</h3>
             <button id="access-monitoring" class="btn">Access Monitoring</button>
             <ul id="monitoring-list">
@@ -58,18 +65,35 @@
                 <li id="log1">12/12/2024 - Warning sent to Student 1</li>
                 <li id="log2">15/12/2024 - Exam paused for Student 2</li>
             </ul>
-        </section><br>
+        </section><br> {% endcomment %}
 
-        <section id="feedback-section" class="feedback-section">
-            <h3 id="feedback-title">Feedback</h3>
-            <textarea id="feedback-textarea" placeholder="Provide your feedback here..."></textarea>
-            <button id="submit-feedback" class="btn">Submit Feedback</button>
-        </section><br>
+        <div id="feedback" class="box">
+            <h3 id="feedback-title" class="section-title">Feedback</h3>
+            <form method="post" action="{% url 'Users:submit_feedback' %}">
+                {% csrf_token %}
+                <textarea id="feedback-textarea" class="feedback-textarea" name="feedback" placeholder="Provide your feedback here..."></textarea>
+                <button type="submit" id="submit-feedback" class="feedback-btn">Submit Feedback</button>
+            </form>
+        </div>
+        
+        <div id="help-support" class="help">
+            <h3 id="help-support-title" class="section-title">Help & Support</h3>
+            <p id="faqs">FAQs for common queries</p>
+            <button id="contact-support" class="help-btn">Contact Support</button>
+        </div>
 
-        <section id="help-support" class="help-support">
-            <h3 id="help-support-title">Help and Support</h3>
-            <a id="faqs" href="#">FAQs</a>
-            <a id="contact-support" href="#">Contact Support</a>
-        </section><br>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-class-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const form = this.closest('form');
+                    if (confirm('Are you sure you want to delete this class?')) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

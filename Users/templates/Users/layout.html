@@ -37,7 +37,7 @@
                     ☰
                 </button>
                 <ul class="dropdown-menu" id="menuDropdown">
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'Users:dashboard' request.user.username %}"><i class="bi bi-person"></i> Dashboard</a></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-text"></i> Exams</a></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-graph-up"></i> Results</a></li>
                     <li><hr class="dropdown-divider"></li>

@@ -12,27 +12,15 @@
             <div>
                 <h2 id="student-welcome">Welcome, {{ student_name }}</h2>
                 <p id="student-uid">UID: {{ uuid }}</p>
-                <p id="student-classes">Enrolled Classes: Software Engineering, Data Science</p>
-            </div>
-            <div>
-                <p id="next-exam">Next Exam: Design Principles</p>
-                <p id="countdown" class="timer">Countdown: 02:15:30</p>
-            </div>
-        </div>
-
-        <div id="upcoming-exams" class="student-info">
-            <div>
-                <h2 id="upcoming-exams-title">Upcoming Exams</h2>
-                <p id="exam1">Software Engineering - 20th July, 10:00 AM (Duration: 2 hrs)</p>
-                <p id="exam2">Design Principles - 25th July, 11:00 AM (Duration: 1.5 hrs)</p>
-            </div>
-        </div>
-
-        <div id="past-results" class="student-info">
-            <div>
-                <h2 id="past-results-title">Past Exam Results</h2>
-                <p id="result1">Software Process II - Score: 85% <br><a href="#" class="view-report-btn">View Report</a></p><br>
-                <p id="result2">Agile Basics - Score: 78%<br><a href="#" class="view-report-btn">View Report</a></p>
+                <p id="student-classes">Enrolled Classes:</p>
+                <ul id="classes-list">
+                    {% for classroom in classrooms %}
+                        <li id="class{{ forloop.counter }}">{{ classroom.class_name }} ({{ classroom.class_code }})</li>
+                    {% empty %}
+                        <li>No enrolled classes found.</li>
+                    {% endfor %}
+                </ul>
+                <a href='{% url "classroom:join_class" %}' id="join-class" class="btnc">Join Class</a>
             </div>
         </div>
 
@@ -44,18 +32,23 @@
                         <th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th>
                     </tr>
                     <tr>
-                        <td>Software Eng.</td><td></td><td>Design Principles</td><td></td><td></td>
+                        {% for exam in upcoming_exams %}
+                            <td>{{ exam.exam_name }}</td>
+                        {% endfor %}
                     </tr>
                 </table>
             </div>
         </div>
-
+        
         <div id="feedback" class="box">
             <h3 id="feedback-title" class="section-title">Feedback</h3>
-            <textarea id="feedback-textarea" class="feedback-textarea" placeholder="Provide your feedback here..."></textarea>
-            <button id="submit-feedback" class="feedback-btn">Submit Feedback</button>
+            <form method="post" action="{% url 'Users:submit_feedback' %}">
+                {% csrf_token %}
+                <textarea id="feedback-textarea" class="feedback-textarea" name="feedback" placeholder="Provide your feedback here..."></textarea>
+                <button type="submit" id="submit-feedback" class="feedback-btn">Submit Feedback</button>
+            </form>
         </div>
-
+        
         <div id="help-support" class="help">
             <h3 id="help-support-title" class="section-title">Help & Support</h3>
             <p id="faqs">FAQs for common queries</p>
