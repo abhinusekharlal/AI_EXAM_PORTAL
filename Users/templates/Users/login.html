@@ -4,41 +4,45 @@
     Login
 {% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="login-container">
-    <div class="login-image">
-        <img src="{% static 'img/login_icon.png' %}" alt="Login Image">
-    </div>
-    <div class="auth-container">
-        <h2 class="text-center mb-4">Login to Exam Monitoring System</h2>
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
-        <form method="post" action="{% url 'Users:login' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                {{ form.username }}
+    <main class="login-container">
+        <div class="login-box">
+            <div class="logo-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="graduation-cap">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                {{ form.password }}
-            </div>
-            
-            {% comment %} <div class="mb-3">
-                <label for="face_image" class="form-label">Facial Recognition (Optional)</label>
-                <input type="file" class="form-control" id="face_image" name="face_image" accept="image/*">
-                <small class="form-text text-muted">Upload a clear photo of your face for additional authentication</small>
-            </div> {% endcomment %}
-            
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-        
-        <div class="text-center mt-3">
-            <p>Don't have an account? <a href="{% url 'Users:register' %}">Register here</a></p>
+            <h1>Welcome Back!</h1>
+            <p class="subtitle">Please Signin to your account</p>
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <form class="login-form" method="post" action="{% url 'Users:login' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    {{ form.password }}
+                </div>
+
+                <button type="submit" class="sign-in-btn">Sign In</button>
+
+                <div class="divider">
+                    <span>Don't have an account?</span>
+                </div>
+                
+                <button type="button" class="create-account-btn"><a href="{% url 'Users:register' %}">Create new Account</a></button>
+            </form>
         </div>
-    </div>
-    </div>
+    </main>
+
 {% endblock %}
