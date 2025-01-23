@@ -1,10 +1,14 @@
 {% extends 'Users/layout.html' %}
-
+{% load static %}
 {% block title %}
     Login
 {% endblock %}
 
 {% block content %}
+<div class="login-container">
+    <div class="login-image">
+        <img src="{% static 'img/login_icon.png' %}" alt="Login Image">
+    </div>
     <div class="auth-container">
         <h2 class="text-center mb-4">Login to Exam Monitoring System</h2>
         {% if error %}
@@ -35,5 +39,6 @@
         <div class="text-center mt-3">
             <p>Don't have an account? <a href="{% url 'Users:register' %}">Register here</a></p>
         </div>
+    </div>
     </div>
 {% endblock %}

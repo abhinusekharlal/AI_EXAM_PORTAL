@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Header Section -->
 
     <!-- Hero Section -->
     <section id="hero">
@@ -20,7 +19,7 @@
 
     <!-- Features Section -->
     <section id="features">
-        <div class="card">
+        <div class="container">
             <h2>Key Features</h2>
             <div class="features-container">
                 <div class="feature-box">
@@ -49,22 +48,41 @@
 
     <!-- About Section -->
     <section class="features">
-        <h2 class="section-title">Why Choose ProctorAI?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon ai-icon"></div>
-                <h3>AI-Powered Detection</h3>
-                <p>Advanced algorithms detect suspicious behavior and ensure exam integrity.</p>
+        <div class="container">
+            <h2 class="section-title">Why Choose ProctorAI?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon ai-icon"></div>
+                    <h3>AI-Powered Detection</h3>
+                    <p>Advanced algorithms detect suspicious behavior and ensure exam integrity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon realtime-icon"></div>
+                    <h3>Real-time Monitoring</h3>
+                    <p>Live proctoring with instant alerts and comprehensive reporting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon secure-icon"></div>
+                    <h3>Instant Alerts</h3>
+                    <p>Immediate notifications for suspicious behavior, allowing quick intervention when needed.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon realtime-icon"></div>
-                <h3>Real-time Monitoring</h3>
-                <p>Live proctoring with instant alerts and comprehensive reporting.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon secure-icon"></div>
-                <h3>Instant Alerts</h3>
-                <p>Immediate notifications for suspicious behavior, allowing quick intervention when needed.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <h2>What Our Users Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonial">
+                    <p>"The AI Proctored Exam Portal has revolutionized the way we conduct exams. It's secure, efficient, and easy to use."</p>
+                    <h4>- John Doe, Educator</h4>
+                </div>
+                <div class="testimonial">
+                    <p>"I feel more confident taking exams online knowing that the platform is secure and fair."</p>
+                    <h4>- Jane Smith, Student</h4>
+                </div>
             </div>
         </div>
     </section>
@@ -83,10 +101,4 @@
         </div>
     </section>
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 AI Proctored Exam Portal. All Rights Reserved.</p>
-        </div>
-    </footer>
 {% endblock %}

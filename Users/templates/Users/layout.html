@@ -17,38 +17,49 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <div class="logo"><a href="{% url 'Users:index' %}" class="logo-link">ProctorAI</a></div>
-        <nav>
-            <!-- Notification Dropdown -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="notificationIcon">
-                    🔔
-                </button>
-                <ul class="dropdown-menu" id="notificationDropdown">
-                    <li><a class="dropdown-item" href="#">Your next exam is scheduled for January 10, 2024.</a></li>
-                    <li><a class="dropdown-item" href="#">Please ensure your webcam is functional before the exam.</a></li>
-                </ul>
+    <div class="page-container d-flex flex-column min-vh-100">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo">
+                <a href="{% url 'Users:index' %}" class="logo-link">
+                    <img src="{% static 'img/logo.png' %}" alt="ProctorAI Logo" width="24" height="24">
+                    <span>PROCTORAI</span>
+                </a>
             </div>
+            <div class="notification">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'%3E%3C/path%3E%3Cpath d='M10.3 21a1.94 1.94 0 0 0 3.4 0'%3E%3C/path%3E%3C/svg%3E" alt="Notifications">
+            </div>
+        </div>
+        <div class="whole_page">
+            <!-- Sidebar -->
+            {% if request.user.is_authenticated %}
+                <nav class="sidebar">
+                    <a href="{% url 'Users:index' %}" class="nav-item">Home</a>
+                    <a href="{% url 'Users:dashboard' request.user.username %}" class="nav-item active">Dashboard</a>
+                    {% if request.user.user_type == 'teacher' %}
+                        <a href="{% url 'classroom:create_class' %}" class="nav-item">Create Class</a>
+                        <a href="{% url 'classroom:add_exam' %}" class="nav-item">Create Exam</a>
+                        <a href="#" class="nav-item">Live Monitoring</a>
+                    {% endif %}
+                    <a href="#" class="nav-item">Help</a>
+                    <a href="{% url 'Users:logout' %}" class="nav-item">SignOut</a>
+                </nav>
+            {% endif %}
+            <!-- Sidebar and Main Content -->
+            <div class="container">
+                <main class="main-content">
+                    {% block content %}
+                    {% endblock %}
+                </main>
+            </div>
+        </div>
 
-            <!-- Menu Dropdown -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="menuIcon">
-                    ☰
-                </button>
-                <ul class="dropdown-menu" id="menuDropdown">
-                    <li><a class="dropdown-item" href="{% url 'Users:dashboard' request.user.username %}"><i class="bi bi-person"></i> Dashboard</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-text"></i> Exams</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-graph-up"></i> Results</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="{% url 'Users:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+        <!-- Footer -->
+        <footer class="footer text-center mt-auto py-3 bg-light">
+            <p>&copy; 2024 AI Proctored Exam Portal. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

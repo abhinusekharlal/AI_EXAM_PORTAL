@@ -6,40 +6,49 @@
 
 
 {% block content %}
-    <div id="teacher-dashboard" class="auth-container">
+<main class="main-content">
         <h2 id="teacher-dashboard-title" class="text-center mb-4">Teacher Dashboard</h2>
-        <section id="user-info" class="user-info">
-            <h2 id="welcome-teacher">Welcome, {{ teacher_name }}</h2>
-            <p id="teacher-role">Role: Teacher</p>
-        </section><br>
+        <div class="welcome-card">
+            <h2 id="welcome-teacher">Welcome,  {{ teacher_name }}</h2>
+            <p>UUID: 12345</p>
+        </div><br>
 
-        <section id="exam-management" class="exam-management">
-            <h3 id="upcoming-exams-title">Upcoming Exams</h3>
-            <a href="{% url 'classroom:add_exam' %}" id="create-exam" class="btnc">Create New Quiz</a>
-            <ul id="upcoming-exams-list">
-                {% for exam in upcoming_exams %}
-                    <li id="exam{{ forloop.counter }}">{{ exam.exam_name }} - <span>{{ exam.exam_date }}</span> - <button>Edit</button> <button>Delete</button></li>
-                {% endfor %}
-            </ul>
-            {% comment %} <button id="upload-questions" class="btn">Upload Exam Questions</button>
-            <button id="set-parameters" class="btn">Set Exam Parameters</button> {% endcomment %}
-        </section><br>
-
-        <section id="class-management" class="class-management">
-            <h3 id="classes-overview-title">Classes Overview</h3>
-            <a href="{% url 'classroom:create_class' %}" id="create-class" class="btnc">Create New Class</a>
-            <ul id="classes-list">
+        <div class="dcard">
+            <h3 id="class-overview-title">Class Overview</h3>
+            <div class="class-info">
                 {% for classroom in classrooms %}
-                    <li id="class{{ forloop.counter }}">{{ classroom.class_name }} ({{ classroom.class_code }}) - <span>{{ classroom.students.count }} Students</span> 
-                        <a href="{% url 'classroom:manage_students' classroom.id %}" class="btnc">Manage Students</a>
+                <div class="class-item">
+                        <h4>{{classroom.class_name}} ({{ classroom.class_code }}) :</h4>
+                        <h5><span>{{ classroom.students.count }} Students</span>
+                        <a href="{% url 'classroom:manage_students' classroom.id %}" class="btn btn-primary">Manage Students</a>
                         <form method="post" action="{% url 'classroom:delete_class' classroom.id %}" style="display:inline;" class="delete-class-form">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm delete-class-btn">Delete</button>
-                        </form>
-                    </li>
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm delete-class-btn">Delete</button>
+                        </form>    
+                </div>
+                {% empty %}
+                    <h5>No classes found.</h5>
                 {% endfor %}
-            </ul>
-        </section><br>
+                <a href="{% url 'classroom:create_class' %}" id="create-class" class="btn btn-primary">Create New Class</a>
+            </div>
+        </div>
+
+        <div class="dcard">
+            <h3 id="exam-overview-title">Exam Overview</h3>
+            <div class="exam-item">
+                {% for exam in upcoming_exams %}
+                <div class="exam-info">
+                        <h4>{{ exam.exam_name }} - <span>{{ exam.exam_date }}</span></h4>
+                        <button class="btn edit">Edit</button> <button class="btn delete">Delete</button>
+                </div>
+                {% empty %}
+                    <h5>No exams found.</h5>
+                {% endfor %}
+                <a href="{% url 'classroom:add_exam' %}" id="create-exam" class="btn btn-primary">Create New Quiz</a>
+            </div>
+        </div>
+
+        
 
         {% comment %} <section id="student-monitoring" class="student-monitoring">
             <h3 id="live-monitoring-title">Live Monitoring</h3>
