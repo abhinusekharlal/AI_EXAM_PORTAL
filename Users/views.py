@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.utils.crypto import get_random_string
 from django.utils import timezone
@@ -121,7 +121,7 @@ def teacher_dashboard(request, username):
     
     classrooms = Classroom.objects.filter(teacher=request.user)
     upcoming_exams = Exam.objects.filter(exam_class__teacher=request.user).order_by('exam_date')
-    
+    exam = Exam.objects.filter(exam_class__teacher=request.user)
     context = {
         'groups': request.user.groups.all(),
         'permissions': request.user.user_permissions.all(),

@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.conf import settings
 
 class Classroom(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -34,10 +35,29 @@ class Exam(models.Model):
     exam_duration = models.DurationField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    teacher = models.ForeignKey('Users.User', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.exam_name
-    
+
     class Meta:
         verbose_name_plural = 'Exams'
         ordering = ['-exam_date']
+
+class Question(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.TextField()
+    option1 = models.CharField(max_length=100)
+    option2 = models.CharField(max_length=100)
+    option3 = models.CharField(max_length=100)
+    option4 = models.CharField(max_length=100)
+    correct_option = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.question_text
+    
+    class Meta:
+        verbose_name_plural = 'Questions'
+        ordering = ['-created_at']

@@ -1,0 +1,79 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Exam Interface
+{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/exam_interface.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="exam-header">
+            <div class="exam-info">
+                <h2>Data Science Exam</h2>
+                <p>Prof. xyz</p>
+            </div>
+            <div class="timer">⏰</div>
+        </div>
+
+        <div class="main-content">
+            <div class="question-section">
+                <div class="navigation-buttons">
+                    <button class="prev-btn">Previous</button>
+                    <span class="question-number">Question No. 1</span>
+                    <button class="next-btn">Next</button>
+                </div>
+                
+                <div class="question-box">
+                    <p class="question-text">What is the primary purpose of data preprocessing in machine learning?</p>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="answer">
+                            <span>To clean and prepare data for analysis</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer">
+                            <span>To increase the dataset size</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer">
+                            <span>To visualize the data</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="answer">
+                            <span>To store data in a database</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="save-btn">Save Answer</button>
+            </div>
+
+            <div class="exam-progress">
+                <h3>Exam Progress</h3>
+                <div class="progress-info">
+                    <span>Questions Answered</span>
+                    <span class="fraction">1/5</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 20%"></div>
+                </div>
+                <button class="submit-btn">Submit Exam</button>
+            </div>
+        </div>
+
+        <div class="proctoring-window">
+            <div class="proctoring-header">
+                <span>📹 Proctoring Active</span>
+                <span class="status-dot"></span>
+            </div>
+            <div class="video-placeholder"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/exam_interface.js' %}"></script>
+{% endblock %}

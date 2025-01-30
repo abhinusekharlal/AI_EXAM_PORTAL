@@ -43,7 +43,7 @@
             {% if request.user.is_authenticated %}
                 <nav class="sidebar">
                     <a href="{% url 'Users:index' %}" class="nav-item">Home</a>
-                    <a href="{% url 'Users:dashboard' request.user.username %}" class="nav-item active">Dashboard</a>
+                    <a href="{% url 'Users:dashboard' request.user.username %}" class="nav-item">Dashboard</a>
                     {% if request.user.user_type == 'teacher' %}
                         <a href="{% url 'classroom:create_class' %}" class="nav-item">Create Class</a>
                         <a href="{% url 'classroom:add_exam' %}" class="nav-item">Create Exam</a>
@@ -61,9 +61,9 @@
                 </main>
             </div>
         </div>
-        <footer>
+        {% comment %} <footer>
             <p>&copy; 2024 ProctorAI. All rights reserved.</p>
-        </footer>
+        </footer> {% endcomment %}
        
     </div>
 
