@@ -1,8 +1,8 @@
 from django import forms
-
+from django.forms import modelformset_factory
 from Users.models import User
 from .models import Classroom, Exam, Question
-from django.utils import timezone
+from django.utils import timezone  # Change this import
 from datetime import timedelta
 from django.core.exceptions import ValidationError
 
@@ -16,9 +16,60 @@ class JoinClassForm(forms.Form):
     class_code = forms.CharField(max_length=10, required=True)
 
 class QuestionForm(forms.ModelForm):
+    question_text = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter question text',
+            'name': 'question_text'
+        })
+    )
+    option1 = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'option1'
+        })
+    )
+    option2 = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'option2'
+        })
+    )
+    option3 = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'option3'
+        })
+    )
+    option4 = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'option4'
+        })
+    )
+    correct_option = forms.ChoiceField(
+        choices=[('1', 'Option 1'), ('2', 'Option 2'), ('3', 'Option 3'), ('4', 'Option 4')],
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'name': 'correct_option'
+        })
+    )
+
     class Meta:
         model = Question
         fields = ['question_text', 'option1', 'option2', 'option3', 'option4', 'correct_option']
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        correct_opt = cleaned_data.get('correct_option')
+        if correct_opt:
+            option_field = f'option{correct_opt}'
+            option_text = cleaned_data.get(option_field)
+            if not option_text:
+                raise forms.ValidationError(f"The text for Option {correct_opt} cannot be empty if selected as correct.")
+        return cleaned_data
+
+# Remove the QuestionFormset definition as we'll handle forms individually with HTMX
 
 def validate_future_date(value):
     if value < timezone.now().date():
@@ -41,7 +92,11 @@ class ExamForm(forms.ModelForm):
     exam_duration = forms.DurationField(
         help_text='Enter duration in the format HH:MM:SS'
     )
-    exam_class = forms.ModelChoiceField(queryset=Classroom.objects.none(), required=True)
+    exam_class = forms.ModelChoiceField(
+        queryset=Classroom.objects.none(),
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
     questions = forms.ModelMultipleChoiceField(
         queryset=Question.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -57,5 +112,5 @@ class ExamForm(forms.ModelForm):
         model = Exam
         fields = ['exam_name', 'exam_class', 'exam_date', 'exam_time', 'exam_duration']
 
-   
+
 

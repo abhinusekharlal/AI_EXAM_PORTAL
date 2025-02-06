@@ -1,81 +1,184 @@
-        // Mock exam data
-const examData = {
-    currentQuestion: 1,
-    totalQuestions: 5,
-    answeredQuestions: 1,
-    timeRemaining: 3600, // in seconds
-};
+console.log('exam_interface.js starting to execute...');
 
-// Update progress bar
-function updateProgress() {
-    const progress = (examData.answeredQuestions / examData.totalQuestions) * 100;
-    document.querySelector('.progress').style.width = `${progress}%`;
-    document.querySelector('.fraction').textContent = 
-        `${examData.answeredQuestions}/${examData.totalQuestions}`;
+// Verify examData is available globally
+if (typeof window.examData === 'undefined') {
+    console.error('examData not found - check script loading order');
+    throw new Error('examData not found - check script loading order');
 }
+
+// Log the data we're working with
+console.log('Working with exam data:', window.examData);
+
+let currentQuestion = 1;
+let answeredQuestions = new Set();
 
 // Timer functionality
-function updateTimer() {
-    const hours = Math.floor(examData.timeRemaining / 3600);
-    const minutes = Math.floor((examData.timeRemaining % 3600) / 60);
-    const seconds = examData.timeRemaining % 60;
+function startTimer(duration) {
+    let timeLeft = duration * 60; // convert minutes to seconds
+    const timerDisplay = document.getElementById('examTimer');
     
-    const timerDisplay = document.querySelector('.timer');
-    timerDisplay.textContent = `⏰ ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    if (examData.timeRemaining > 0) {
-        examData.timeRemaining--;
-        setTimeout(updateTimer, 1000);
-    } else {
-        alert('Time is up!');
-        // Handle exam submission
-    }
+    const countdown = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerDisplay.textContent = `⏰ ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            submitExam();
+        }
+        timeLeft--;
+    }, 1000);
 }
 
-// Navigation buttons
-document.querySelector('.prev-btn').addEventListener('click', () => {
-    if (examData.currentQuestion > 1) {
-        examData.currentQuestion--;
-        document.querySelector('.question-number').textContent = 
-            `Question No. ${examData.currentQuestion}`;
-    }
-});
+function showQuestion(num) {
+    console.log("Showing question:", num);
+    const questions = document.querySelectorAll('.question-box');
+    
+    questions.forEach(q => {
+        const questionNum = parseInt(q.dataset.questionNumber);
+        if (questionNum === num) {
+            q.classList.add('active');
+            console.log("Activating question:", questionNum);
+        } else {
+            q.classList.remove('active');
+        }
+    });
+    
+    document.getElementById('currentQuestionNum').textContent = num;
+    currentQuestion = num;
+}
 
-document.querySelector('.next-btn').addEventListener('click', () => {
-    if (examData.currentQuestion < examData.totalQuestions) {
-        examData.currentQuestion++;
-        document.querySelector('.question-number').textContent = 
-            `Question No. ${examData.currentQuestion}`;
+function previousQuestion(e) {
+    e?.preventDefault();
+    if (currentQuestion > 1) {
+        showQuestion(currentQuestion - 1);
     }
-});
+    console.log('Previous button clicked');
+}
 
-// Save answer button
-document.querySelector('.save-btn').addEventListener('click', () => {
-    const selectedOption = document.querySelector('input[name="answer"]:checked');
-    if (selectedOption) {
-        // Here you would typically save the answer to your backend
-        alert('Answer saved successfully!');
+function nextQuestion(e) {
+    e?.preventDefault();
+    const questions = document.querySelectorAll('.question-box');
+    const totalQuestions = questions.length;
+    console.log("Total questions:", totalQuestions, "Current question:", currentQuestion);
+    if (currentQuestion < totalQuestions) {
+        showQuestion(currentQuestion + 1);
+    } else {
+        console.log("Already at the last question.");
+    }
+    console.log('Next button clicked');
+}
+
+function saveAnswer(e) {
+    e?.preventDefault();
+    // Get currently visible question using display style
+    const currentBox = Array.from(document.querySelectorAll('.question-box')).find(q => q.style.display !== 'none');
+    if (!currentBox) return;
+    const selected = currentBox.querySelector('input[type="radio"]:checked');
+    if (selected) {
+        const qNumber = parseInt(currentBox.dataset.questionNumber);
+        answeredQuestions.add(qNumber);
+        updateProgress();
+        nextQuestion(e);
     } else {
         alert('Please select an answer before saving.');
     }
-});
+}
 
-// Submit exam button
-document.querySelector('.submit-btn').addEventListener('click', () => {
+function updateProgress() {
+    const totalQuestions = document.querySelectorAll('.question-box').length;
+    const progressPercent = (answeredQuestions.size / totalQuestions) * 100;
+    document.getElementById('progressBar').style.width = `${progressPercent}%`;
+    document.getElementById('answeredCount').textContent = answeredQuestions.size;
+}
+
+function submitExam(e) {
+    e?.preventDefault();
+    
+    // Require at least one answered question before submission
+    if (answeredQuestions.size === 0) {
+        alert('Please answer at least one question before submitting.');
+        return;
+    }
     if (confirm('Are you sure you want to submit the exam?')) {
-        // Here you would typically handle the exam submission
-        alert('Exam submitted successfully!');
+        const answers = {};
+        // Gather selected answers from every question box
+        document.querySelectorAll('.question-box').forEach(box => {
+            const questionId = box.dataset.questionId;
+            const selected = box.querySelector('input[type="radio"]:checked');
+            if (selected) {
+                answers[questionId] = selected.value;
+            }
+        });
+        fetch('/classroom/submit-exam/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': examData.csrfToken,
+            },
+            body: JSON.stringify({
+                examId: examData.examId,
+                answers: answers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Your score: ${data.score}%`);
+                window.location.href = data.redirect_url;
+            } else {
+                alert('Error submitting exam: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting exam. Please try again.');
+        });
+    }
+}
+
+// Basic fullscreen implementation (if desired)
+function enterFullscreen() {
+    const container = document.getElementById('examContainer');
+    if (container && container.requestFullscreen) {
+        container.requestFullscreen().catch(err => {
+            console.error("Error launching fullscreen:", err);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        // Get and verify all required elements
+        const elements = {
+            prevBtn: document.querySelector('.prev-btn'),
+            nextBtn: document.querySelector('.next-btn'),
+            saveBtn: document.querySelector('.save-btn'),
+            submitBtn: document.querySelector('.submit-btn'),
+            questionsContainer: document.getElementById('questionsContainer'),
+            timerDisplay: document.getElementById('examTimer')
+        };
+
+        // Verify all elements are found
+        Object.entries(elements).forEach(([name, element]) => {
+            if (!element) {
+                throw new Error(`Required element ${name} not found`);
+            }
+        });
+
+        console.log('All required elements found:', elements);
+        
+        // Add event listeners and initialize
+        elements.prevBtn.addEventListener('click', previousQuestion);
+        elements.nextBtn.addEventListener('click', nextQuestion);
+        elements.saveBtn.addEventListener('click', saveAnswer);
+        elements.submitBtn.addEventListener('click', submitExam);
+        
+        startTimer(window.examData.duration);
+        showQuestion(1);
+        updateProgress();
+        
+        console.log('Exam interface initialized successfully');
+    } catch (error) {
+        console.error('Error initializing exam interface:', error);
     }
 });
-
-// Initialize the exam interface
-document.addEventListener('DOMContentLoaded', () => {
-    updateProgress();
-    updateTimer();
-});
-
-// Simulate active proctoring status
-setInterval(() => {
-    const statusDot = document.querySelector('.status-dot');
-    statusDot.style.opacity = statusDot.style.opacity === '1' ? '0.5' : '1';
-}, 2000);

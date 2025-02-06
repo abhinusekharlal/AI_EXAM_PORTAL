@@ -44,6 +44,13 @@ class Exam(models.Model):
         verbose_name_plural = 'Exams'
         ordering = ['-exam_date']
 
+OPTION_CHOICES = (
+    ('1', 'Option 1'),
+    ('2', 'Option 2'),
+    ('3', 'Option 3'),
+    ('4', 'Option 4'),
+)
+
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='questions')
     question_text = models.TextField()
@@ -51,7 +58,8 @@ class Question(models.Model):
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
     option4 = models.CharField(max_length=100)
-    correct_option = models.CharField(max_length=100)
+    # Update correct_option to use valid choices and limit max_length accordingly.
+    correct_option = models.CharField(max_length=1, choices=OPTION_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

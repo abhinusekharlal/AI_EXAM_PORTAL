@@ -63,11 +63,16 @@
 }
 
 .question-box {
+    display: none; /* Hide all questions by default */
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+}
+
+.question-box.active {
+    display: block; /* Show only active question */
 }
 
 .question-text {
@@ -182,4 +187,27 @@
 .video-placeholder {
     background: #1a1a2e;
     height: 150px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Fullscreen styles */
+#examContainer:-webkit-full-screen {
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#examContainer:-moz-full-screen {
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
 }

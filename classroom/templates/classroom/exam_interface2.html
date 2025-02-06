@@ -40,7 +40,7 @@
                 
                 <div id="questionsContainer">
                     {% for question in questions %}
-                    <div class="question-box {% if forloop.first %}active{% endif %}" 
+                    <div class="question-box {% if not forloop.first %}hidden{% endif %}" 
                          data-question-id="{{ question.id }}"
                          data-question-number="{{ forloop.counter }}">
                         <p class="question-text">{{ question.question_text }}</p>

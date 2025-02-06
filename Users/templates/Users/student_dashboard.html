@@ -54,7 +54,7 @@
                         </div>
                         <div class="exam-actions">
                             <button class="btn-scheduled">Scheduled</button>
-                            <button class="btn-start"> <a href="{% url 'classroom:view_exam' exam.id %}"> Start Exam</a></button>
+                            <a href="{% url 'classroom:view_exam' exam.id %}" class="btn-start" > Start Exam</a>
                         </div>
                     </div>
                 {% endfor %}

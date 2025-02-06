@@ -1,0 +1,42 @@
+<div class="question-card" data-number="{{ number }}">
+    <div class="question-header">
+        <span>Question {{ number }}</span>
+        <button type="button" 
+                class="btn-delete" 
+                hx-delete="{% url 'classroom:delete_question' %}"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-target="closest .question-card" 
+                hx-swap="outerHTML"
+                hx-trigger="click">
+            🗑
+        </button>
+    </div>
+    <div class="question-content">
+        <div class="form-group">
+            {{ form.question_text.label_tag }}
+            {{ form.question_text }}
+        </div>
+        <div class="options-container">
+            <div class="form-group">
+                {{ form.option1.label_tag }}
+                {{ form.option1 }}
+            </div>
+            <div class="form-group">
+                {{ form.option2.label_tag }}
+                {{ form.option2 }}
+            </div>
+            <div class="form-group">
+                {{ form.option3.label_tag }}
+                {{ form.option3 }}
+            </div>
+            <div class="form-group">
+                {{ form.option4.label_tag }}
+                {{ form.option4 }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.correct_option.label_tag }}
+            {{ form.correct_option }}
+        </div>
+    </div>
+</div>
