@@ -1,0 +1,14 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Exam Completed{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="completion-message">
+        <h1>Exam Completed</h1>
+        <p>Your exam has been submitted successfully.</p>
+        <a href="{% url 'Users:dashboard' request.user.username %}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

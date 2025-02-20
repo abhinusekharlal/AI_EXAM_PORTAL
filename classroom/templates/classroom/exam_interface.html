@@ -1,0 +1,78 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+{% load exam_tags %}  {# Add this line to load the custom template tags #}
+
+{% block title %}{{ exam.exam_name }}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/exam_interface.css' %}">
+    <!-- Define examData first -->
+    <script>
+        window.examData = {
+            duration: {{ duration_minutes }},
+            totalQuestions: {{ questions|length }},
+            examId: "{{ exam.id }}",
+            csrfToken: '{{ csrf_token }}'
+        };
+        console.log('examData initialized:', window.examData);
+    </script>
+    <!-- Load exam_interface.js after examData is defined -->
+    <script defer src="{% static 'js/exam_interface.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="examContainer">
+        <div class="exam-header">
+            <div class="exam-info">
+                <h2>{{ exam.exam_name }}</h2>
+                <p>Duration: {{ exam.exam_duration }}</p>
+            </div>
+            <div class="timer" id="examTimer">⏰ --:--</div>
+        </div>
+
+        <div class="main-content">
+            <div class="question-section">
+                <div class="navigation-buttons">
+                    <button class="prev-btn">Previous</button>
+                    <span class="question-number">Question <span id="currentQuestionNum">1</span></span>
+                    <button class="next-btn">Next</button>
+                </div>
+                
+                <div id="questionsContainer">
+                    {% for question in questions %}
+                    <div class="question-box {% if forloop.first %}active{% endif %}" 
+                         data-question-id="{{ question.id }}"
+                         data-question-number="{{ forloop.counter }}">
+                        <p class="question-text">{{ question.question_text }}</p>
+                        <div class="options">
+                            {% for option_num, option_text in question|get_options %}
+                            <label class="option">
+                                <input type="radio" 
+                                       name="question_{{ question.id }}" 
+                                       value="{{ option_num }}"
+                                       data-question="{{ question.id }}">
+                                <span>{{ option_text }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button class="save-btn">Save Answer</button>
+            </div>
+
+            <div class="exam-progress">
+                <h3>Exam Progress</h3>
+                <div class="progress-info">
+                    <span>Questions Answered</span>
+                    <span class="fraction"><span id="answeredCount">0</span>/{{ questions|length }}</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar" style="width: 0%"></div>
+                </div>
+                <button class="submit-btn">Submit Exam</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'Users/layout.html' %}
+
+{% block title %}
+    Manage Students
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Manage Students for {{ classroom.class_name }} ({{ classroom.class_code }})</h2>
+        <button id="send-invitations" class="btn btn-primary">Send Invitations</button>
+        <section id="joined-students" class="mt-4">
+            <h3>Joined Students</h3>
+            <ul class="list-group">
+                {% for student in joined_students %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ student.get_full_name }} ({{ student.email }})
+                        <form method="post" action="{% url 'classroom:remove_student' classroom.id student.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+{% endblock %}

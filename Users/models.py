@@ -9,6 +9,10 @@ class User(AbstractUser):
     )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    is_email_verified = models.BooleanField(default=False)
+    email_verification_token = models.CharField(max_length=200, blank=True)
+    email_token_created_at = models.DateTimeField(null=True, blank=True)
+    # ...existing code...
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_groups',  # Add related_name to avoid clashes
@@ -23,3 +27,10 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+    classrooms = models.ManyToManyField('classroom.Classroom', related_name='enrolled_students')
+
+    def is_student(self):
+        return self.user_type == 'student'
+    
+    def is_teacher(self):
+        return self.user_type == 'teacher'

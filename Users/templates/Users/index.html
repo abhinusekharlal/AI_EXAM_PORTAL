@@ -1,12 +1,14 @@
 {% extends 'Users/layout.html' %}
-
+{% load static %}
 {% block title %}
     Home
 {% endblock %}
 
-{% block content %}
-    <!-- Header Section -->
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 
+{% block content %}
     <!-- Hero Section -->
     <section id="hero">
         <div class="container">
@@ -47,6 +49,49 @@
         </div>
     </section>
 
+    <!--How it Works-->
+    <section class="how-it-works">
+        <h2>HOW DOES IT WORK?</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
+            </div>
+            <div class="step-content">
+              <h3>1. REGISTER</h3>
+              <p>Quick and easy registration</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="3" y="3" rx="2" ry="2"></rect><path d="M21 12V7"></path><path d="M21 16v1"></path><path d="M3 12h18"></path></svg>
+            </div>
+            <div class="step-content">
+              <h3>2. SETUP</h3>
+              <p>Complete system check and verification</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <div class="step-content">
+              <h3>3. VERIFY</h3>
+              <p>AI powered identity verification</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </div>
+            <div class="step-content">
+              <h3>4. START EXAM</h3>
+              <p>Complete system check and verification</p>
+            </div>
+          </div>
+        </div>
+    </section>
+
     <!-- About Section -->
     <section class="features">
         <h2 class="section-title">Why Choose ProctorAI?</h2>
@@ -82,11 +127,4 @@
             </form>
         </div>
     </section>
-
-    <!-- Footer Section -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 AI Proctored Exam Portal. All Rights Reserved.</p>
-        </div>
-    </footer>
 {% endblock %}

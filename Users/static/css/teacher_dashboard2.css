@@ -1,0 +1,380 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #fff;
+}
+
+/* .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    height: 48px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo span {
+    font-weight: 500;
+    font-size: 14px;
+} */
+
+.container {
+    display: flex;
+    min-height: calc(100vh - 48px);
+}
+
+.sidebar {
+    width: 200px;
+    padding: 1rem 0;
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+}
+
+.nav-item.active {
+    color: #0066ff;
+    background-color: #f0f7ff;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: #fff;
+    max-width: 100%;
+    width: 100%;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.welcome-card h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.welcome-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.classes-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.class-tag {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+}
+
+.exam-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.exam-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.exam-info {
+    margin-bottom: 1rem;
+}
+
+.exam-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.exam-details {
+    display: flex;
+    gap: 1rem;
+    font-size: 14px;
+    color: #666;
+}
+
+.exam-date, .exam-time {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.exam-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-scheduled, .btn-start {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-scheduled {
+    background-color: #0066ff;
+    color: white;
+}
+
+.btn-start {
+    background-color: #0066ff;
+    color: white;
+}
+
+.result-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.score {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.btn-view {
+    background-color: #0066ff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+img {
+    width: 24px;
+    height: 24px;
+}
+
+.exam-details img {
+    width: 16px;
+    height: 16px;
+}
+
+
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.welcome-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.welcome-card h2 {
+    margin-bottom: 10px;
+}
+
+/* Class Overview Styles */
+.class-info {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+/* Exam Item Styles */
+.exam-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.exam-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Monitoring Styles */
+.student-monitoring {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.monitoring-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.status.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Incident Card Styles */
+.incident-card {
+    background-color: white;
+}
+
+.incident {
+    background-color: #ffebee;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.incident-info {
+    margin-bottom: 10px;
+}
+
+.incident-type {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.incident-time {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Button Styles */
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn.scheduled {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn.edit {
+    background-color: #795548;
+    color: white;
+}
+
+.btn.delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn.monitor {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn.review {
+    background-color: #2196F3;
+    color: white;
+    margin-top: 10px;
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+.box{
+    width: auto;
+
+}
+.feedback-textarea{
+    width: 100%;
+}
+#submit-feedback{
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #0066ff;
+    align-items: center;
+    
+}
+.help-btn{
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #0066ff;
+    align-items: center;
+}
+.help{
+    padding-bottom: 50px;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .exam-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .exam-actions {
+        margin-top: 10px;
+    }
+}

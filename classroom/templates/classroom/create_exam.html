@@ -1,0 +1,91 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Create New Exam
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_exam.css' %}">
+    <!-- Add HTMX directly in this template -->
+    <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <script>
+        document.body.addEventListener('htmx:configRequest', function(evt) {
+            evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="exam-form">
+            <h1>Create New Exam</h1>
+            
+            <section class="exam-details">
+                <h2>Exam Details</h2>
+                <form method="post" action="{% url 'classroom:add_exam' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="exam_name">Exam Name</label>
+                        {{ exam_form.exam_name }}
+                        {% if exam_form.exam_name.errors %}
+                            <div class="error">{{ exam_form.exam_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        <label for="exam_class">Class</label>
+                        {{ exam_form.exam_class }}
+                        {% if exam_form.exam_class.errors %}
+                            <div class="error">{{ exam_form.exam_class.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        <label for="exam_date">Date</label>
+                        {{ exam_form.exam_date }}
+                        {% if exam_form.exam_date.errors %}
+                            <div class="error">{{ exam_form.exam_date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        <label for="exam_time">Time</label>
+                        {{ exam_form.exam_time }}
+                        {% if exam_form.exam_time.errors %}
+                            <div class="error">{{ exam_form.exam_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        <label for="exam_duration">Duration (HH:MM:SS)</label>
+                        {{ exam_form.exam_duration }}
+                        {% if exam_form.exam_duration.errors %}
+                            <div class="error">{{ exam_form.exam_duration.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <section class="questions-section">
+                        <div class="questions-header">
+                            <h2>Questions</h2>
+                            <button type="button" 
+                                    class="btn-add-question"
+                                    hx-get="{% url 'classroom:add_question_form' %}"
+                                    hx-target="#questions-container"
+                                    hx-swap="beforeend"
+                                    hx-vals='js:{count: document.querySelectorAll(".question-card").length}'>
+                                + Add Question
+                            </button>
+                        </div>
+                        
+                        <div id="questions-container" hx-target="this">
+                            <!-- Questions will be added here dynamically -->
+                        </div>
+                    </section>
+                    <button type="submit" class="btn btn-primary">Create Exam</button>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/create_exam.js' %}"></script>
+{% endblock %}
