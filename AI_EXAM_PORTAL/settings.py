@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'Users.middleware.RoleBasedAccessControlMiddleware',
+    'Users.middleware.SessionTrackingMiddleware',
+    'Users.middleware.SingleDeviceSessionMiddleware',
 ]
 
 ROOT_URLCONF = 'AI_EXAM_PORTAL.urls'
@@ -134,10 +136,61 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'Users.User'
+
+# Email configuration with Mailtrap
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_PORT = 587
+EMAIL_HOST_USER = 'a7e51742133547'
+EMAIL_HOST_PASSWORD = 'e3132b032e4901'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@aiexamportal.com')
+DEFAULT_FROM_EMAIL = 'noreply@aiexamportal.com'
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'django.template': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'django.db.backends': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
+        'Users': {  # Add logging for our Users app
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',  # Set to DEBUG to see detailed logs
+        },
+    },
+}

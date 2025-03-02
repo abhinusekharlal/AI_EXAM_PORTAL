@@ -1,0 +1,4 @@
+deepface>=0.0.79
+opencv-python>=4.5.5
+Pillow>=9.0.0
+numpy>=1.22.0

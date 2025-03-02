@@ -47,8 +47,9 @@
                     {% if request.user.user_type == 'teacher' %}
                         <a href="{% url 'classroom:create_class' %}" class="nav-item">Create Class</a>
                         <a href="{% url 'classroom:add_exam' %}" class="nav-item">Create Exam</a>
-                        <a href="#" class="nav-item">Live Monitoring</a>
+                        <a href="{% url 'Users:monitor_student_sessions' %}" class="nav-item">Monitor Sessions</a>
                     {% endif %}
+                    <a href="{% url 'Users:manage_sessions' %}" class="nav-item">Manage My Sessions</a>
                     <a href="#" class="nav-item">Help</a>
                     <a href="{% url 'Users:logout' %}" class="nav-item">SignOut</a>
                 </nav>

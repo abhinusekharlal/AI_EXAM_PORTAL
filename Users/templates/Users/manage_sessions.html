@@ -1,0 +1,133 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Manage Sessions
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        .session-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .session-table th,
+        .session-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .session-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .session-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .session-table .current {
+            background-color: #e8f4fc;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .terminate-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .current-label {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #17a2b8;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Manage Your Active Sessions</h2>
+            </div>
+            <div class="card-body">
+                <p class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> You are currently logged in from multiple devices or browsers. 
+                    For security reasons, you can terminate sessions that you don't recognize or no longer need.
+                    <strong>Note:</strong> During exams, students will be automatically limited to one active session.
+                </p>
+
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if active_sessions %}
+                    <table class="session-table">
+                        <thead>
+                            <tr>
+                                <th>Device/Browser</th>
+                                <th>IP Address</th>
+                                <th>Last Activity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for session in active_sessions %}
+                                <tr {% if session.session_key == current_session_key %}class="current"{% endif %}>
+                                    <td>
+                                        {{ session.user_agent|truncatechars:50 }}
+                                    </td>
+                                    <td>{{ session.ip_address }}</td>
+                                    <td>{{ session.last_activity }}</td>
+                                    <td>
+                                        {% if session.session_key == current_session_key %}
+                                            <span class="current-label">Current Session</span>
+                                        {% else %}
+                                            Active
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if session.session_key != current_session_key %}
+                                            <form method="post" action="{% url 'Users:terminate_session' session.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="action-btn terminate-btn">Terminate</button>
+                                            </form>
+                                        {% else %}
+                                            <em>In use</em>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center">No other active sessions found.</p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'Users:dashboard' request.user.username %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,540 @@
+INFO 2025-02-28 21:04:51,030 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:05:45,969 basehttp "POST /login/ HTTP/1.1" 302 0
+ERROR 2025-02-28 21:05:46,288 log Internal Server Error: /dashboard/hellostudent/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 28, in dashboard
+    return student_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 215, in student_dashboard
+    return render(request, 'Users/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'face_verification_page' with keyword arguments '{'exam_id': 6}' not found. 1 pattern(s) tried: ['face\\-verification/(?P<exam_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/\\Z']
+ERROR 2025-02-28 21:05:46,288 log Internal Server Error: /dashboard/hellostudent/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 28, in dashboard
+    return student_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 215, in student_dashboard
+    return render(request, 'Users/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'face_verification_page' with keyword arguments '{'exam_id': 6}' not found. 1 pattern(s) tried: ['face\\-verification/(?P<exam_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/\\Z']
+ERROR 2025-02-28 21:05:46,296 basehttp "GET /dashboard/hellostudent/ HTTP/1.1" 500 206276
+INFO 2025-02-28 21:06:00,133 basehttp "GET /login/ HTTP/1.1" 200 4181
+ERROR 2025-02-28 21:06:02,848 log Internal Server Error: /dashboard/hellostudent/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 28, in dashboard
+    return student_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 215, in student_dashboard
+    return render(request, 'Users/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'face_verification_page' with keyword arguments '{'exam_id': 6}' not found. 1 pattern(s) tried: ['face\\-verification/(?P<exam_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/\\Z']
+ERROR 2025-02-28 21:06:02,848 log Internal Server Error: /dashboard/hellostudent/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 28, in dashboard
+    return student_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 215, in student_dashboard
+    return render(request, 'Users/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'face_verification_page' with keyword arguments '{'exam_id': 6}' not found. 1 pattern(s) tried: ['face\\-verification/(?P<exam_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/\\Z']
+ERROR 2025-02-28 21:06:02,851 basehttp "GET /dashboard/hellostudent/ HTTP/1.1" 500 206139
+INFO 2025-02-28 21:06:06,042 basehttp "GET /sessions/ HTTP/1.1" 200 5943
+WARNING 2025-02-28 21:06:06,077 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-02-28 21:06:10,465 basehttp "GET /sessions/ HTTP/1.1" 200 5943
+WARNING 2025-02-28 21:06:10,506 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-02-28 21:06:12,051 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/AI_EXAM_PORTAL/settings.py changed, reloading.
+INFO 2025-02-28 21:06:13,398 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:06:47,104 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/AI_EXAM_PORTAL/settings.py changed, reloading.
+INFO 2025-02-28 21:06:48,364 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:07:00,451 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-02-28 21:07:00,464 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-02-28 21:07:02,230 basehttp "GET /register/ HTTP/1.1" 200 4845
+INFO 2025-02-28 21:07:42,327 basehttp "POST /register/ HTTP/1.1" 200 5439
+INFO 2025-02-28 21:07:57,420 basehttp "POST /register/ HTTP/1.1" 200 5423
+INFO 2025-02-28 21:08:16,916 views Generated verification URL: http://127.0.0.1:8000/verify-email/O8OjXQ865u4W0Yzkr5CyRwpSvP2kIF5Asu5Vlz2xvS8QjCNAZv2DZ2sGFssw5ZJ6
+INFO 2025-02-28 21:08:16,916 views Attempting to send email to abhinusekharlalyouramigo@gmail.com
+INFO 2025-02-28 21:10:32,851 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-02-28 21:10:32,919 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-02-28 21:10:32,919 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-02-28 21:10:32,919 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-02-28 21:10:32,920 basehttp "GET /static/css/index.css HTTP/1.1" 200 3093
+INFO 2025-02-28 21:10:34,057 basehttp "GET /register/ HTTP/1.1" 200 4845
+INFO 2025-02-28 21:10:34,087 basehttp "GET /static/css/register.css HTTP/1.1" 200 3558
+INFO 2025-02-28 21:10:56,678 basehttp "POST /register/ HTTP/1.1" 200 5420
+INFO 2025-02-28 21:11:10,013 views Generated verification URL: http://127.0.0.1:8000/verify-email/y91bGXdNOnh1KvRUKAnnseU7yn7iVbHKfXbQ6eQ4hldEUodeU0ykTbDWGIvms3ca
+INFO 2025-02-28 21:11:10,013 views Attempting to send email to lideh47335@jomspar.com
+INFO 2025-02-28 21:13:30,264 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-02-28 21:13:32,252 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:14:19,029 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-02-28 21:14:20,675 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:18:14,485 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-02-28 21:18:16,296 autoreload Watching for file changes with StatReloader
+INFO 2025-02-28 21:18:37,578 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/urls.py changed, reloading.
+INFO 2025-02-28 21:18:38,991 autoreload Watching for file changes with StatReloader
+WARNING 2025-02-28 21:19:07,632 log Unauthorized: /test-email/
+WARNING 2025-02-28 21:19:07,632 log Unauthorized: /test-email/
+WARNING 2025-02-28 21:19:07,633 basehttp "GET /test-email/?email=youremail@gmail.com HTTP/1.1" 401 12
+INFO 2025-02-28 21:20:30,592 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-02-28 21:20:32,773 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-02-28 21:20:53,067 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-02-28 21:20:53,081 basehttp "GET /dashboard/abhinu/ HTTP/1.1" 302 0
+INFO 2025-02-28 21:20:53,136 basehttp "GET /access-denied/ HTTP/1.1" 200 2518
+INFO 2025-02-28 21:21:13,019 views SMTP Settings:
+INFO 2025-02-28 21:21:13,019 views Host: sandbox.smtp.mailtrap.io
+INFO 2025-02-28 21:21:13,020 views Port: 2525
+INFO 2025-02-28 21:21:13,020 views User: a7e51742133547
+INFO 2025-02-28 21:21:13,020 views TLS: True
+INFO 2025-02-28 21:21:13,020 views From Email: noreply@aiexamportal.com
+INFO 2025-02-28 21:21:32,095 views SMTP Settings:
+INFO 2025-02-28 21:21:32,095 views Host: sandbox.smtp.mailtrap.io
+INFO 2025-02-28 21:21:32,095 views Port: 2525
+INFO 2025-02-28 21:21:32,095 views User: a7e51742133547
+INFO 2025-02-28 21:21:32,095 views TLS: True
+INFO 2025-02-28 21:21:32,095 views From Email: noreply@aiexamportal.com
+INFO 2025-02-28 21:21:34,522 views SMTP Settings:
+INFO 2025-02-28 21:21:34,523 views Host: sandbox.smtp.mailtrap.io
+INFO 2025-02-28 21:21:34,523 views Port: 2525
+INFO 2025-02-28 21:21:34,523 views User: a7e51742133547
+INFO 2025-02-28 21:21:34,523 views TLS: True
+INFO 2025-02-28 21:21:34,523 views From Email: noreply@aiexamportal.com
+INFO 2025-02-28 21:21:44,042 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-02-28 21:21:45,345 autoreload Watching for file changes with StatReloader
+INFO 2025-03-02 14:38:17,212 autoreload Watching for file changes with StatReloader
+INFO 2025-03-02 14:38:30,557 basehttp "GET / HTTP/1.1" 200 8444
+INFO 2025-03-02 14:38:30,630 basehttp "GET /static/css/index.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:38:30,631 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:38:30,634 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-03-02 14:38:30,643 basehttp "GET /static/img/logo.png HTTP/1.1" 304 0
+WARNING 2025-03-02 14:38:31,743 log Not Found: /favicon.ico
+WARNING 2025-03-02 14:38:31,743 log Not Found: /favicon.ico
+WARNING 2025-03-02 14:38:31,743 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-02 14:38:33,377 basehttp "GET /dashboard/abhinu/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:38:33,389 basehttp "GET /access-denied/ HTTP/1.1" 200 2518
+INFO 2025-03-02 14:38:36,478 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:38:36,483 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-02 14:38:38,147 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-03-02 14:38:38,167 basehttp "GET /static/css/login.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:38:40,526 basehttp "POST /login/ HTTP/1.1" 200 4125
+INFO 2025-03-02 14:38:51,718 basehttp "GET /register/ HTTP/1.1" 200 4845
+INFO 2025-03-02 14:38:51,747 basehttp "GET /static/css/register.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:38:54,235 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-03-02 14:38:56,748 basehttp "GET /register/ HTTP/1.1" 200 4845
+INFO 2025-03-02 14:39:44,294 views Generated verification URL: http://127.0.0.1:8000/verify-email/TBazFFyLbifxMbQZe46tbGu3EX4CUl1PsGBYVajxHY9I5HZvUM20qNOjVlmWP6gV
+INFO 2025-03-02 14:39:44,294 views Attempting to send email to swathisuresh123@gmail.com
+INFO 2025-03-02 14:39:50,200 views Successfully opened email connection
+INFO 2025-03-02 14:39:51,394 views Successfully sent verification email to swathisuresh123@gmail.com
+INFO 2025-03-02 14:39:51,688 basehttp "POST /register/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:39:51,694 basehttp "GET /email-verification-sent/ HTTP/1.1" 200 3396
+INFO 2025-03-02 14:40:28,012 basehttp "GET /verify-email/TBazFFyLbifxMbQZe46tbGu3EX4CUl1PsGBYVajxHY9I5HZvUM20qNOjVlmWP6gV HTTP/1.1" 301 0
+INFO 2025-03-02 14:40:28,039 basehttp "GET /verify-email/TBazFFyLbifxMbQZe46tbGu3EX4CUl1PsGBYVajxHY9I5HZvUM20qNOjVlmWP6gV/ HTTP/1.1" 200 2774
+INFO 2025-03-02 14:40:38,909 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-03-02 14:40:41,365 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:40:41,388 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5664
+INFO 2025-03-02 14:40:41,465 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:40:55,441 basehttp "GET /face-registration/ HTTP/1.1" 200 12367
+INFO 2025-03-02 14:41:36,505 basehttp "POST /api/face-register/ HTTP/1.1" 200 60
+INFO 2025-03-02 14:41:42,559 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5662
+INFO 2025-03-02 14:42:53,016 basehttp "GET /face-registration/ HTTP/1.1" 200 12358
+INFO 2025-03-02 14:43:27,589 basehttp "POST /api/face-register/ HTTP/1.1" 200 94
+INFO 2025-03-02 14:43:45,056 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5662
+INFO 2025-03-02 14:44:29,825 basehttp "GET /sessions/ HTTP/1.1" 200 5937
+WARNING 2025-03-02 14:44:29,867 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:44:42,214 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-02 14:44:42,269 basehttp "GET /static/css/index.css HTTP/1.1" 200 3093
+INFO 2025-03-02 14:44:42,270 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-02 14:44:42,524 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-02 14:44:42,530 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-02 14:44:44,437 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-03-02 14:44:44,468 basehttp "GET /static/css/login.css HTTP/1.1" 200 4181
+INFO 2025-03-02 14:44:48,998 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:44:49,022 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6012
+INFO 2025-03-02 14:44:49,094 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 8371
+INFO 2025-03-02 14:44:59,952 basehttp "GET /sessions/ HTTP/1.1" 200 7165
+WARNING 2025-03-02 14:44:59,984 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:45:27,541 basehttp "GET /sessions/ HTTP/1.1" 200 7165
+WARNING 2025-03-02 14:45:27,581 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:45:29,841 basehttp "POST /sessions/terminate/7/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:45:29,857 basehttp "GET /sessions/ HTTP/1.1" 200 6236
+WARNING 2025-03-02 14:45:29,925 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:45:35,154 basehttp "GET /sessions/ HTTP/1.1" 302 0
+WARNING 2025-03-02 14:45:35,164 log Not Found: /accounts/login/
+WARNING 2025-03-02 14:45:35,164 log Not Found: /accounts/login/
+WARNING 2025-03-02 14:45:35,165 basehttp "GET /accounts/login/?next=/sessions/ HTTP/1.1" 404 11286
+INFO 2025-03-02 14:45:50,115 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5662
+INFO 2025-03-02 14:45:57,273 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 14994
+INFO 2025-03-02 14:45:57,319 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:45:57,320 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:45:57,324 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-03-02 14:45:57,325 basehttp "GET /static/img/logo.png HTTP/1.1" 304 0
+WARNING 2025-03-02 14:45:57,446 log Not Found: /favicon.ico
+WARNING 2025-03-02 14:45:57,446 log Not Found: /favicon.ico
+WARNING 2025-03-02 14:45:57,446 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-02 14:45:59,494 basehttp "GET /sessions/ HTTP/1.1" 200 6237
+WARNING 2025-03-02 14:45:59,523 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:46:01,461 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 7468
+WARNING 2025-03-02 14:46:01,551 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:46:05,871 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 14994
+INFO 2025-03-02 14:46:18,435 basehttp "GET /classroom/join HTTP/1.1" 200 2953
+INFO 2025-03-02 14:46:21,259 basehttp "POST /classroom/join HTTP/1.1" 302 0
+INFO 2025-03-02 14:46:21,279 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5691
+INFO 2025-03-02 14:46:30,567 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9632
+WARNING 2025-03-02 14:46:30,621 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:46:56,499 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 14994
+INFO 2025-03-02 14:51:27,985 basehttp "GET /sessions/ HTTP/1.1" 200 5937
+WARNING 2025-03-02 14:51:28,035 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 14:51:30,327 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5691
+INFO 2025-03-02 14:51:32,476 basehttp "GET /face-registration/ HTTP/1.1" 200 12358
+INFO 2025-03-02 14:54:43,303 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 5691
+INFO 2025-03-02 14:54:51,900 basehttp "POST /classroom/delete_exam/15/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:54:51,929 basehttp "GET /classroom/ HTTP/1.1" 200 8893
+INFO 2025-03-02 14:54:56,373 basehttp "POST /classroom/delete_exam/13/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:54:56,396 basehttp "GET /classroom/ HTTP/1.1" 200 6894
+INFO 2025-03-02 14:54:57,704 basehttp "POST /classroom/delete_exam/6/ HTTP/1.1" 302 0
+INFO 2025-03-02 14:54:57,722 basehttp "GET /classroom/ HTTP/1.1" 200 4897
+INFO 2025-03-02 14:54:58,599 basehttp "GET /classroom/addexam HTTP/1.1" 200 6277
+WARNING 2025-03-02 14:54:58,633 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-02 14:54:58,633 basehttp "GET /static/css/add_exam.css HTTP/1.1" 304 0
+INFO 2025-03-02 14:55:32,605 basehttp "GET /classroom/add-question-form/?count=0 HTTP/1.1" 200 2408
+INFO 2025-03-02 14:55:43,288 basehttp "GET /classroom/add-question-form/?count=1 HTTP/1.1" 200 2408
+INFO 2025-03-02 14:56:55,271 basehttp "POST /classroom/addexam HTTP/1.1" 302 0
+INFO 2025-03-02 14:56:55,313 basehttp "GET /classroom/ HTTP/1.1" 200 6897
+INFO 2025-03-02 14:56:57,861 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-02 15:06:59,163 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 15:07:00,811 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-02 15:07:08,834 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+WARNING 2025-03-02 15:07:17,371 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:07:17,371 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:07:17,371 basehttp "GET /classroom/take-exam/16/ HTTP/1.1" 404 11294
+INFO 2025-03-02 15:09:08,584 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 15:09:13,500 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-02 15:09:24,018 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+WARNING 2025-03-02 15:09:53,051 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:09:53,051 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:09:53,052 basehttp "GET /classroom/take-exam/16/ HTTP/1.1" 404 11294
+INFO 2025-03-02 15:14:02,258 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-02 15:14:04,095 autoreload Watching for file changes with StatReloader
+INFO 2025-03-02 15:14:26,573 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+WARNING 2025-03-02 15:14:28,407 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:14:28,407 log Not Found: /classroom/take-exam/16/
+WARNING 2025-03-02 15:14:28,407 basehttp "GET /classroom/take-exam/16/ HTTP/1.1" 404 11294
+INFO 2025-03-02 15:15:35,543 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 15:15:37,027 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 15:15:37,060 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 8371
+INFO 2025-03-02 15:15:37,061 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-02 15:15:37,227 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-02 15:15:37,227 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-02 15:15:38,144 log Not Found: /favicon.ico
+WARNING 2025-03-02 15:15:38,144 log Not Found: /favicon.ico
+WARNING 2025-03-02 15:15:38,145 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-02 15:15:43,841 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 15:15:49,480 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-02 15:15:54,491 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13210
+INFO 2025-03-02 15:15:54,523 basehttp "GET /static/css/exam_interface.css HTTP/1.1" 304 0
+INFO 2025-03-02 15:15:54,523 basehttp "GET /static/js/exam_interface.js HTTP/1.1" 304 0
+INFO 2025-03-02 15:16:10,996 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13210
+INFO 2025-03-02 15:16:17,488 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-02 15:16:17,558 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-02 15:17:08,400 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-02 15:17:12,112 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 17:27:42,423 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 17:28:06,204 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-02 17:28:33,870 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-02 17:28:40,944 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-02 17:29:07,770 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:32:36,347 autoreload Watching for file changes with StatReloader
+INFO 2025-03-02 18:32:44,339 basehttp "GET / HTTP/1.1" 200 8447
+WARNING 2025-03-02 18:32:45,603 log Not Found: /favicon.ico
+WARNING 2025-03-02 18:32:45,603 log Not Found: /favicon.ico
+WARNING 2025-03-02 18:32:45,603 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-02 18:32:48,900 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:32:51,523 basehttp "GET /face-registration/ HTTP/1.1" 200 12358
+INFO 2025-03-02 18:32:57,172 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:32:58,822 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 18:33:23,952 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-02 18:33:30,216 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:33:33,750 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 18:33:56,849 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-02 18:34:09,478 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-02 18:35:00,498 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13210
+INFO 2025-03-02 18:35:16,294 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:37:10,641 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 18:37:21,592 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-02 18:37:27,382 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-02 18:37:33,250 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13785
+INFO 2025-03-02 18:37:55,481 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-02 18:38:10,600 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-02 18:38:13,153 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13210
+INFO 2025-03-02 18:38:58,722 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989

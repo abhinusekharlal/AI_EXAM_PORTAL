@@ -13,4 +13,17 @@ urlpatterns = [
     path('dashboard/<str:username>/', views.dashboard, name='dashboard'),
     path('submit_feedback/', views.submit_feedback, name='submit_feedback'),
     path('access-denied/', views.access_denied, name='access_denied'),
+    path('sessions/', views.manage_sessions, name='manage_sessions'),
+    path('sessions/terminate/<int:session_id>/', views.terminate_session, name='terminate_session'),
+    path('monitor/student-sessions/', views.monitor_student_sessions, name='monitor_student_sessions'),
+    path('monitor/terminate-student-session/<int:session_id>/', views.terminate_student_session, name='terminate_student_session'),
+    
+    # Face recognition URLs
+    path('face-registration/', views.face_registration_page, name='face_registration_page'),
+    path('api/face-register/', views.face_registration_view, name='face_register'),
+    path('api/face-verify/', views.face_verification_view, name='face_verify'),
+    path('face-verification/<int:exam_id>/', views.face_verification_page, name='face_verification_page'),
+    
+    # Email testing URL (for debugging)
+    path('test-email/', views.test_email, name='test_email'),
 ]

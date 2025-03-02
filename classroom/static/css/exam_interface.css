@@ -1,19 +1,39 @@
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-color: #333;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+body {
+    background-color: var(--light-gray);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
 .container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+    min-height: calc(100vh - 2rem);
+    display: flex;
+    flex-direction: column;
 }
 
 .exam-header {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 1.5rem 2rem;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
 }
 
 .exam-info h2 {
@@ -21,101 +41,170 @@
     margin-bottom: 0.2rem;
 }
 
+.exam-info h1 {
+    font-size: 1.8rem;
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+}
+
 .exam-info p {
     color: #666;
     font-size: 0.9rem;
 }
 
-.timer {
+#examTimer {
     font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background: var(--light-gray);
+    transition: color 0.3s ease;
+}
+
+#examTimer.warning {
+    color: var(--warning-color);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.5; }
 }
 
 .main-content {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    flex: 1;
 }
 
 .question-section {
     background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+}
+
+.navigation-controls {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--light-gray);
     border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .navigation-buttons {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
 }
 
 .prev-btn, .next-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
     border-radius: 4px;
-    background: white;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: 500;
+    min-width: 120px;
+    font-size: 1rem;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background: #0056b3;
+}
+
+.prev-btn:disabled, .next-btn:disabled {
+    background: var(--border-color);
+    cursor: not-allowed;
 }
 
 .question-number {
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .question-box {
-    display: none; /* Hide all questions by default */
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    flex: 1;
+    display: none;
+    padding: 2rem;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--light-gray);
 }
 
 .question-box.active {
-    display: block; /* Show only active question */
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .question-text {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
 .options {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
 }
 
 .option {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 1.2rem;
+    background: var(--light-gray);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-bottom: 1rem;
 }
 
 .option:hover {
-    background-color: #f8f8f8;
+    background: #e9ecef;
+    transform: translateX(5px);
 }
 
 .option input[type="radio"] {
-    width: 16px;
-    height: 16px;
+    margin-right: 1.5rem;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.option input[type="radio"]:checked + span {
+    font-weight: 500;
+    color: var(--primary-color);
 }
 
 .save-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: #0066ff;
+    padding: 0.75rem 1.5rem;
+    background: var(--success-color);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: 500;
+    margin-top: 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+    background: #218838;
 }
 
 .exam-progress {
@@ -146,14 +235,20 @@
 }
 
 .submit-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: #0066ff;
+    padding: 1rem 2rem;
+    background: #dc3545;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: 500;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #c82333;
 }
 
 .proctoring-window {
@@ -194,7 +289,8 @@
 }
 
 /* Fullscreen styles */
-#examContainer:-webkit-full-screen {
+#examContainer:-webkit-full-screen,
+#examContainer:-moz-full-screen {
     background-color: white;
     width: 100vw;
     height: 100vh;
@@ -203,11 +299,490 @@
     overflow-y: auto;
 }
 
-#examContainer:-moz-full-screen {
-    background-color: white;
-    width: 100vw;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
+.video-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 240px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    background: #000;
+    transition: all 0.3s ease;
+}
+
+.video-container:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#localVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Progress indicator */
+.progress-indicator {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin: 1rem 0;
+}
+
+.question-indicator {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--light-gray);
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.question-indicator:hover {
+    transform: scale(1.1);
+}
+
+.question-indicator.answered {
+    background: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.question-indicator.current {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Alert styles */
+.alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    max-width: 400px;
+    z-index: 1050;
+    animation: slideIn 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Ensure alerts stack nicely on mobile */
+@media (max-width: 576px) {
+    .messages {
+        left: 20px;
+        right: 20px;
+        min-width: auto;
+    }
+}
+
+/* Adding success/error states for the exam interface */
+.exam-container {
+    position: relative;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.retry-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr 250px;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .question-section {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+
+    .exam-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .navigation-buttons {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .prev-btn, .next-btn {
+        min-width: 100px;
+        padding: 0.5rem 1rem;
+    }
+
+    .video-container {
+        position: static;
+        width: 100%;
+        max-width: 320px;
+        margin: 1rem auto;
+        height: 240px;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .question-section {
+        padding: 1rem;
+    }
+
+    .exam-controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 1rem;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+    }
+
+    .container {
+        padding-bottom: 80px;
+    }
+
+    .question-box {
+        padding: 1rem;
+    }
+
+    .option {
+        padding: 1rem;
+    }
+
+    .question-indicator {
+        width: 30px;
+        height: 30px;
+    }
+
+    .alert {
+        left: 20px;
+        right: 20px;
+        min-width: auto;
+    }
+}
+
+/* Add to existing CSS */
+.notifications-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    min-width: 300px;
+    padding: 15px;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    animation: slideIn 0.3s ease;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.notification.fade-out {
+    animation: slideOut 0.3s ease;
+}
+
+.notification-info {
+    border-left: 4px solid var(--primary-color);
+}
+
+.notification-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.notification-warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.notification-danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.notification-close:hover {
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.questions-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+fieldset.options {
+    border: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.option-text {
+    flex: 1;
+    padding-left: 1rem;
+}
+
+/* Focus styles for better accessibility */
+.question-box:focus,
+.option:focus-within,
+button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.prev-btn:focus, 
+.next-btn:focus,
+.save-btn:focus,
+.submit-btn:focus,
+.option:focus-within {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+/* Add to existing media queries */
+@media (max-width: 768px) {
+    .questions-wrapper {
+        gap: 0.5rem;
+    }
+    
+    .timer-display {
+        font-size: 1rem;
+    }
+    
+    fieldset.options {
+        margin: 1rem 0;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #0000ff;
+        --success-color: #006400;
+        --danger-color: #8b0000;
+        --warning-color: #b8860b;
+    }
+    
+    .option {
+        border: 2px solid currentColor;
+    }
+    
+    .question-indicator {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduce motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Fix progress indicator overflow */
+.progress-indicator {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1rem;
+    max-height: 200px;
     overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+/* Better notification visibility */
+.notification {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* Improve timer visibility */
+#examTimer.warning {
+    background: #fff3cd;
+    color: #856404;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* Add loading states */
+.saving {
+    pointer-events: none;
+    opacity: 0.7;
+    position: relative;
+}
+
+.saving::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Focus visible polyfill */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
 }

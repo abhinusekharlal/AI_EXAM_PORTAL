@@ -1,0 +1,198 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Monitor Student Sessions
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        .session-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .session-table th,
+        .session-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .session-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .session-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .session-table .exam-active {
+            background-color: #fff3cd;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .terminate-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .exam-label {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #ffc107;
+            color: #212529;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Monitor Student Sessions</h2>
+            </div>
+            <div class="card-body">
+                <p class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> This page shows all active sessions for students in your classes. 
+                    Students taking exams are highlighted in yellow. You can terminate suspicious sessions if needed.
+                </p>
+
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="filter-section">
+                    <h5>Filter Options</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select id="student-filter" class="form-control">
+                                <option value="">All Students</option>
+                                {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.get_full_name }} ({{ student.username }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="exam-only">
+                                <label class="form-check-label" for="exam-only">
+                                    Show only students in exams
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if active_sessions %}
+                    <table class="session-table" id="session-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Device/Browser</th>
+                                <th>IP Address</th>
+                                <th>Last Activity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for session in active_sessions %}
+                                <tr data-student-id="{{ session.user.id }}" class="{% if session.is_exam_session %}exam-active{% endif %}">
+                                    <td>
+                                        {{ session.user.get_full_name }}
+                                        <br>
+                                        <small>{{ session.user.username }}</small>
+                                    </td>
+                                    <td>
+                                        {{ session.user_agent|truncatechars:50 }}
+                                    </td>
+                                    <td>{{ session.ip_address }}</td>
+                                    <td>{{ session.last_activity }}</td>
+                                    <td>
+                                        {% if session.is_exam_session %}
+                                            <span class="exam-label">In Exam</span>
+                                        {% else %}
+                                            Active
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form method="post" action="{% url 'Users:terminate_student_session' session.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="action-btn terminate-btn">Terminate</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-center">No active student sessions found.</p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'Users:dashboard' request.user.username %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentFilter = document.getElementById('student-filter');
+            const examOnlyCheckbox = document.getElementById('exam-only');
+            const sessionTable = document.getElementById('session-table');
+            const rows = sessionTable ? sessionTable.querySelectorAll('tbody tr') : [];
+            
+            function applyFilters() {
+                const selectedStudentId = studentFilter.value;
+                const examOnly = examOnlyCheckbox.checked;
+                
+                rows.forEach(row => {
+                    let showRow = true;
+                    
+                    // Filter by student
+                    if (selectedStudentId && row.dataset.studentId !== selectedStudentId) {
+                        showRow = false;
+                    }
+                    
+                    // Filter by exam status
+                    if (examOnly && !row.classList.contains('exam-active')) {
+                        showRow = false;
+                    }
+                    
+                    row.style.display = showRow ? '' : 'none';
+                });
+            }
+            
+            if (studentFilter && examOnlyCheckbox) {
+                studentFilter.addEventListener('change', applyFilters);
+                examOnlyCheckbox.addEventListener('change', applyFilters);
+            }
+        });
+    </script>
+{% endblock %}
