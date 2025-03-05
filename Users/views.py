@@ -1,16 +1,17 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout, update_session_auth_hash
 from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.core.mail import send_mail, EmailMessage
 from django.contrib import messages
 from datetime import timedelta
 from .models import User, UserSession
-from .forms import UserForm, LoginForm
+from .forms import UserForm, LoginForm, ProfileForm
 from classroom.models import Classroom, Exam
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
+from django.contrib.auth.forms import PasswordChangeForm
 from .face_recognition_utils import register_face, verify_face
 import json
 import logging
@@ -32,6 +33,18 @@ def dashboard(request, username):
         return teacher_dashboard(request, username)
     else:
         return redirect('Users:access_denied')
+
+# Add help view
+@login_required
+def help_page(request):
+    """Display help content based on user type"""
+    user_type = request.user.user_type
+    context = {
+        'is_student': request.user.is_student(),
+        'is_teacher': request.user.is_teacher(),
+        'user': request.user
+    }
+    return render(request, 'Users/help.html', context)
 
 def register(request):
     if request.method == 'POST':
@@ -545,3 +558,67 @@ def face_verification_page(request, exam_id):
     except Exam.DoesNotExist:
         messages.error(request, 'Exam not found')
         return redirect('Users:dashboard', username=request.user.username)
+
+@login_required
+def profile(request, username):
+    """View and update profile information"""
+    # Ensure users can only view and edit their own profiles
+    if request.user.username != username:
+        messages.error(request, 'You can only view and edit your own profile.')
+        return redirect('Users:dashboard', username=request.user.username)
+    
+    user = request.user
+    
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('Users:profile', username=user.username)
+    else:
+        form = ProfileForm(instance=user)
+    
+    # Create context based on user type
+    context = {
+        'form': form,
+        'user': user,
+        'is_student': user.is_student(),
+        'is_teacher': user.is_teacher(),
+    }
+    
+    # Add user type specific information to context
+    if user.is_student():
+        enrolled_classes = Classroom.objects.filter(students=user)
+        upcoming_exams = Exam.objects.filter(exam_class__students=user).order_by('exam_date')
+        context.update({
+            'enrolled_classes': enrolled_classes,
+            'upcoming_exams': upcoming_exams,
+        })
+    elif user.is_teacher():
+        teaching_classes = Classroom.objects.filter(teacher=user)
+        exams_created = Exam.objects.filter(teacher=user).count()
+        students_count = sum(classroom.students.count() for classroom in teaching_classes)
+        context.update({
+            'teaching_classes': teaching_classes,
+            'exams_created': exams_created,
+            'students_count': students_count,
+        })
+    
+    return render(request, 'Users/profile.html', context)
+
+@login_required
+def change_password(request):
+    """Handle password change requests"""
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Important: update the session to prevent the user from being logged out
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return JsonResponse({'success': True})
+        else:
+            errors = {field: errors[0] for field, errors in form.errors.items()}
+            return JsonResponse({'success': False, 'errors': errors})
+    
+    return JsonResponse({'success': False, 'errors': {'form': 'Invalid request method'}}, status=400)

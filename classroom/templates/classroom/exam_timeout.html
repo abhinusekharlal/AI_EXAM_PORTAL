@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Exam Timeout{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">Exam Time Expired</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">Time's Up!</h4>
+                <p>The time allocated for your exam has expired, and your exam has been automatically submitted.</p>
+            </div>
+            
+            <div class="text-center my-4">
+                <img src="{% static 'img/timeout.svg' %}" alt="Timeout" class="img-fluid" style="max-width: 200px;">
+                <p class="text-muted mt-3">Only the answers you saved before the time expired will be considered for scoring.</p>
+            </div>
+            
+            <div class="mt-4">
+                <p>Your score will be calculated based on the answers you submitted before time ran out.</p>
+                <a href="{% url 'Users:dashboard' username=request.user.username %}" class="btn btn-primary">
+                    Return to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

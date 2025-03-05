@@ -538,3 +538,1408 @@ INFO 2025-03-02 18:37:55,481 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
 INFO 2025-03-02 18:38:10,600 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
 INFO 2025-03-02 18:38:13,153 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13210
 INFO 2025-03-02 18:38:58,722 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-03 06:23:21,874 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 06:23:34,035 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+WARNING 2025-03-03 06:23:34,261 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:23:34,261 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:23:34,262 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:23:38,811 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:23:45,194 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 06:23:45,227 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 06:23:47,735 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 06:23:47,776 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 06:23:55,913 basehttp "GET / HTTP/1.1" 200 8447
+WARNING 2025-03-03 06:23:56,606 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:23:56,606 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:23:56,607 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:23:58,092 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-03 06:24:11,175 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-03 06:24:11,236 basehttp "GET /static/css/index.css HTTP/1.1" 200 3093
+INFO 2025-03-03 06:24:11,237 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:24:11,251 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:24:11,252 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:24:12,696 basehttp "GET /login/ HTTP/1.1" 200 4016
+INFO 2025-03-03 06:24:12,714 basehttp "GET /static/css/login.css HTTP/1.1" 200 4181
+INFO 2025-03-03 06:24:36,827 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-03 06:24:36,865 basehttp "GET /static/css/index.css HTTP/1.1" 200 3093
+INFO 2025-03-03 06:24:36,865 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:24:37,319 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:24:37,325 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:24:39,179 basehttp "GET /login/ HTTP/1.1" 200 3910
+INFO 2025-03-03 06:24:39,206 basehttp "GET /static/css/login.css HTTP/1.1" 200 4181
+INFO 2025-03-03 06:29:53,027 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:29:54,679 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:29:54,706 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:29:54,706 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:29:54,755 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:29:54,756 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:29:55,104 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:55,104 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:55,105 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:29:57,138 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:29:57,159 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:29:57,159 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:29:57,206 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:29:57,206 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:29:57,311 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:57,311 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:57,311 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:29:58,889 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:29:58,922 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:29:58,922 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:29:58,972 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:29:58,973 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:29:59,201 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:59,201 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:29:59,201 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:27,486 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:27,511 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:27,511 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:27,557 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:35:27,557 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-03 06:35:27,770 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:27,770 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:27,771 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:30,679 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:30,700 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:30,700 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:30,747 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:35:30,747 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:35:30,919 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:30,919 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:30,920 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:31,090 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:31,112 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:31,112 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:31,158 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:35:31,159 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:35:31,324 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:31,324 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:31,324 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:31,489 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:31,516 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:35:31,516 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:31,517 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:35:31,517 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+WARNING 2025-03-03 06:35:31,680 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:31,680 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:31,683 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:31,699 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:31,722 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:35:31,723 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:31,723 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:35:31,723 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:31,907 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:31,931 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:31,932 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:31,932 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:35:31,933 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-03 06:35:32,257 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:32,257 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:32,257 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:35:32,294 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10814
+INFO 2025-03-03 06:35:32,356 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:35:32,356 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:35:32,356 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:35:32,357 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-03 06:35:32,551 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:32,551 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:35:32,551 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:36:27,484 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 06:36:27,523 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:36:27,523 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:36:27,523 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 268
+INFO 2025-03-03 06:36:27,524 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:36:28,441 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:36:28,441 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:36:28,442 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:37:06,143 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 06:37:26,235 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 06:37:34,210 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 06:37:34,240 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:37:34,240 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:37:34,240 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 10817
+INFO 2025-03-03 06:37:34,241 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 06:37:34,962 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:37:34,962 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:37:34,972 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:37:40,662 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 06:37:40,691 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:37:40,692 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:37:40,692 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:37:40,693 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 10817
+WARNING 2025-03-03 06:37:41,277 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:37:41,277 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:37:41,278 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 06:38:24,274 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 06:38:24,296 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 06:38:24,297 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 06:38:24,297 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 06:38:24,297 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 10817
+WARNING 2025-03-03 06:38:25,492 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:38:25,492 log Not Found: /favicon.ico
+WARNING 2025-03-03 06:38:25,493 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 18:52:36,755 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 18:52:45,251 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 302 0
+WARNING 2025-03-03 18:52:45,268 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:45,268 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:45,269 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 11301
+WARNING 2025-03-03 18:52:45,370 log Not Found: /favicon.ico
+WARNING 2025-03-03 18:52:45,370 log Not Found: /favicon.ico
+WARNING 2025-03-03 18:52:45,370 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+WARNING 2025-03-03 18:52:50,292 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:50,292 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:50,293 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 11301
+WARNING 2025-03-03 18:52:51,005 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:51,005 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:51,006 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 11301
+WARNING 2025-03-03 18:52:51,210 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:51,210 log Not Found: /accounts/login/
+WARNING 2025-03-03 18:52:51,211 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 11301
+INFO 2025-03-03 18:54:03,841 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-03 18:54:03,888 basehttp "GET /static/css/index.css HTTP/1.1" 304 0
+INFO 2025-03-03 18:54:05,950 basehttp "GET /login/ HTTP/1.1" 200 3910
+INFO 2025-03-03 18:54:05,993 basehttp "GET /static/css/login.css HTTP/1.1" 304 0
+INFO 2025-03-03 18:54:23,694 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-03-03 18:54:23,719 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 18:54:23,794 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 20:12:20,963 autoreload Watching for file changes with StatReloader
+WARNING 2025-03-03 20:12:39,246 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:12:39,246 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:12:39,247 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:12:41,059 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-03 20:12:50,025 basehttp "GET / HTTP/1.1" 200 8447
+WARNING 2025-03-03 20:12:51,017 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:12:51,017 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:12:51,018 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:12:53,229 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 6989
+INFO 2025-03-03 20:17:44,686 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 20:17:44,707 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11045
+INFO 2025-03-03 20:17:44,708 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:17:45,165 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:17:45,165 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 20:17:45,999 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:17:45,999 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:17:45,999 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:17:47,804 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10253
+INFO 2025-03-03 20:17:47,820 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:17:47,820 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11045
+INFO 2025-03-03 20:17:47,937 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:17:47,938 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 20:17:48,351 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:17:48,351 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:17:48,351 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:19:27,815 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:19:35,269 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:20:00,205 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:20:06,804 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10776
+INFO 2025-03-03 20:20:06,822 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:20:06,822 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11045
+INFO 2025-03-03 20:20:07,206 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:20:07,207 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 20:20:07,818 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:20:07,818 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:20:07,818 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:20:57,544 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 20:24:37,174 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:24:43,817 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10776
+INFO 2025-03-03 20:24:43,843 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11259
+INFO 2025-03-03 20:24:43,843 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:24:43,917 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:24:44,136 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-03 20:24:46,552 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:24:46,552 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:24:46,552 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:25:03,398 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 20:42:05,515 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:42:16,101 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:42:25,749 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10776
+INFO 2025-03-03 20:42:25,790 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:42:25,791 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:42:25,792 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+INFO 2025-03-03 20:42:25,793 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-03 20:42:26,798 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:42:26,798 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:42:26,799 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:43:19,846 basehttp "GET /classroom/manage_students/66ad954b-7e5a-4451-ab83-324170679683/ HTTP/1.1" 200 3669
+INFO 2025-03-03 20:43:26,478 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10776
+INFO 2025-03-03 20:43:26,542 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 20:49:12,105 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:49:23,269 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:49:31,044 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:49:31,078 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:49:31,078 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:49:31,078 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:49:31,079 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11872
+WARNING 2025-03-03 20:49:32,069 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:49:32,069 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:49:32,070 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:50:00,202 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:50:13,616 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:50:21,535 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:50:21,576 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:50:21,576 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:50:21,577 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:50:21,577 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+WARNING 2025-03-03 20:50:22,348 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:50:22,348 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:50:22,348 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:51:22,674 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:51:32,889 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:51:40,626 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:51:40,660 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:51:40,662 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:51:40,662 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:51:40,663 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+WARNING 2025-03-03 20:51:41,545 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:51:41,545 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:51:41,546 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:51:44,212 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:51:44,241 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:51:44,242 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:51:44,242 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:51:44,243 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+WARNING 2025-03-03 20:51:44,756 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:51:44,756 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:51:44,756 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:52:08,674 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:52:17,449 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:52:17,494 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:52:17,495 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+INFO 2025-03-03 20:52:17,495 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:52:17,495 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 20:52:18,457 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:52:18,457 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:52:18,458 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:52:21,207 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:52:21,228 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:52:21,229 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 20:52:21,229 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 11516
+INFO 2025-03-03 20:52:21,230 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+WARNING 2025-03-03 20:52:21,834 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:52:21,834 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:52:21,835 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 20:52:25,290 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:52:26,050 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-03 20:52:27,003 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:56:27,079 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 20:56:35,294 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 20:56:35,331 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 20:56:35,331 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 20:56:35,331 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 12252
+INFO 2025-03-03 20:56:35,332 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 20:56:36,541 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:56:36,541 log Not Found: /favicon.ico
+WARNING 2025-03-03 20:56:36,542 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:05:53,420 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:06:03,030 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 10692
+INFO 2025-03-03 21:06:03,054 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:06:03,055 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:06:03,055 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:06:03,056 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 14539
+WARNING 2025-03-03 21:06:04,250 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:06:04,250 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:06:04,251 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:08:54,560 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:09:39,344 basehttp "POST /classroom/delete_exam/14/ HTTP/1.1" 302 0
+INFO 2025-03-03 21:09:39,355 basehttp "GET /classroom/ HTTP/1.1" 200 4895
+INFO 2025-03-03 21:09:44,797 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 9130
+INFO 2025-03-03 21:09:44,825 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:12:35,188 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:12:41,975 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 9130
+INFO 2025-03-03 21:12:42,002 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:12:42,002 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:12:42,003 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:12:42,003 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 16084
+WARNING 2025-03-03 21:12:42,946 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:12:42,946 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:12:42,947 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:21:40,796 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:21:47,450 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15213
+INFO 2025-03-03 21:21:47,477 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:21:47,477 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:21:47,477 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18517
+INFO 2025-03-03 21:21:47,477 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+WARNING 2025-03-03 21:21:48,741 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:21:48,741 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:21:48,741 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:22:47,473 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16015
+INFO 2025-03-03 21:22:47,493 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:22:47,494 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:22:47,494 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 10804
+INFO 2025-03-03 21:22:47,494 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+WARNING 2025-03-03 21:22:48,514 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:22:48,514 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:22:48,515 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:27:10,409 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:27:17,313 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15213
+INFO 2025-03-03 21:27:17,339 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:27:17,339 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:27:17,339 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:27:17,340 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+WARNING 2025-03-03 21:27:18,321 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:27:18,321 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:27:18,322 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:29:15,262 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:29:25,891 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15188
+INFO 2025-03-03 21:29:25,919 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:29:25,919 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+INFO 2025-03-03 21:29:25,921 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:29:25,921 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 21:29:26,936 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:29:26,936 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:29:26,936 basehttp "GET /favicon.ico HTTP/1.1" 404 11258
+INFO 2025-03-03 21:32:08,315 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/forms.py changed, reloading.
+INFO 2025-03-03 21:32:09,280 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:32:14,296 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/forms.py changed, reloading.
+INFO 2025-03-03 21:32:15,207 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:32:55,071 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-03 21:32:56,098 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:33:07,300 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-03 21:33:08,248 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:33:30,632 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/urls.py changed, reloading.
+INFO 2025-03-03 21:33:31,609 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:36:36,725 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-03 21:36:37,719 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:37:05,279 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/urls.py changed, reloading.
+INFO 2025-03-03 21:37:06,282 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:37:17,379 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/urls.py changed, reloading.
+INFO 2025-03-03 21:37:18,295 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:39:17,579 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15350
+INFO 2025-03-03 21:39:17,605 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:39:17,606 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+INFO 2025-03-03 21:39:17,606 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:39:17,606 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 21:39:18,506 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:39:18,506 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:39:18,507 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:39:20,436 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 12997
+INFO 2025-03-03 21:39:47,773 basehttp "POST /profile/helloteacher2/ HTTP/1.1" 302 0
+INFO 2025-03-03 21:39:47,787 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13382
+INFO 2025-03-03 21:39:59,557 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:40:11,924 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13028
+INFO 2025-03-03 21:40:28,831 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:44:32,244 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:44:41,075 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:44:41,093 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+INFO 2025-03-03 21:44:44,116 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:44:44,135 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:44:44,136 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:44:44,136 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+INFO 2025-03-03 21:44:44,137 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 21:44:44,866 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:44:44,866 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:44:44,866 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:44:59,476 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13028
+INFO 2025-03-03 21:44:59,505 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:45:09,560 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16173
+INFO 2025-03-03 21:45:09,579 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 10804
+INFO 2025-03-03 21:45:09,580 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:45:09,580 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:45:09,580 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+WARNING 2025-03-03 21:45:10,702 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:45:10,702 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:45:10,702 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:46:29,519 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:46:29,535 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:46:29,537 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-03 21:46:29,537 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:46:29,537 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+WARNING 2025-03-03 21:46:30,585 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:46:30,585 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:46:30,586 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:47:03,454 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:47:35,109 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:47:42,361 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:47:42,386 basehttp "GET /static/css/style.css HTTP/1.1" 200 16725
+INFO 2025-03-03 21:47:42,387 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:47:42,387 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18836
+INFO 2025-03-03 21:47:42,387 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 21:47:43,601 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:47:43,601 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:47:43,601 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:47:55,822 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13028
+INFO 2025-03-03 21:47:55,840 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:48:05,308 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:48:05,341 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:48:09,945 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:48:11,544 basehttp "GET /classroom/create HTTP/1.1" 200 3534
+INFO 2025-03-03 21:48:12,961 basehttp "GET /classroom/addexam HTTP/1.1" 200 6277
+WARNING 2025-03-03 21:48:12,996 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-03 21:48:14,946 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 21:48:14,968 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 21:48:16,624 basehttp "GET /sessions/ HTTP/1.1" 200 7465
+WARNING 2025-03-03 21:48:16,650 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 21:48:18,650 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 21:48:18,666 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 21:50:47,004 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-03 21:50:53,049 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:50:53,071 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:59:05,339 autoreload Watching for file changes with StatReloader
+INFO 2025-03-03 21:59:10,552 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:59:10,571 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-03 21:59:10,572 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18308
+INFO 2025-03-03 21:59:11,033 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-03 21:59:11,033 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-03 21:59:11,794 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:59:11,794 log Not Found: /favicon.ico
+WARNING 2025-03-03 21:59:11,795 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-03 21:59:13,770 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-03 21:59:15,317 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:59:15,333 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:59:18,366 basehttp "GET /classroom/create HTTP/1.1" 200 3534
+INFO 2025-03-03 21:59:19,289 basehttp "GET /classroom/addexam HTTP/1.1" 200 6277
+WARNING 2025-03-03 21:59:19,306 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-03 21:59:20,522 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 21:59:20,557 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 21:59:23,672 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9676
+WARNING 2025-03-03 21:59:23,691 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-03 21:59:24,554 basehttp "GET /classroom/addexam HTTP/1.1" 200 6277
+WARNING 2025-03-03 21:59:24,581 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-03 21:59:32,094 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-03 21:59:34,144 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-03 21:59:34,159 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-03 21:59:35,186 basehttp "GET / HTTP/1.1" 200 8743
+INFO 2025-03-04 08:39:02,292 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 08:40:18,087 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-04 08:40:18,117 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-04 08:40:18,119 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+WARNING 2025-03-04 08:40:35,592 log Not Found: /favicon.ico
+WARNING 2025-03-04 08:40:35,592 log Not Found: /favicon.ico
+WARNING 2025-03-04 08:40:35,593 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-04 08:56:11,955 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13028
+INFO 2025-03-04 08:56:18,686 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15356
+INFO 2025-03-04 08:56:26,119 basehttp "GET / HTTP/1.1" 200 8447
+INFO 2025-03-04 08:56:26,146 basehttp "GET /static/css/index.css HTTP/1.1" 200 2759
+INFO 2025-03-04 08:56:28,860 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16173
+INFO 2025-03-04 08:56:28,887 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 10804
+INFO 2025-03-04 08:56:33,013 basehttp "GET /profile/swathi123/ HTTP/1.1" 200 12770
+WARNING 2025-03-04 08:56:36,770 log Not Found: /favicon.ico
+WARNING 2025-03-04 08:56:36,770 log Not Found: /favicon.ico
+WARNING 2025-03-04 08:56:36,771 basehttp "GET /favicon.ico HTTP/1.1" 404 11809
+INFO 2025-03-04 08:56:45,365 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16173
+INFO 2025-03-04 09:14:25,327 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-04 09:14:26,690 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:14:47,136 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py changed, reloading.
+INFO 2025-03-04 09:14:48,485 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:15:10,193 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/urls.py changed, reloading.
+INFO 2025-03-04 09:15:11,508 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:19:45,607 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:19:53,067 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15361
+INFO 2025-03-04 09:19:53,107 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 09:19:53,108 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-04 09:19:53,109 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18308
+INFO 2025-03-04 09:19:53,109 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-04 09:19:54,503 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:19:54,503 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:19:54,503 basehttp "GET /favicon.ico HTTP/1.1" 404 12060
+INFO 2025-03-04 09:19:56,077 basehttp "GET /help/ HTTP/1.1" 200 25478
+INFO 2025-03-04 09:22:10,898 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:22:18,449 basehttp "GET /help/ HTTP/1.1" 200 22786
+INFO 2025-03-04 09:22:18,482 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 09:22:18,483 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18308
+INFO 2025-03-04 09:22:19,008 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-04 09:22:19,008 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+WARNING 2025-03-04 09:22:19,829 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:22:19,829 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:22:19,830 basehttp "GET /favicon.ico HTTP/1.1" 404 12060
+INFO 2025-03-04 09:22:33,809 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15361
+INFO 2025-03-04 09:26:05,869 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 09:26:07,114 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:26:30,145 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 09:26:31,497 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:27:02,040 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 09:27:03,465 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:27:09,616 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 09:27:10,842 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:28:56,111 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 09:29:02,702 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15383
+INFO 2025-03-04 09:29:02,741 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 09:29:02,742 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-04 09:29:02,742 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-04 09:29:02,744 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18308
+WARNING 2025-03-04 09:29:04,252 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:29:04,252 log Not Found: /favicon.ico
+WARNING 2025-03-04 09:29:04,252 basehttp "GET /favicon.ico HTTP/1.1" 404 12351
+INFO 2025-03-04 09:29:08,854 basehttp "GET /classroom/edit_exam/16/ HTTP/1.1" 200 14550
+WARNING 2025-03-04 09:29:08,884 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-04 09:29:08,886 basehttp "GET /static/css/add_exam.css HTTP/1.1" 200 4408
+INFO 2025-03-04 09:29:28,917 basehttp "POST /classroom/edit_exam/16/ HTTP/1.1" 302 0
+INFO 2025-03-04 09:29:28,946 basehttp "GET /classroom/ HTTP/1.1" 200 4901
+INFO 2025-03-04 09:29:37,878 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:02:48,867 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:02:59,863 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-03-04 14:02:59,894 basehttp "GET / HTTP/1.1" 200 8285
+WARNING 2025-03-04 14:03:01,508 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:03:01,508 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:03:01,509 basehttp "GET /favicon.ico HTTP/1.1" 404 13472
+INFO 2025-03-04 14:03:02,659 basehttp "GET / HTTP/1.1" 200 8285
+INFO 2025-03-04 14:03:02,682 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-04 14:03:11,350 basehttp "GET / HTTP/1.1" 200 8452
+INFO 2025-03-04 14:03:11,378 basehttp "GET /static/css/index.css HTTP/1.1" 304 0
+WARNING 2025-03-04 14:03:12,167 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:03:12,167 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:03:12,168 basehttp "GET /favicon.ico HTTP/1.1" 404 13472
+INFO 2025-03-04 14:03:13,148 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 302 0
+WARNING 2025-03-04 14:03:13,161 log Not Found: /accounts/login/
+WARNING 2025-03-04 14:03:13,161 log Not Found: /accounts/login/
+WARNING 2025-03-04 14:03:13,162 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 13515
+INFO 2025-03-04 14:03:14,103 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-04 14:03:14,140 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 304 0
+INFO 2025-03-04 14:03:19,396 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-04 14:03:36,636 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-04 14:03:45,208 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+ERROR 2025-03-04 14:03:49,426 log Internal Server Error: /classroom/exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py", line 176, in view_exam
+    return render(request, 'classroom/exam_not_available.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: classroom/exam_not_available.html
+ERROR 2025-03-04 14:03:49,426 log Internal Server Error: /classroom/exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py", line 176, in view_exam
+    return render(request, 'classroom/exam_not_available.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: classroom/exam_not_available.html
+ERROR 2025-03-04 14:03:49,430 basehttp "GET /classroom/exam/16/ HTTP/1.1" 500 94153
+INFO 2025-03-04 14:04:08,933 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-04 14:04:10,815 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-04 14:04:15,263 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-04 14:04:18,513 basehttp "GET /login/ HTTP/1.1" 200 3910
+INFO 2025-03-04 14:04:27,282 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-03-04 14:04:27,317 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:04:27,399 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-04 14:04:31,082 basehttp "GET /classroom/edit_exam/16/ HTTP/1.1" 200 14550
+WARNING 2025-03-04 14:04:31,113 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-04 14:04:31,115 basehttp "GET /static/css/add_exam.css HTTP/1.1" 304 0
+INFO 2025-03-04 14:04:37,720 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:04:39,103 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9681
+WARNING 2025-03-04 14:04:39,131 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-04 14:04:41,516 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:10:01,246 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:10:03,463 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:10:30,070 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:10:31,677 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:11:21,482 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-04 14:11:49,363 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+ERROR 2025-03-04 14:11:51,642 log Internal Server Error: /classroom/exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py", line 176, in view_exam
+    return render(request, 'classroom/exam_not_available.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+ERROR 2025-03-04 14:11:51,642 log Internal Server Error: /classroom/exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 163, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: base.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py", line 176, in view_exam
+    return render(request, 'classroom/exam_not_available.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 109, in render
+    reraise(exc, self.backend)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 130, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: base.html
+ERROR 2025-03-04 14:11:51,645 basehttp "GET /classroom/exam/16/ HTTP/1.1" 500 143128
+INFO 2025-03-04 14:12:30,018 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 3408
+INFO 2025-03-04 14:12:44,370 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-04 14:18:33,236 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:18:34,631 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:18:39,264 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:18:40,286 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:18:53,816 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 14:18:55,452 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:19:13,863 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 14:19:15,584 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:20:04,175 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:20:05,228 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:20:50,421 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:20:51,376 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:20:59,280 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:20:59,309 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 14:20:59,309 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-04 14:20:59,309 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-04 14:20:59,310 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 200 18308
+WARNING 2025-03-04 14:20:59,810 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:20:59,810 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:20:59,810 basehttp "GET /favicon.ico HTTP/1.1" 404 13785
+INFO 2025-03-04 14:21:03,952 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 18983
+INFO 2025-03-04 14:21:03,971 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 14:21:03,971 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 11530
+INFO 2025-03-04 14:21:03,971 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-04 14:21:03,972 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+WARNING 2025-03-04 14:21:04,243 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:21:04,243 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:21:04,243 basehttp "GET /favicon.ico HTTP/1.1" 404 13785
+INFO 2025-03-04 14:21:27,931 basehttp "GET /classroom/edit_exam/16/ HTTP/1.1" 200 14550
+WARNING 2025-03-04 14:21:27,961 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-04 14:23:44,099 basehttp "POST /classroom/edit_exam/16/ HTTP/1.1" 200 14547
+WARNING 2025-03-04 14:23:44,121 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-04 14:23:47,206 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15384
+INFO 2025-03-04 14:23:51,820 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 18983
+INFO 2025-03-04 14:23:51,839 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 304 0
+INFO 2025-03-04 14:23:57,159 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 18983
+INFO 2025-03-04 14:23:57,177 basehttp "GET /static/js/main.js HTTP/1.1" 200 0
+INFO 2025-03-04 14:23:57,177 basehttp "GET /static/img/logo.png HTTP/1.1" 200 862
+INFO 2025-03-04 14:23:57,178 basehttp "GET /static/css/style.css HTTP/1.1" 200 16532
+INFO 2025-03-04 14:23:57,178 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 11530
+WARNING 2025-03-04 14:23:57,586 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:23:57,586 log Not Found: /favicon.ico
+WARNING 2025-03-04 14:23:57,586 basehttp "GET /favicon.ico HTTP/1.1" 404 13785
+INFO 2025-03-04 14:24:28,456 basehttp "GET /classroom/addexam HTTP/1.1" 200 6282
+WARNING 2025-03-04 14:24:28,490 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-04 14:24:31,000 basehttp "GET /classroom/add-question-form/?count=0 HTTP/1.1" 200 2883
+INFO 2025-03-04 14:28:36,650 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:28:37,787 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:28:46,061 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:28:47,105 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:30:40,739 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:30:41,765 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:30:52,071 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:30:53,053 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:31:23,761 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:31:24,897 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:31:29,108 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:31:30,208 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:37:51,517 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:37:52,578 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:38:00,630 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/views.py changed, reloading.
+INFO 2025-03-04 14:38:01,735 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:39:01,121 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/AI_EXAM_PORTAL/settings.py changed, reloading.
+INFO 2025-03-04 14:39:02,281 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:39:08,477 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/AI_EXAM_PORTAL/settings.py changed, reloading.
+INFO 2025-03-04 14:39:09,499 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:40:33,547 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/forms.py changed, reloading.
+INFO 2025-03-04 14:40:34,532 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:41:50,261 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/forms.py changed, reloading.
+INFO 2025-03-04 14:41:51,515 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:42:16,129 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/models.py changed, reloading.
+INFO 2025-03-04 14:42:17,165 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:42:54,938 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/models.py changed, reloading.
+INFO 2025-03-04 14:42:55,805 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:45:43,876 autoreload Watching for file changes with StatReloader
+ERROR 2025-03-04 14:45:50,945 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:50,945 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:50,947 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:51,026 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:51,026 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:51,027 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:54,100 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,100 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,102 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:54,180 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,180 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,181 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:54,880 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,880 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,882 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:54,955 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,955 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:54,957 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:55,108 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,108 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,110 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:55,187 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,187 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,188 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:55,324 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,324 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,325 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:55,404 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,404 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,404 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:55,532 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,532 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,534 basehttp "GET /classroom/addexam HTTP/1.1" 500 66942
+ERROR 2025-03-04 14:45:55,611 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,611 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:55,612 basehttp "GET /favicon.ico HTTP/1.1" 500 66314
+ERROR 2025-03-04 14:45:57,624 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:57,624 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:45:57,625 basehttp "GET /favicon.ico HTTP/1.1" 500 66056
+ERROR 2025-03-04 14:46:00,555 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:00,555 log Internal Server Error: /classroom/addexam
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:00,556 basehttp "GET /classroom/addexam HTTP/1.1" 500 66677
+ERROR 2025-03-04 14:46:00,637 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:00,637 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:00,638 basehttp "GET /favicon.ico HTTP/1.1" 500 66049
+ERROR 2025-03-04 14:46:02,767 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:02,767 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:02,768 basehttp "GET /favicon.ico HTTP/1.1" 500 66056
+ERROR 2025-03-04 14:46:04,869 log Internal Server Error: /classroom/edit_exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:04,869 log Internal Server Error: /classroom/edit_exam/16/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:04,870 basehttp "GET /classroom/edit_exam/16/ HTTP/1.1" 500 66732
+ERROR 2025-03-04 14:46:04,955 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:04,955 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:04,956 basehttp "GET /favicon.ico HTTP/1.1" 500 66055
+ERROR 2025-03-04 14:46:11,552 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:11,552 log Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:46:11,553 basehttp "GET /favicon.ico HTTP/1.1" 500 66056
+INFO 2025-03-04 14:49:47,304 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 14:49:48,604 autoreload Watching for file changes with StatReloader
+INFO 2025-03-04 14:50:13,240 autoreload /home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/urls.py changed, reloading.
+INFO 2025-03-04 14:50:14,286 autoreload Watching for file changes with StatReloader
+ERROR 2025-03-04 14:50:21,341 log Internal Server Error: /dashboard/swathi123/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:50:21,341 log Internal Server Error: /dashboard/swathi123/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/classroom/middleware.py", line 12, in __call__
+    if request.htmx and hasattr(response, 'context_data') and 'form' in response.context_data:
+       ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'htmx'
+ERROR 2025-03-04 14:50:21,342 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 500 66828
+INFO 2025-03-05 04:50:15,743 autoreload Watching for file changes with StatReloader
+INFO 2025-03-05 04:59:18,510 autoreload Watching for file changes with StatReloader
+WARNING 2025-03-05 04:59:37,674 log Not Found: /favicon.ico
+WARNING 2025-03-05 04:59:37,674 log Not Found: /favicon.ico
+WARNING 2025-03-05 04:59:37,675 basehttp "GET /favicon.ico HTTP/1.1" 404 12060
+INFO 2025-03-05 04:59:39,683 basehttp "GET / HTTP/1.1" 200 8748
+WARNING 2025-03-05 04:59:43,283 log Not Found: /accounts/login/
+WARNING 2025-03-05 04:59:43,283 log Not Found: /accounts/login/
+WARNING 2025-03-05 04:59:43,284 basehttp "GET /accounts/login/?next=/dashboard/helloteacher2/ HTTP/1.1" 404 12103
+ERROR 2025-03-05 04:59:49,157 log Internal Server Error: /dashboard/helloteacher2/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 33, in dashboard
+    return teacher_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 310, in teacher_dashboard
+    return render(request, 'Users/teacher_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'edit_exam' not found. 'edit_exam' is not a valid view function or pattern name.
+ERROR 2025-03-05 04:59:49,157 log Internal Server Error: /dashboard/helloteacher2/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 33, in dashboard
+    return teacher_dashboard(request, username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/Users/views.py", line 310, in teacher_dashboard
+    return render(request, 'Users/teacher_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 1008, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 243, in render
+    nodelist.append(node.render_annotated(context))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 969, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'edit_exam' not found. 'edit_exam' is not a valid view function or pattern name.
+ERROR 2025-03-05 04:59:49,161 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 500 201203
+WARNING 2025-03-05 04:59:49,294 log Not Found: /favicon.ico
+WARNING 2025-03-05 04:59:49,294 log Not Found: /favicon.ico
+WARNING 2025-03-05 04:59:49,294 basehttp "GET /favicon.ico HTTP/1.1" 404 12060
+INFO 2025-03-05 05:01:05,542 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15239
+INFO 2025-03-05 05:01:05,571 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-05 05:01:05,573 basehttp "GET /static/css/teacher_dashboard2.css HTTP/1.1" 304 0
+INFO 2025-03-05 05:01:12,169 basehttp "GET /classroom/addexam HTTP/1.1" 200 6282
+WARNING 2025-03-05 05:01:12,208 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 404 1877
+INFO 2025-03-05 05:01:12,216 basehttp "GET /static/css/add_exam.css HTTP/1.1" 200 4408
+INFO 2025-03-05 05:01:14,565 basehttp "GET /classroom/add-question-form/?count=0 HTTP/1.1" 200 2408
+INFO 2025-03-05 05:01:27,266 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15239
+INFO 2025-03-05 05:01:28,934 basehttp "GET /profile/helloteacher2/ HTTP/1.1" 200 13033
+INFO 2025-03-05 05:01:43,609 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15239
+INFO 2025-03-05 05:01:45,059 basehttp "GET /monitor/student-sessions/ HTTP/1.1" 200 9681
+WARNING 2025-03-05 05:01:45,091 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-05 05:01:46,732 basehttp "GET /sessions/ HTTP/1.1" 200 7470
+WARNING 2025-03-05 05:01:46,782 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-05 05:02:13,040 basehttp "GET /dashboard/helloteacher2/ HTTP/1.1" 200 15239
+INFO 2025-03-05 05:02:37,720 basehttp "GET / HTTP/1.1" 200 8452
+INFO 2025-03-05 05:02:37,747 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-03-05 05:02:37,749 basehttp "GET /static/css/index.css HTTP/1.1" 304 0
+WARNING 2025-03-05 05:02:40,403 log Not Found: /favicon.ico
+WARNING 2025-03-05 05:02:40,403 log Not Found: /favicon.ico
+WARNING 2025-03-05 05:02:40,403 basehttp "GET /favicon.ico HTTP/1.1" 404 12060
+INFO 2025-03-05 05:02:40,987 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-05 05:02:41,011 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 200 10804
+INFO 2025-03-05 05:02:45,554 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-05 05:03:03,999 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:03:14,452 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-05 05:03:20,773 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-05 05:03:23,133 basehttp "GET /face-verification/16/ HTTP/1.1" 200 13790
+INFO 2025-03-05 05:03:52,453 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-05 05:04:36,415 basehttp "POST /api/face-verify/ HTTP/1.1" 200 102
+INFO 2025-03-05 05:05:12,423 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:05:16,145 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:05:21,401 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:06:07,940 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:06:31,698 basehttp "POST /api/face-verify/ HTTP/1.1" 200 57
+INFO 2025-03-05 05:06:41,197 basehttp "POST /api/face-verify/ HTTP/1.1" 200 55
+INFO 2025-03-05 05:06:47,579 basehttp "GET /classroom/exam/16/ HTTP/1.1" 200 13215
+INFO 2025-03-05 05:06:47,616 basehttp "GET /static/css/exam_interface.css HTTP/1.1" 304 0
+INFO 2025-03-05 05:06:47,616 basehttp "GET /static/js/exam_interface.js HTTP/1.1" 304 0
+INFO 2025-03-05 05:06:59,854 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-05 05:06:59,882 basehttp "GET /static/css/student_dashboard.css HTTP/1.1" 304 0
+INFO 2025-03-05 05:07:08,786 basehttp "GET /profile/swathi123/ HTTP/1.1" 200 12775
+INFO 2025-03-05 05:07:16,218 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178
+INFO 2025-03-05 05:07:19,257 basehttp "GET /sessions/ HTTP/1.1" 200 5942
+WARNING 2025-03-05 05:07:19,295 basehttp "GET /static/css/dashboard.css HTTP/1.1" 404 1865
+INFO 2025-03-05 05:07:21,757 basehttp "GET /dashboard/swathi123/ HTTP/1.1" 200 16178

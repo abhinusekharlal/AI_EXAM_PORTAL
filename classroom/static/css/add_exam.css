@@ -63,38 +63,61 @@ body {
     cursor: pointer;
   }
 
-/* Sidebar Styles */
-.sidebar {
-    width: 200px;
-    background: white;
-    padding: 20px 0;
-    border-right: 1px solid #e1e4e8;
+/* Custom Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
 }
 
-.logo {
-    padding: 0 20px;
-    margin-bottom: 30px;
+button {
+    background-color: #f55454;
+    color: white;
+    border: none;
+    position: relative;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color .3s ease-in-out;
 }
 
-.logo img {
-    max-width: 100%;
-    height: auto;
+button:hover {
+    background-color: #0056b3;
 }
 
-.nav-links {
-    display: flex;
-    flex-direction: column;
+.table-status {
+    padding: 5px 10px;
+    border-radius: 15px;
 }
 
-.nav-links a {
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #333;
+.status-published {
+    background-color: #e0f7e9;
+    color: #28a745;
 }
 
-.nav-links a.active {
-    background-color: #f0f2f5;
-    color: #0066ff;
+.status-review {
+    background-color: #fff3cd;
+    color: #ffc107;
+}
+
+.draggable-section {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+}
+
+.draggable-section:hover {
+    background-color: #f4f4f4;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
 }
 
 /* Main Content Styles */
@@ -147,8 +170,7 @@ h2 {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex
-;
+    display: flex;
     flex-direction: column;
 }
 

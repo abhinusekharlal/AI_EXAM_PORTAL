@@ -15,6 +15,7 @@
     <div class="messages">
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -27,6 +28,9 @@
     <div class="card welcome-card">
         <h2>{{ student_name }}</h2>
         <p><i class="fas fa-id-badge"></i> Student ID: {{ uuid }}</p>
+        <a href="{% url 'Users:profile' username %}" class="btn-primary" style="margin-top: 10px;">
+            <i class="fas fa-user-edit"></i> Manage Profile
+        </a>
         
         <!-- Face Recognition Status -->
         <div class="face-id-status">
@@ -134,7 +138,7 @@
     </div>        
     <div class="card" id="feedback">
         <h3><i class="fas fa-comment"></i> Feedback</h3>
-        <form method="post" action="{% url 'Users:submit_feedback' %}">
+        <form method="post" action="{% url 'Users:submit_feedback' %}" id="feedback-form">
             {% csrf_token %}
             <textarea 
                 id="feedback-textarea" 
@@ -146,14 +150,56 @@
                 <i class="fas fa-paper-plane"></i> Submit Feedback
             </button>
         </form>
+        <div id="feedback-success" class="alert alert-success" style="display:none; margin-top: 15px;">
+            <i class="fas fa-check-circle"></i> Your feedback has been submitted. Thank you!
+        </div>
     </div>
 
     <div class="card help">
         <h3><i class="fas fa-question-circle"></i> Help & Support</h3>
         <p>Need assistance? Check our frequently asked questions or contact support.</p>
-        <button class="help-btn">
+        <button id="contact-support" class="help-btn">
             <i class="fas fa-headset"></i> Contact Support
         </button>
+    </div>
+
+    <!-- Contact Support Modal -->
+    <div id="support-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-headset"></i> Contact Support</h3>
+            <div class="support-details">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:support@proctoraiexam.com">support@proctoraiexam.com</a></p>
+                <p><i class="fas fa-phone"></i> Toll-Free: <a href="tel:1-800-PROCTOR">1-800-PROCTOR (776-2867)</a></p>
+                <p><i class="fas fa-clock"></i> Hours: Monday - Friday, 8:00 AM - 8:00 PM EST</p>
+                <div class="support-ticket">
+                    <h4>Submit a Support Ticket</h4>
+                    <form id="support-ticket-form">
+                        <div class="form-group">
+                            <label for="issue-type">Issue Type</label>
+                            <select id="issue-type" class="form-control">
+                                <option value="">Select an issue type</option>
+                                <option value="technical">Technical Problem</option>
+                                <option value="account">Account Issue</option>
+                                <option value="exam">Exam Access</option>
+                                <option value="face">Face Recognition</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issue-description">Description</label>
+                            <textarea id="issue-description" class="form-control" rows="4" placeholder="Please describe your issue in detail..."></textarea>
+                        </div>
+                        <button type="button" id="submit-ticket" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Ticket
+                        </button>
+                    </form>
+                    <div id="ticket-success" class="alert alert-success" style="display:none; margin-top: 15px;">
+                        <i class="fas fa-check-circle"></i> Your support ticket has been submitted. We'll respond shortly.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 
@@ -163,6 +209,88 @@
         // Initialize tooltips
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
+
+        // Feedback form submission with AJAX
+        const feedbackForm = document.getElementById('feedback-form');
+        const feedbackSuccess = document.getElementById('feedback-success');
+        
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(feedbackForm);
+            const feedbackText = formData.get('feedback').trim();
+            
+            if (!feedbackText) {
+                alert('Please enter your feedback before submitting.');
+                return;
+            }
+
+            fetch('{% url "Users:submit_feedback" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('feedback-textarea').value = '';
+                    feedbackSuccess.style.display = 'block';
+                    setTimeout(() => {
+                        feedbackSuccess.style.display = 'none';
+                    }, 5000); // Hide the success message after 5 seconds
+                } else {
+                    alert('Error submitting feedback. Please try again.');
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+
+        // Contact support modal
+        const supportModal = document.getElementById('support-modal');
+        const contactSupportBtn = document.getElementById('contact-support');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const submitTicketBtn = document.getElementById('submit-ticket');
+        const ticketSuccess = document.getElementById('ticket-success');
+
+        contactSupportBtn.addEventListener('click', function() {
+            supportModal.style.display = 'block';
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            supportModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == supportModal) {
+                supportModal.style.display = 'none';
+            }
+        });
+
+        submitTicketBtn.addEventListener('click', function() {
+            const issueType = document.getElementById('issue-type').value;
+            const issueDescription = document.getElementById('issue-description').value.trim();
+            
+            if (!issueType) {
+                alert('Please select an issue type.');
+                return;
+            }
+            
+            if (!issueDescription) {
+                alert('Please describe your issue.');
+                return;
+            }
+            
+            // This would normally submit to a backend API
+            document.getElementById('issue-type').value = '';
+            document.getElementById('issue-description').value = '';
+            ticketSuccess.style.display = 'block';
+            
+            setTimeout(() => {
+                ticketSuccess.style.display = 'none';
+            }, 5000); // Hide the success message after 5 seconds
+        });
     });
 </script>
 {% endblock %}

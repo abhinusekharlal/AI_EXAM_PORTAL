@@ -1,0 +1,660 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Help & Support
+{% endblock %}
+
+{% block head %}
+    {% if is_student %}
+    <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
+    {% else %}
+    <link rel="stylesheet" href="{% static 'css/teacher_dashboard2.css' %}">
+    {% endif %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .help-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .help-section h3 {
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 0.8rem;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #0066ff;
+        }
+        
+        .feature-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .feature-title i {
+            color: #0066ff;
+            font-size: 1.2rem;
+        }
+        
+        .feature-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .faq-section {
+            margin-top: 3rem;
+        }
+        
+        .accordion-item {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+        
+        .accordion-header:hover {
+            background: #e9ecef;
+        }
+        
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .contact-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .contact-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .contact-card i {
+            font-size: 2rem;
+            color: #0066ff;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.7rem 1.5rem;
+            background-color: #0066ff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            background-color: #0052cc;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    // Toggle active class on header
+                    this.classList.toggle('active');
+                    
+                    // Toggle content visibility
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                });
+            });
+            
+            // Contact support modal
+            const supportModal = document.getElementById('support-modal');
+            const contactSupportBtn = document.getElementById('contact-support');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const submitTicketBtn = document.getElementById('submit-ticket');
+            const ticketSuccess = document.getElementById('ticket-success');
+            
+            if (contactSupportBtn) {
+                contactSupportBtn.addEventListener('click', function() {
+                    supportModal.style.display = 'block';
+                });
+            }
+            
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    supportModal.style.display = 'none';
+                });
+            }
+            
+            window.addEventListener('click', function(event) {
+                if (event.target == supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            });
+            
+            if (submitTicketBtn) {
+                submitTicketBtn.addEventListener('click', function() {
+                    const issueType = document.getElementById('issue-type').value;
+                    const issueDescription = document.getElementById('issue-description').value.trim();
+                    
+                    if (!issueType) {
+                        alert('Please select an issue type.');
+                        return;
+                    }
+                    
+                    if (!issueDescription) {
+                        alert('Please describe your issue.');
+                        return;
+                    }
+                    
+                    // This would normally submit to a backend API
+                    document.getElementById('issue-type').value = '';
+                    document.getElementById('issue-description').value = '';
+                    ticketSuccess.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        ticketSuccess.style.display = 'none';
+                    }, 5000); // Hide the success message after 5 seconds
+                });
+            }
+            
+            // Live chat button
+            const openChatBtn = document.getElementById('open-chat');
+            if (openChatBtn) {
+                openChatBtn.addEventListener('click', function() {
+                    alert('Live chat is coming soon! Please use email or submit a ticket for now.');
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <h2 id="{% if is_student %}student{% else %}teacher{% endif %}-dashboard-title">Help & Support Center</h2>
+
+    <div class="card welcome-card">
+        <h2>Welcome to the Help Center, {{ user.get_full_name }}</h2>
+        <p><i class="fas fa-{% if is_student %}graduation-cap{% else %}chalkboard-teacher{% endif %}"></i> Find answers to your questions and learn how to use the platform effectively.</p>
+    </div>
+
+    <div class="card help-section">
+        <h3><i class="fas fa-puzzle-piece"></i> Key Features</h3>
+        
+        {% if is_student %}
+        <!-- Student features -->
+        <div class="feature-list">
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-id-card"></i> Face ID Verification
+                </div>
+                <p class="feature-desc">Securely verify your identity before taking exams with our AI-powered face recognition system.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-users"></i> Join Classes
+                </div>
+                <p class="feature-desc">Easily join your teacher's classes using a class code to access course materials and exams.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-file-alt"></i> Take Exams
+                </div>
+                <p class="feature-desc">Access and complete secure online exams with real-time monitoring and proctoring.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-chart-line"></i> View Results
+                </div>
+                <p class="feature-desc">Review your exam results, see detailed performance analytics, and track your progress over time.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-shield-alt"></i> Session Management
+                </div>
+                <p class="feature-desc">Manage and monitor all your active sessions across devices for enhanced security.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-comment"></i> Submit Feedback
+                </div>
+                <p class="feature-desc">Share your thoughts, report issues, and help us improve the platform with your feedback.</p>
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Teacher features -->
+        <div class="feature-list">
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-chalkboard"></i> Create Classes
+                </div>
+                <p class="feature-desc">Create and manage virtual classrooms for your students with unique class codes.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-tasks"></i> Create Exams
+                </div>
+                <p class="feature-desc">Design custom exams with various question types, set time limits, and assign to specific classes.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-user-check"></i> Monitor Students
+                </div>
+                <p class="feature-desc">Monitor student sessions during exams with AI-powered proctoring to prevent cheating.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-chart-bar"></i> View Analytics
+                </div>
+                <p class="feature-desc">Access detailed performance analytics for your students and exams to track progress.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-user-graduate"></i> Manage Students
+                </div>
+                <p class="feature-desc">Add, remove, and manage students in your classes with detailed controls.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-title">
+                    <i class="fas fa-shield-alt"></i> Security Tools
+                </div>
+                <p class="feature-desc">Use advanced security tools like session monitoring and AI proctoring to maintain exam integrity.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card faq-section">
+        <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
+        
+        {% if is_student %}
+        <!-- Student FAQs -->
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How do I join a class?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>To join a class:</p>
+                    <ol>
+                        <li>Log in to your student dashboard</li>
+                        <li>Click on the "Join New Class" button</li>
+                        <li>Enter the class code provided by your teacher</li>
+                        <li>Click "Join Class" to complete the process</li>
+                    </ol>
+                    <p>The class will immediately appear in your dashboard once joined.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How does face verification work?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Face verification uses AI to confirm your identity before and during exams:</p>
+                    <ol>
+                        <li>First, set up your face ID in your profile settings</li>
+                        <li>When starting an exam, you'll be prompted for face verification</li>
+                        <li>Your webcam will activate to capture your image</li>
+                        <li>Our AI will compare it with your registered face ID</li>
+                        <li>If verified, you can proceed with the exam</li>
+                    </ol>
+                    <p>The system may also perform random checks during the exam to ensure continuous verification.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>What happens if I lose internet connection during an exam?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>If you lose your internet connection during an exam:</p>
+                    <ul>
+                        <li>The system automatically saves your answers every 30 seconds</li>
+                        <li>You have a 5-minute grace period to reconnect</li>
+                        <li>If you reconnect within this period, you can continue from where you left off</li>
+                        <li>If reconnection takes longer, contact your teacher immediately</li>
+                    </ul>
+                    <p>We recommend using a stable internet connection for taking exams.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>Can I use multiple devices during an exam?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>No, you cannot use multiple devices during an exam. For security reasons:</p>
+                    <ul>
+                        <li>You can only be logged into one device during an active exam</li>
+                        <li>If you attempt to access the exam from another device, your previous session will be automatically terminated</li>
+                        <li>Multiple login attempts during an exam may be flagged as suspicious activity</li>
+                    </ul>
+                    <p>Make sure you use a reliable device with a good internet connection before starting an exam.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How can I update my face recognition data?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>To update your face recognition data:</p>
+                    <ol>
+                        <li>Go to your Profile page</li>
+                        <li>Find the Face Recognition section</li>
+                        <li>Click on "Update Face ID"</li>
+                        <li>Follow the prompts to capture new images of your face</li>
+                        <li>Submit the new images to update your profile</li>
+                    </ol>
+                    <p>It's recommended to update your face data if you've significantly changed your appearance (new glasses, hairstyle change, etc.)</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>What should I do if I'm unable to start an exam?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>If you're unable to start an exam:</p>
+                    <ol>
+                        <li>Check that you have a working webcam for face verification</li>
+                        <li>Ensure you're using a supported browser (Chrome, Firefox, or Edge recommended)</li>
+                        <li>Clear your browser cache and cookies</li>
+                        <li>Make sure you have permission to access the exam</li>
+                        <li>Contact your teacher if the problem persists</li>
+                    </ol>
+                    <p>You can also check the "Monitor Sessions" page to ensure you don't have other active sessions interfering with the exam access.</p>
+                </div>
+            </div>
+        </div>
+        
+        {% else %}
+        <!-- Teacher FAQs -->
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How do I create a new class?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>To create a new class:</p>
+                    <ol>
+                        <li>Log in to your teacher dashboard</li>
+                        <li>Click on the "Create New Class" button</li>
+                        <li>Fill in the class name and description</li>
+                        <li>Click "Create Class" to generate a unique class code</li>
+                        <li>Share this code with your students to join</li>
+                    </ol>
+                    <p>The class will be immediately available in your dashboard once created.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How do I create and schedule an exam?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>To create and schedule an exam:</p>
+                    <ol>
+                        <li>Go to your teacher dashboard</li>
+                        <li>Click on "Create New Quiz"</li>
+                        <li>Fill in the exam details (name, class, date, time, duration)</li>
+                        <li>Add questions and answer options</li>
+                        <li>Mark the correct answers for each question</li>
+                        <li>Click "Create Exam" to save and schedule</li>
+                    </ol>
+                    <p>Students will see the scheduled exam in their dashboard and can take it at the specified time.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How does the student monitoring system work?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Our student monitoring system includes several security features:</p>
+                    <ul>
+                        <li>Face verification at the beginning of each exam</li>
+                        <li>Live webcam proctoring with AI-powered behavior analysis</li>
+                        <li>Browser focus tracking to detect tab switching</li>
+                        <li>AI-powered detection of suspicious activities</li>
+                        <li>Real-time alerts for potential cheating behaviors</li>
+                        <li>Session monitoring with the ability to terminate suspicious sessions</li>
+                    </ul>
+                    <p>You can access the monitoring dashboard by clicking "Monitor Sessions" in your teacher dashboard.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>How do I manage students in my class?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>To manage students in your class:</p>
+                    <ol>
+                        <li>Go to your teacher dashboard</li>
+                        <li>Find the class in the "Your Classes" section</li>
+                        <li>Click the "Manage" button for that class</li>
+                        <li>On the class management page, you can:</li>
+                        <ul>
+                            <li>See all enrolled students</li>
+                            <li>Remove students if needed</li>
+                            <li>Send invitations to new students</li>
+                            <li>View student activity within the class</li>
+                        </ul>
+                    </ol>
+                    <p>You can also generate a new class code if needed for security purposes.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>What do I do if I suspect cheating during an exam?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>If you suspect a student is cheating during an exam:</p>
+                    <ol>
+                        <li>Go to "Monitor Sessions" in your dashboard</li>
+                        <li>Locate the student's active session (highlighted in yellow)</li>
+                        <li>Review their activity logs and webcam recordings</li>
+                        <li>If necessary, use the "Terminate" button to end their exam session</li>
+                        <li>Document the incident with timestamps for your records</li>
+                    </ol>
+                    <p>The system also automatically flags suspicious behavior and will alert you to potential issues.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span>Can I edit an exam after it's been created?</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, you can edit an exam after creation, with some limitations:</p>
+                    <ul>
+                        <li>You can freely edit exams that haven't started yet</li>
+                        <li>You can modify the exam name, date, and time as needed</li>
+                        <li>Questions and answers can be edited before any student has taken the exam</li>
+                        <li>Once a student has started the exam, you cannot edit the content</li>
+                        <li>You cannot delete an exam after students have submitted answers</li>
+                    </ul>
+                    <p>To edit an exam, find it in your "Exam Overview" section and click the "Edit" button.</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card contact-section">
+        <h3><i class="fas fa-headset"></i> Need More Help?</h3>
+        <p>We're here to assist you. Choose one of the options below to get the support you need.</p>
+        
+        <div class="contact-options">
+            <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <h4>Email Support</h4>
+                <p>Send us a message and we'll respond within 24 hours.</p>
+                <a href="mailto:support@proctoraiexam.com" class="contact-btn">Email Us</a>
+            </div>
+            
+            <div class="contact-card">
+                <i class="fas fa-comments"></i>
+                <h4>Live Chat</h4>
+                <p>Chat with our support team during business hours.</p>
+                <button id="open-chat" class="contact-btn">Start Chat</button>
+            </div>
+            
+            <div class="contact-card">
+                <i class="fas fa-question-circle"></i>
+                <h4>Support Ticket</h4>
+                <p>Submit a detailed support request.</p>
+                <button id="contact-support" class="contact-btn">Create Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Support Modal -->
+    <div id="support-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-headset"></i> Contact Support</h3>
+            <div class="support-details">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:support@proctoraiexam.com">support@proctoraiexam.com</a></p>
+                <p><i class="fas fa-phone"></i> Toll-Free: <a href="tel:1-800-PROCTOR">1-800-PROCTOR (776-2867)</a></p>
+                <p><i class="fas fa-clock"></i> Hours: Monday - Friday, 8:00 AM - 8:00 PM EST</p>
+                <div class="support-ticket">
+                    <h4>Submit a Support Ticket</h4>
+                    <form id="support-ticket-form">
+                        <div class="form-group">
+                            <label for="issue-type">Issue Type</label>
+                            <select id="issue-type" class="form-control">
+                                <option value="">Select an issue type</option>
+                                <option value="technical">Technical Problem</option>
+                                <option value="account">Account Issue</option>
+                                {% if is_student %}
+                                <option value="exam">Exam Access</option>
+                                <option value="face">Face Recognition</option>
+                                {% else %}
+                                <option value="exam">Exam Creation</option>
+                                <option value="monitoring">Student Monitoring</option>
+                                {% endif %}
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issue-description">Description</label>
+                            <textarea id="issue-description" class="form-control" rows="4" placeholder="Please describe your issue in detail..."></textarea>
+                        </div>
+                        <button type="button" id="submit-ticket" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Ticket
+                        </button>
+                    </form>
+                    <div id="ticket-success" class="alert alert-success" style="display:none; margin-top: 15px;">
+                        <i class="fas fa-check-circle"></i> Your support ticket has been submitted. We'll respond shortly.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
