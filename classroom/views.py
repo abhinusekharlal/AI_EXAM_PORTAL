@@ -10,6 +10,10 @@ from datetime import timedelta
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 import json
 
+import threading
+
+from django.http import StreamingHttpResponse
+import cv2
 
 class JoinClassForm(forms.Form):
     class_code = forms.CharField(max_length=10, label='Class Code')
@@ -232,3 +236,42 @@ def submit_exam(request):
 @login_required
 def exam_completed(request):
     return render(request, 'classroom/exam_completed.html')
+
+
+
+
+
+# Open video source
+camera = cv2.VideoCapture(0)
+frame_lock = threading.Lock()
+current_frame = None
+
+# Capture frames in a background thread
+def capture_frames():
+    global current_frame
+    while True:
+        success, frame = camera.read()
+        if not success:
+            break
+        with frame_lock:
+            current_frame = frame
+
+# Start the capture thread
+threading.Thread(target=capture_frames, daemon=True).start()
+
+# Frame generator for streaming
+def generate_frames():
+    while True:
+        with frame_lock:
+            if current_frame is None:
+                continue
+            _, buffer = cv2.imencode('.jpg', current_frame)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+
+# Streaming views
+def video_feed(request):
+    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+
+def admin_feed(request):
+    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
