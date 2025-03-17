@@ -9,6 +9,8 @@ from django.utils import timezone  # Change this import
 from datetime import timedelta
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 import json
+# Import the ExamSession model
+from monitoring.models import ExamSession
 
 
 class JoinClassForm(forms.Form):
@@ -157,7 +159,55 @@ def delete_exam(request, exam_id):
     if request.method == 'POST':
         exam.delete()
         return redirect('classroom:schedule')
+
+@login_required
+def edit_exam(request,exam_id):
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
     
+    exam = get_object_or_404(Exam, id=exam_id)
+    questions = Question.objects.filter(exam=exam).order_by('id')
+    
+    if request.method == 'POST':
+        exam_form = ExamForm(request.POST, instance=exam, request=request)
+        questions_data = []
+        
+        # Collect all question forms data
+        i = 0
+        while f'question_{i}-question_text' in request.POST:
+            question_data = {
+                'question_text': request.POST.get(f'question_{i}-question_text'),
+                'option1': request.POST.get(f'question_{i}-option1'),
+                'option2': request.POST.get(f'question_{i}-option2'),
+                'option3': request.POST.get(f'question_{i}-option3'),
+                'option4': request.POST.get(f'question_{i}-option4'),
+                'correct_option': request.POST.get(f'question_{i}-correct_option'),
+            }
+            questions_data.append(question_data)
+            i += 1
+
+        if exam_form.is_valid():
+            exam = exam_form.save(commit=False)
+            exam.teacher = request.user
+            exam.save()
+
+            # Save all questions
+            for question_data in questions_data:
+                question_form = QuestionForm(question_data)
+                if question_form.is_valid():
+                    question = question_form.save(commit=False)
+                    question.exam = exam
+                    question.save()
+
+            return redirect('classroom:schedule')
+    else:
+        exam_form = ExamForm(instance=exam, request=request)
+    
+    return render(request, 'classroom/edit_exam.html', {
+        'exam_form': exam_form,
+        'exam': exam
+    })
+
 @login_required
 def view_exam(request, exam_id):
     if request.user.user_type != 'student':
@@ -181,9 +231,20 @@ def view_exam(request, exam_id):
         'start_time': current_time.isoformat(),
     }
     
-    # Set exam session data
+    # Set exam session data in Django session
     request.session[f'exam_{exam_id}_started'] = True
     request.session[f'exam_{exam_id}_start_time'] = current_time.isoformat()
+    
+    # Create or get an ExamSession record for monitoring
+    exam_session, created = ExamSession.objects.get_or_create(
+        exam=exam,
+        student=request.user,
+        is_active=True,
+        defaults={
+            'started_at': current_time,
+            'last_activity': current_time
+        }
+    )
     
     return render(request, 'classroom/exam_interface.html', context)
 
@@ -215,6 +276,18 @@ def submit_exam(request):
             # Clear exam session data
             request.session.pop(f'exam_{exam_id}_started', None)
             request.session.pop(f'exam_{exam_id}_start_time', None)
+            
+            # Mark exam session as inactive when exam is submitted
+            try:
+                exam_session = ExamSession.objects.get(
+                    exam_id=exam_id,
+                    student=request.user,
+                    is_active=True
+                )
+                exam_session.is_active = False
+                exam_session.save()
+            except ExamSession.DoesNotExist:
+                pass  # No active session found, which is unexpected but we can continue
             
             return JsonResponse({
                 'success': True,

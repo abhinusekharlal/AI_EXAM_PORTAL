@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'classroom',
     'monitoring',
     'results',
+    'channels',  # Add Django Channels
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,6 +78,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AI_EXAM_PORTAL.wsgi.application'
 
+# Add after WSGI_APPLICATION
+ASGI_APPLICATION = 'AI_EXAM_PORTAL.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -125,6 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -193,4 +197,40 @@ LOGGING = {
             'level': 'DEBUG',  # Set to DEBUG to see detailed logs
         },
     },
+}
+
+# Channel Layers configuration
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+} if not DEBUG else {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# YOLO model settings
+YOLO_MODEL_DIR = os.path.join(BASE_DIR, 'monitoring', 'models')
+os.makedirs(YOLO_MODEL_DIR, exist_ok=True)
+
+# Frame storage settings
+MONITORING_FRAMES_DIR = os.path.join(MEDIA_ROOT, 'monitoring_frames')
+os.makedirs(MONITORING_FRAMES_DIR, exist_ok=True)
+
+# Monitoring settings
+MONITORING_CONFIG = {
+    'frame_interval': 2000,  # Milliseconds between frame captures
+    'frame_quality': 0.6,    # JPEG compression quality (0-1)
+    'alert_thresholds': {
+        'face_missing': 3,    # Consecutive frames before alert
+        'multiple_faces': 2,
+        'looking_away': 2,
+        'unknown_face': 1,
+        'phone_detected': 1,
+        'unauthorized_object': 1
+    }
 }

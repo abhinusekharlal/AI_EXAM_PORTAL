@@ -1,0 +1,77 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Exam Monitoring - {{ exam.exam_name }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/monitoring_dashboard.css' %}">
+<script src="{% static 'js/exam_monitor.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize monitoring dashboard
+        const monitorDashboard = new ExamMonitorDashboard({{ exam.id }});
+        monitorDashboard.initialize();
+        monitorDashboard.startInactiveCheck();
+        
+        // Set up refresh button
+        document.getElementById('refreshStreamsBtn').addEventListener('click', () => {
+            monitorDashboard.refreshStreams();
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}  <!-- Add CSRF token for AJAX requests -->
+<div class="monitoring-container">
+    <div class="monitoring-header">
+        <h1>Exam Monitoring - {{ exam.exam_name }}</h1>
+        <div class="controls">
+            <button id="refreshStreamsBtn" class="btn btn-secondary">
+                <i class="fas fa-sync"></i> Refresh Streams
+            </button>
+            <span id="connectionStatus" class="connection-status">Connecting...</span>
+        </div>
+    </div>
+
+    <div class="alerts-panel">
+        <div class="alerts-header">
+            <h3>Alerts <span id="alertCounter" class="alert-count">0</span></h3>
+        </div>
+        <div class="alerts-list"></div>
+    </div>
+
+    <div id="videoGrid" class="video-grid">
+        <div id="emptyState" class="empty-state">
+            <i class="fas fa-video-slash"></i>
+            <p>No active student streams</p>
+        </div>
+    </div>
+</div>
+
+<!-- Template for video cards -->
+<template id="videoCardTemplate">
+    <div class="video-card">
+        <div class="video-header">
+            <span class="student-name"></span>
+            <div class="controls">
+                <button class="focus-btn" title="Focus view">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </div>
+        <div class="video-content">
+            <img class="student-video" alt="Student webcam stream">
+            <div class="alert-indicator hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="alert-text"></span>
+            </div>
+        </div>
+        <div class="video-footer">
+            <span class="connection-status">Connected</span>
+        </div>
+    </div>
+</template>
+
+{% endblock %}
+

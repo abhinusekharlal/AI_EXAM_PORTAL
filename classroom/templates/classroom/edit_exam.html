@@ -8,6 +8,8 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_exam.css' %}">
+    <script src="{% static 'js/create_exam.js' %}"></script>
+    <script src="{% static 'js/question_validation.js' %}"></script>
     <!-- Add HTMX directly in this template -->
     <script src="https://unpkg.com/htmx.org@1.9.9"></script>
     <script>
@@ -133,6 +135,3 @@
     </div>
 {% endblock %}
 
-{% block script %}
-    <script src="{% static 'js/create_exam.js' %}"></script>
-{% endblock %}

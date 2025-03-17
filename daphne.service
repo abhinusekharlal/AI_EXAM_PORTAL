@@ -1,0 +1,24 @@
+[Unit]
+Description=AI Exam Portal Daphne Service
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL
+Environment=DJANGO_SETTINGS_MODULE=AI_EXAM_PORTAL.settings
+ExecStart=/usr/local/bin/daphne -u /run/daphne/daphne.sock -p 8001 AI_EXAM_PORTAL.asgi:application
+
+# Process management
+Restart=always
+RestartSec=3
+StartLimitIntervalSec=30
+StartLimitBurst=3
+
+# Create runtime directory
+RuntimeDirectory=daphne
+RuntimeDirectoryMode=755
+
+[Install]
+WantedBy=multi-user.target

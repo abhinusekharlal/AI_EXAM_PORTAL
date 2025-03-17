@@ -26,17 +26,11 @@
             
             async function initializeExam() {
                 try {
-                    // Initialize exam interface first and wait for it
+                    // Initialize exam interface which contains webcam monitoring
                     window.examInterface = new ExamInterface(window.examData);
-                    await new Promise(resolve => setTimeout(resolve, 1000));
                     
-                    // Only initialize exam monitor if exam interface is ready
-                    if (window.examInterface && window.examInterface.state) {
-                        window.examMonitor = new ExamMonitor(window.examData.examId);
-                        await window.examMonitor.initialize();
-                    } else {
-                        throw new Error('Exam interface not properly initialized');
-                    }
+                    // No need for separate ExamMonitor - WebcamMonitor is already initialized 
+                    // inside ExamInterface constructor
                     
                 } catch (error) {
                     console.error('Failed to initialize exam:', error);

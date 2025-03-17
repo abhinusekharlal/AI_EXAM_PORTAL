@@ -24,8 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Users.urls', namespace='Users')),
     path('', include('classroom.urls', namespace='classroom')),
+    path('',include('monitoring.urls', namespace='monitoring')),
     path('verify-email/<str:token>/', views.verify_email, name='verify-email'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

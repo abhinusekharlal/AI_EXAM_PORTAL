@@ -1,3 +1,8 @@
 venv/
 __pycache__/
 media/face_recognition/
+media/
+monitoring/__pycache__
+Users/__pycache__
+classroom/__pycache__
+AI_EXAM_PORTAL/__pycache__

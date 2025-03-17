@@ -9,6 +9,7 @@ urlpatterns = [
     path('classroom/create', views.create_class, name='create_class'),
     path('classroom/join', views.join_class, name='join_class'),
     path('classroom/addexam', views.add_exam, name='add_exam'),
+    path('classroom/edit_exam/<int:exam_id>/', views.edit_exam, name='edit_exam'),
     path('classroom/exam/<int:exam_id>/', views.view_exam, name='view_exam'),
     path('classroom/delete_exam/<int:exam_id>/', views.delete_exam, name='delete_exam'),
     path('classroom/delete/<uuid:class_id>/', views.delete_class, name='delete_class'),
