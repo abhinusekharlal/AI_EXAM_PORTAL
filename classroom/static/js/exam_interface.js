@@ -138,6 +138,34 @@ class NotificationManager {
     }
 }
 
+class ActivityLogger {
+    constructor() {
+        this.logContainer = document.getElementById('activityLog');
+        this.maxLogEntries = 50;
+    }
+
+    logActivity(message, type = 'info') {
+        if (!this.logContainer) return;
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString();
+        
+        const logEntry = document.createElement('div');
+        logEntry.className = `log-entry log-${type}`;
+        logEntry.innerHTML = `
+            <span class="log-time">${timeStr}</span>
+            <span class="log-message">${message}</span>
+        `;
+        
+        this.logContainer.insertBefore(logEntry, this.logContainer.firstChild);
+        
+        // Trim old entries
+        while (this.logContainer.children.length > this.maxLogEntries) {
+            this.logContainer.removeChild(this.logContainer.lastChild);
+        }
+    }
+}
+
 class WebcamMonitor {
     constructor(examId, csrfToken) {
         this.examId = examId;
@@ -256,12 +284,13 @@ class WebcamMonitor {
 
     handleAlerts(alerts) {
         alerts.forEach(alert => {
-            // Show alert to student
             const message = `Warning: ${alert.description}`;
-            const duration = alert.severity === 'critical' ? 0 : 5000; // Keep critical alerts visible
+            const duration = alert.severity === 'critical' ? 0 : 5000;
             window.examInterface.showNotification(message, alert.severity, duration);
             
-            // Update video status for critical alerts
+            // Log to activity log
+            window.examInterface.logger.logActivity(alert.description, alert.severity);
+            
             if (alert.severity === 'critical') {
                 this.updateStatus('error', alert.description);
             }
@@ -309,6 +338,11 @@ class ExamInterface {
             throw new Error('Timer element not found');
         }
         
+        this.logger = new ActivityLogger();
+        
+        // Auto-save interval
+        this.autoSaveInterval = null;
+        
         this.initializeInterface();
     }
 
@@ -319,6 +353,12 @@ class ExamInterface {
         this.timer.start();
         this.updateProgress();
         
+        this.setupDetailsPanel();
+        this.initializeExamSummary();
+        this.setupKeyboardShortcuts();
+        this.setupAutoSave();
+        this.logger.logActivity('Exam interface initialized', 'success');
+        
         // Initialize webcam monitoring
         try {
             const webcamInitialized = await this.webcamMonitor.initialize();
@@ -328,15 +368,122 @@ class ExamInterface {
                     'warning',
                     0
                 );
+                this.logger.logActivity('Failed to initialize webcam', 'error');
+            } else {
+                this.logger.logActivity('Webcam monitoring active', 'success');
             }
         } catch (error) {
             console.error('Error initializing webcam monitoring:', error);
-            this.showNotification(
-                'Error initializing webcam monitoring. Please refresh the page.',
-                'danger',
-                0
-            );
+            this.logger.logActivity('Webcam initialization error', 'error');
         }
+    }
+    
+    // Set up auto-saving of answers
+    setupAutoSave() {
+        // Auto-save every 30 seconds
+        this.autoSaveInterval = setInterval(() => {
+            const selectedAnswers = this.collectUnsavedAnswers();
+            
+            if (selectedAnswers.length > 0) {
+                selectedAnswers.forEach(radio => this.handleAnswerSave(radio, true));
+                this.logger.logActivity(`Auto-saved ${selectedAnswers.length} answer(s)`, 'info');
+            }
+        }, 30000);
+    }
+    
+    // Collect any selected but unsaved answers
+    collectUnsavedAnswers() {
+        const result = [];
+        document.querySelectorAll('.question-box').forEach(box => {
+            // If box is already marked as answered, skip it
+            if (box.classList.contains('answered')) return;
+            
+            // Find selected radio button
+            const selectedRadio = box.querySelector('input[type="radio"]:checked');
+            if (selectedRadio) {
+                result.push(selectedRadio);
+            }
+        });
+        return result;
+    }
+
+    setupDetailsPanel() {
+        const detailsPanel = document.querySelector('.exam-details-panel');
+        if (detailsPanel) {
+            detailsPanel.addEventListener('toggle', (e) => {
+                const isOpen = detailsPanel.hasAttribute('open');
+                this.logger.logActivity(
+                    `Exam details panel ${isOpen ? 'opened' : 'closed'}`,
+                    'info'
+                );
+            });
+        }
+    }
+
+    initializeExamSummary() {
+        this.updateExamSummary();
+        // Update summary every time an answer is saved
+        this.attachAnswerSaveCallback(() => this.updateExamSummary());
+    }
+
+    updateExamSummary() {
+        const answeredCount = document.getElementById('answeredCount');
+        const remainingCount = document.getElementById('remainingCount');
+        
+        if (answeredCount && remainingCount) {
+            const answered = this.state.answeredQuestions.size;
+            const total = window.examData.totalQuestions;
+            const remaining = total - answered;
+            
+            answeredCount.textContent = answered;
+            remainingCount.textContent = remaining;
+        }
+    }
+
+    attachAnswerSaveCallback(callback) {
+        const originalSetAnswer = this.state.setAnswer.bind(this.state);
+        this.state.setAnswer = (questionId, answer) => {
+            originalSetAnswer(questionId, answer);
+            callback();
+        };
+    }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Existing left/right navigation
+            if (e.key === 'ArrowLeft') {
+                this.navigateQuestion(-1);
+                this.logger.logActivity('Navigated to previous question using keyboard', 'info');
+            } else if (e.key === 'ArrowRight') {
+                this.navigateQuestion(1);
+                this.logger.logActivity('Navigated to next question using keyboard', 'info');
+            }
+            
+            // Number keys for answer selection (1-9)
+            if (/^[1-9]$/.test(e.key)) {
+                const currentBox = document.querySelector('.question-box.active');
+                if (currentBox) {
+                    const option = currentBox.querySelector(`input[type="radio"]:nth-of-type(${e.key})`);
+                    if (option) {
+                        option.checked = true;
+                        this.handleAnswerChange({ target: option });
+                        this.logger.logActivity(`Selected option ${e.key} using keyboard`, 'info');
+                    }
+                }
+            }
+            
+            // 'S' key for saving current answer
+            if (e.key.toLowerCase() === 's') {
+                const currentBox = document.querySelector('.question-box.active');
+                if (currentBox) {
+                    const saveBtn = currentBox.querySelector('.save-btn');
+                    if (saveBtn) {
+                        saveBtn.click();
+                        this.logger.logActivity('Answer saved using keyboard shortcut', 'info');
+                    }
+                }
+            }
+        });
     }
 
     attachEventListeners() {
@@ -398,7 +545,7 @@ class ExamInterface {
         this.handleAnswerSave(event.target);
     }
 
-    handleAnswerSave(radio) {
+    handleAnswerSave(radio, isAutoSave = false) {
         const questionBox = radio.closest('.question-box');
         if (!questionBox) return;
 
@@ -407,13 +554,18 @@ class ExamInterface {
 
         this.state.setAnswer(questionId, radio.value);
         questionBox.classList.add('answered');
-        this.showNotification('Answer saved!', 'success');
-        this.updateProgress();
+        
+        if (!isAutoSave) {
+            this.showNotification('Answer saved!', 'success');
+            this.logger.logActivity(`Answer saved for question ${questionNum}`, 'success');
 
-        // Auto-navigate to next question after saving if not on last question
-        if (questionNum < window.examData.totalQuestions) {
-            setTimeout(() => this.navigateQuestion(1), 500);
+            // Auto-navigate to next question after saving if not on last question
+            if (questionNum < window.examData.totalQuestions) {
+                setTimeout(() => this.navigateQuestion(1), 500);
+            }
         }
+        
+        this.updateProgress();
     }
 
     showQuestion(num) {
@@ -479,60 +631,170 @@ class ExamInterface {
     }
 
     async submitExam(isAutoSubmit = false) {
-        if (this.state.isSubmitting) return;
+        if (this.state.isSubmitting) {
+            this.showNotification('Submission already in progress...', 'warning');
+            return;
+        }
 
         try {
-            // Existing confirmation code
+            // Show loading state
+            this.setSubmitButtonLoading(true);
+
             if (!isAutoSubmit) {
                 const unansweredCount = window.examData.totalQuestions - this.state.answeredQuestions.size;
                 if (unansweredCount > 0) {
-                    const confirmed = confirm(`You have ${unansweredCount} unanswered questions. Are you sure you want to submit?`);
-                    if (!confirmed) return;
+                    const confirmed = await this.showConfirmationModal(
+                        `You have ${unansweredCount} unanswered ${unansweredCount === 1 ? 'question' : 'questions'}. Are you sure you want to submit?`
+                    );
+                    if (!confirmed) {
+                        this.logger.logActivity('Exam submission cancelled - unanswered questions', 'info');
+                        this.setSubmitButtonLoading(false);
+                        return;
+                    }
                 } else {
-                    const confirmed = confirm('Are you sure you want to submit the exam?');
-                    if (!confirmed) return;
+                    const confirmed = await this.showConfirmationModal(
+                        'Are you sure you want to submit the exam? This action cannot be undone.'
+                    );
+                    if (!confirmed) {
+                        this.logger.logActivity('Exam submission cancelled', 'info');
+                        this.setSubmitButtonLoading(false);
+                        return;
+                    }
                 }
             }
 
             this.state.isSubmitting = true;
+            this.logger.logActivity('Starting exam submission...', 'info');
             
-            // Stop webcam monitoring before submitting
-            this.webcamMonitor.stop();
+            // Prevent accidental navigation
+            this.setupBeforeUnloadWarning();
+            
+            // Clean up resources
+            this.cleanup();
+            this.logger.logActivity('Webcam monitoring stopped', 'info');
 
-            // Existing submission code
-            const answers = Array.from(this.state.answers.entries()).map(([questionId, answer]) => ({
-                question_id: questionId,
-                selected_option: answer
-            }));
-
-            const response = await fetch(window.examData.submitUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': window.examData.csrfToken
-                },
-                body: JSON.stringify({
-                    exam_id: window.examData.examId,
-                    answers: answers
-                })
+            // Convert Map of answers to an object that Django can handle
+            // This was a key issue - Django expects a different format than we were sending
+            const answersObject = {};
+            this.state.answers.forEach((value, key) => {
+                answersObject[key] = value;
             });
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error || 'Failed to submit exam');
+            // Add retry mechanism with exponential backoff
+            let attempts = 0;
+            const maxAttempts = 3;
+            const baseDelay = 2000; // 2 seconds
+            
+            while (attempts < maxAttempts) {
+                try {
+                    attempts++;
+                    this.showNotification(
+                        `Submitting exam${attempts > 1 ? ` (attempt ${attempts})` : ''}...`, 
+                        'info'
+                    );
+                    
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-            this.state.clearSavedState();
-            this.timer.stop();
-            window.location.href = window.examData.completedUrl;
+                    const response = await fetch(window.examData.submitUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': window.examData.csrfToken
+                        },
+                        body: JSON.stringify({
+                            examId: window.examData.examId,
+                            answers: answersObject // Changed from array format to object format
+                        }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeout);
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Failed to submit exam');
+                    }
+                    
+                    const data = await response.json();
+
+                    // Success path
+                    this.state.clearSavedState();
+                    this.logger.logActivity('Exam submitted successfully', 'success');
+                    
+                    this.showNotification(
+                        'Exam submitted successfully! Redirecting to results page...',
+                        'success',
+                        2000
+                    );
+                    
+                    // Remove navigation warning
+                    this.removeBeforeUnloadWarning();
+                    
+                    // Delay redirect to show the success message
+                    setTimeout(() => {
+                        window.location.href = window.examData.completedUrl;
+                    }, 2000);
+                    
+                    break;
+                } catch (error) {
+                    console.error(`Error submitting exam (attempt ${attempts}):`, error);
+                    
+                    if (attempts >= maxAttempts) {
+                        throw error;
+                    }
+                    
+                    const delay = baseDelay * Math.pow(2, attempts - 1); // Exponential backoff
+                    this.showNotification(
+                        `Submission attempt ${attempts} failed. Retrying in ${delay/1000} seconds...`,
+                        'warning'
+                    );
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
         } catch (error) {
             console.error('Error submitting exam:', error);
-            this.showNotification('Failed to submit exam. Please try again.', 'danger', 0);
+            this.showNotification(
+                'Failed to submit exam. Please try again or contact your proctor.',
+                'danger',
+                0
+            );
             this.state.isSubmitting = false;
+            this.logger.logActivity('Exam submission failed: ' + error.message, 'error');
             
-            // Restart webcam monitoring if submission failed
+            // Try to restart monitoring if it's not active
             if (!this.webcamMonitor.isActive) {
                 await this.webcamMonitor.initialize();
+                this.logger.logActivity('Webcam monitoring restarted', 'info');
             }
+            
+            // Restart auto-save
+            this.setupAutoSave();
+        } finally {
+            this.setSubmitButtonLoading(false);
         }
+    }
+
+    setSubmitButtonLoading(isLoading) {
+        const submitBtn = document.querySelector('.submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = isLoading;
+            submitBtn.classList.toggle('loading', isLoading);
+            submitBtn.innerHTML = isLoading ? 
+                '<span class="spinner"></span> Submitting...' : 
+                '<span class="submit-icon">✓</span> Submit Exam';
+        }
+    }
+
+    setupBeforeUnloadWarning() {
+        window.onbeforeunload = (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        };
+    }
+
+    removeBeforeUnloadWarning() {
+        window.onbeforeunload = null;
     }
 
     handleTimeUp() {
@@ -542,6 +804,59 @@ class ExamInterface {
 
     showNotification(message, type) {
         this.notifications.show(message, type);
+    }
+
+    showConfirmationModal(message) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('confirmationModal');
+            const confirmBtn = document.getElementById('confirmSubmit');
+            const cancelBtn = document.getElementById('cancelSubmit');
+            const messageEl = document.getElementById('confirmationMessage');
+            
+            if (!modal || !confirmBtn || !cancelBtn || !messageEl) {
+                resolve(window.confirm(message));
+                return;
+            }
+
+            messageEl.textContent = message;
+            modal.classList.add('active');
+
+            const handleConfirm = () => {
+                modal.classList.remove('active');
+                cleanup();
+                resolve(true);
+            };
+
+            const handleCancel = () => {
+                modal.classList.remove('active');
+                cleanup();
+                resolve(false);
+            };
+
+            const cleanup = () => {
+                confirmBtn.removeEventListener('click', handleConfirm);
+                cancelBtn.removeEventListener('click', handleCancel);
+            };
+
+            confirmBtn.addEventListener('click', handleConfirm);
+            cancelBtn.addEventListener('click', handleCancel);
+        });
+    }
+    
+    // Clean up resources
+    cleanup() {
+        if (this.autoSaveInterval) {
+            clearInterval(this.autoSaveInterval);
+            this.autoSaveInterval = null;
+        }
+        
+        if (this.webcamMonitor) {
+            this.webcamMonitor.stop();
+        }
+        
+        if (this.timer) {
+            this.timer.stop();
+        }
     }
 }
 

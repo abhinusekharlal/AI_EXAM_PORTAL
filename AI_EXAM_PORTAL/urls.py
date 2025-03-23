@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('Users.urls', namespace='Users')),
     path('', include('classroom.urls', namespace='classroom')),
     path('',include('monitoring.urls', namespace='monitoring')),
+    path('results/', include('results.urls', namespace='results')),
     path('verify-email/<str:token>/', views.verify_email, name='verify-email'),
 ]
 

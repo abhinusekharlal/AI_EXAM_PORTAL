@@ -20,6 +20,7 @@ urlpatterns = [
     path('monitor/student-sessions/', views.monitor_student_sessions, name='monitor_student_sessions'),
     path('monitor/terminate-student-session/<int:session_id>/', views.terminate_student_session, name='terminate_student_session'),
     path('help/', views.help_page, name='help'),  # New URL for help page
+    path('resend-verification/', views.resend_verification_email, name='resend-verification'),
     
     # Face recognition URLs
     path('face-registration/', views.face_registration_page, name='face_registration_page'),

@@ -1,24 +1,31 @@
 {% extends 'Users/layout.html' %}
 {% load form_tags %}
+{% load static %}
 
 {% block title %}
     Create Class
 {% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/base_components.css' %}">
+{% endblock %}
+
 {% block content %}
-    <div class="container mt-5">
-        <h2>Create a New Class</h2>
+    <div class="card form-card">
+        <h2><i class="fas fa-plus-circle"></i> Create a New Class</h2>
         <form method="post" action="{% url 'classroom:create_class' %}">
             {% csrf_token %}
-            <div class="mb-3">
+            <div class="form-group">
                 <label for="id_class_name" class="form-label">Class Name</label>
                 {{ form.class_name|add_class:"form-control" }}
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label for="id_class_description" class="form-label">Class Description</label>
                 {{ form.class_description|add_class:"form-control" }}
             </div>
-            <button type="submit" class="btn btn-primary">Create Class</button>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-plus"></i> Create Class
+            </button>
         </form>
     </div>
 {% endblock %}

@@ -130,7 +130,9 @@
                         </div>
                     </div>
                     <div class="result-actions">
-                        <button class="btn-view">View Report</button>
+                        <a href="{% url 'results:result_detail' result_id=exam.id %}" class="btn-view">
+                            <i class="fas fa-chart-bar"></i> View Report
+                        </a>
                     </div>
                 </div>
             {% endfor %}

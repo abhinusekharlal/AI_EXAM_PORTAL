@@ -7,5 +7,5 @@ daphne>=4.0.0
 channels-redis>=4.1.0  # For Redis channel layer in production
 redis>=5.0.1
 ultralytics>=8.0.0  # For YOLO object detection
-torch>=2.0.0  # Required by ultralytics
-torchvision>=0.15.0  # Required by ultralytics
+torch>=2.0.0  
+torchvision>=0.15.0  

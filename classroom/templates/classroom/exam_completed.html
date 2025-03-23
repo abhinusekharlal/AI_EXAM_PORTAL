@@ -1,51 +1,140 @@
-{% extends 'base.html' %}
+{% extends 'Users/layout.html' %}
 {% load static %}
+{% load exam_tags %}
 
 {% block title %}Exam Completed{% endblock %}
 
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="card shadow">
-        <div class="card-header bg-success text-white">
-            <h3 class="mb-0">Exam Completed Successfully</h3>
-        </div>
-        <div class="card-body">
-            <div class="alert alert-success">
-                <h4 class="alert-heading">Congratulations!</h4>
-                <p>You have successfully completed the exam: <strong>{{ exam.exam_name }}</strong></p>
+        {% if generic_completion %}
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">Exam Completed</h3>
             </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Your Score</h5>
-                    <div class="display-4 text-primary">{{ score|floatformat:2 }}%</div>
-                    <p class="text-muted">Submitted on: {{ completion_time|date:"F d, Y" }} at {{ completion_time|time:"H:i" }}</p>
+            <div class="card-body text-center">
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">Exam Submission Received</h4>
+                    <p>Your exam has been completed and submitted successfully.</p>
                 </div>
-                <div class="col-md-6">
-                    <h5>Exam Details</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Class
-                            <span class="badge bg-primary rounded-pill">{{ exam.exam_class.class_name }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Duration
-                            <span class="badge bg-primary rounded-pill">{{ exam.exam_duration }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Exam Date
-                            <span class="badge bg-primary rounded-pill">{{ exam.exam_date }}</span>
-                        </li>
-                    </ul>
+                <div class="mt-4">
+                    <a href="{% url 'Users:dashboard' username=request.user.username %}" class="btn btn-primary">
+                        Return to Dashboard
+                    </a>
                 </div>
             </div>
-            
-            <div class="mt-4">
-                <a href="{% url 'Users:dashboard' username=request.user.username %}" class="btn btn-primary">
-                    Return to Dashboard
-                </a>
+        {% else %}
+            <div class="card-header {% if result and result.status == 'passed' %}bg-success{% else %}bg-warning{% endif %} text-white">
+                <h3 class="mb-0">Exam Completed: {{ exam.exam_name }}</h3>
             </div>
-        </div>
+            <div class="card-body">
+                <div class="alert {% if result and result.status == 'passed' %}alert-success{% else %}alert-warning{% endif %}">
+                    <h4 class="alert-heading">
+                        {% if result and result.status == 'passed' %}Congratulations!{% else %}Exam Completed{% endif %}
+                    </h4>
+                    <p>You have successfully completed the exam: <strong>{{ exam.exam_name }}</strong></p>
+                    
+                    {% if result %}
+                        <p class="mt-2">
+                            Status: 
+                            <span class="badge {% if result.status == 'passed' %}bg-success{% else %}bg-danger{% endif %} p-2">
+                                {{ result.status|title }}
+                            </span>
+                        </p>
+                    {% endif %}
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="score-card p-3 border rounded">
+                            <h5>Your Score</h5>
+                            <div class="display-4 {% if result and result.status == 'passed' %}text-success{% else %}text-warning{% endif %}">
+                                {{ score|floatformat:1 }}%
+                            </div>
+                            
+                            {% if result %}
+                            <div class="score-details mt-3">
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <span>Correct Answers:</span>
+                                    <span class="text-success fw-bold">{{ result.correct_answers }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <span>Total Questions:</span>
+                                    <span>{{ result.total_questions }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between py-2">
+                                    <span>Score Ratio:</span>
+                                    <span>{{ result.correct_answers }}/{{ result.total_questions }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <p class="text-muted mt-3">
+                                Submitted on: {{ completion_time|date:"F d, Y" }} at {{ completion_time|time:"H:i" }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="exam-details-card p-3 border rounded">
+                            <h5>Exam Details</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    Class
+                                    <span class="badge bg-primary rounded-pill">{{ exam.exam_class.class_name }}</span>
+                                </li>
+                                
+                                {% if result %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    Time Taken
+                                    <span class="badge bg-primary rounded-pill">{{ result.duration_in_minutes|floatformat:1 }} minutes</span>
+                                </li>
+                                {% endif %}
+                                
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    Duration Limit
+                                    <span class="badge bg-primary rounded-pill">{{ exam.exam_duration }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    Exam Date
+                                    <span class="badge bg-primary rounded-pill">{{ exam.exam_date }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if result %}
+                <div class="answers-summary mt-4">
+                    <h5>Response Summary</h5>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ result.correct_answers|multiply:100|divided_by:result.total_questions }}%;"
+                             aria-valuenow="{{ result.correct_answers }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ result.total_questions }}">
+                            {{ result.correct_answers }} Correct
+                        </div>
+                        <div class="progress-bar bg-danger" role="progressbar"
+                             style="width: {{ result.total_questions|subtract:result.correct_answers|multiply:100|divided_by:result.total_questions }}%;">
+                            {{ result.total_questions|subtract:result.correct_answers }} Incorrect
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{% url 'Users:dashboard' username=request.user.username %}" class="btn btn-primary">
+                        Return to Dashboard
+                    </a>
+                    
+                    {% if result %}
+                    <a href="{% url 'results:result_detail' result_id=result.id %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-chart-bar"></i> View Detailed Results
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

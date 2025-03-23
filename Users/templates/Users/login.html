@@ -19,8 +19,19 @@
             </div>
             <h1>Welcome Back!</h1>
             <p class="subtitle">Please Signin to your account</p>
-            {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                        {% if "verify your email" in message|lower %}
+                            <form method="post" action="{% url 'Users:resend-verification' %}" class="mt-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="email" value="{{ email }}">
+                                <button type="submit" class="btn btn-link p-0">Resend verification email</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             {% endif %}
             <form class="login-form" method="post" action="{% url 'Users:login' %}" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -44,5 +55,4 @@
             </form>
         </div>
     </main>
-
 {% endblock %}

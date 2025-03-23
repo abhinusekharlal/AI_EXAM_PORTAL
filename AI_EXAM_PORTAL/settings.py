@@ -156,45 +156,37 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
             'style': '{',
         },
     },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
             'formatter': 'verbose',
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'debug.log'),
-            'formatter': 'verbose',
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['file', 'console'],
             'level': 'INFO',
+            'propagate': True,
         },
-        'django.server': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-        },
-        'django.request': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-        },
-        'django.template': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-        },
-        'django.db.backends': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-        },
-        'Users': {  # Add logging for our Users app
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',  # Set to DEBUG to see detailed logs
+        'monitoring': {
+            'handlers': ['file', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
         },
     },
 }

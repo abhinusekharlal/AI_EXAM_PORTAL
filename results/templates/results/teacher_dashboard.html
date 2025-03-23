@@ -1,0 +1,86 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Exam Results Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Exam Results Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Your Exams</h5>
+                </div>
+                <div class="card-body">
+                    {% if exam_data %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Exam Name</th>
+                                        <th>Results</th>
+                                        <th>Avg. Score</th>
+                                        <th>Flagged</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in exam_data %}
+                                        <tr>
+                                            <td>{{ item.exam.exam_name }}</td>
+                                            <td>{{ item.results_count }}</td>
+                                            <td>{{ item.avg_score }}%</td>
+                                            <td>
+                                                {% if item.flagged_count > 0 %}
+                                                    <span class="badge bg-warning">{{ item.flagged_count }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">0</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'results:exam_results_list' exam_id=item.exam.id %}" class="btn btn-sm btn-primary">View Results</a>
+                                                <a href="{% url 'results:exam_report' exam_id=item.exam.id %}" class="btn btn-sm btn-info">Report</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">You haven't created any exams yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">Flagged Exams Requiring Review</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_flagged %}
+                        <ul class="list-group">
+                            {% for result in recent_flagged %}
+                                <li class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ result.student.username }}</h6>
+                                        <small>{{ result.completion_time|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ result.exam.exam_name }}</p>
+                                    <small class="text-muted">Score: {{ result.score }}%</small>
+                                    <a href="{% url 'results:review_flagged_exam' result_id=result.id %}" class="btn btn-sm btn-warning float-end">Review</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No flagged exams requiring review.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

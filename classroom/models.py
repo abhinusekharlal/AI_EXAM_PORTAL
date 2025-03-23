@@ -28,6 +28,12 @@ class Classroom(models.Model):
         return uuid.uuid4().hex[:10].upper()
 
 class Exam(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('completed', 'Completed'),
+    )
+    
     exam_name = models.CharField(max_length=100)
     exam_class = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     exam_date = models.DateField()
@@ -36,6 +42,7 @@ class Exam(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     teacher = models.ForeignKey('Users.User', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='published')
     
     def __str__(self):
         return self.exam_name

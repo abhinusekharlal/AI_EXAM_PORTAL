@@ -17,6 +17,7 @@ import json
 import logging
 import smtplib
 from socket import gaierror
+from django.urls import reverse
 
 # Get a logger instance
 logger = logging.getLogger(__name__)
@@ -58,7 +59,10 @@ def register(request):
                 user.email_token_created_at = timezone.now()
                 user.save()
                 
-                verification_url = f"{request.scheme}://{request.get_host()}/verify-email/{user.email_verification_token}"
+                # Fix: Use reverse() to generate the correct URL with namespace
+                verification_url = request.build_absolute_uri(
+                    reverse('Users:verify-email', args=[user.email_verification_token])
+                )
                 logger.info(f"Generated verification URL: {verification_url}")
                 
                 # Create email message
@@ -160,6 +164,11 @@ def test_email(request):
 
 def verify_email(request, token):
     try:
+        # First validate token length to prevent DB lookups with invalid tokens
+        if len(token) != 64:
+            messages.error(request, 'Invalid verification link.')
+            return render(request, 'Users/verify_email.html')
+            
         user = User.objects.get(email_verification_token=token)
         
         # Check if token is expired (24 hours)
@@ -168,14 +177,23 @@ def verify_email(request, token):
             user.delete()
             return render(request, 'Users/verify_email.html')
         
+        # Check if user is already verified
+        if user.is_active and user.is_email_verified:
+            messages.info(request, 'Email was already verified. You can login.')
+            return render(request, 'Users/verify_email.html')
+        
         user.is_active = True
         user.is_email_verified = True
-        user.email_verification_token = ''
+        user.email_verification_token = ''  # Clear the token after use
         user.save()
+        
         messages.success(request, 'Email verified successfully. You can now login.')
         
     except User.DoesNotExist:
         messages.error(request, 'Invalid verification link.')
+    except Exception as e:
+        logger.error(f"Error during email verification: {str(e)}")
+        messages.error(request, 'An error occurred during verification. Please try again.')
     
     return render(request, 'Users/verify_email.html')
 
@@ -185,65 +203,76 @@ def login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
             
-            if user is not None:
+            try:
+                # First check if user exists and get their status
+                user = User.objects.get(username=username)
+                
                 if not user.is_active:
-                    return render(request, 'Users/login.html', 
-                                  {'form': form, 'error': 'Please verify your email first.'})
+                    # Check if they need to verify email
+                    if user.email_verification_token:
+                        if timezone.now() > user.email_token_created_at + timedelta(hours=24):
+                            # Token expired, they need to register again
+                            messages.error(request, 'Your verification link has expired. Please register again.')
+                            user.delete()
+                            return render(request, 'Users/login.html', {'form': form})
+                        else:
+                            messages.error(request, 'Please verify your email before logging in. Check your inbox for the verification link.')
+                            return render(request, 'Users/login.html', {'form': form, 'email': user.email})
+                    else:
+                        messages.error(request, 'Your account is not active. Please contact support.')
+                        return render(request, 'Users/login.html', {'form': form})
                 
-                # Check for suspicious login attempts (different IP or device)
-                x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-                if x_forwarded_for:
-                    ip = x_forwarded_for.split(',')[0]
-                else:
-                    ip = request.META.get('REMOTE_ADDR')
-                
-                user_agent = request.META.get('HTTP_USER_AGENT', '')
-                
-                # Check if this is a login from a different device/location compared to usual pattern
-                previous_sessions = UserSession.objects.filter(
-                    user=user, 
-                    is_active=True
-                ).order_by('-created_at')[:5]
-                
-                suspicious_login = False
-                for session in previous_sessions:
-                    # If IP is different from any recent sessions, consider it suspicious
-                    if session.ip_address != ip and session.user_agent != user_agent:
-                        suspicious_login = True
-                        break
-                
-                auth_login(request, user)
-                
-                # Add a warning message if login seems suspicious
-                if suspicious_login:
-                    messages.warning(
-                        request, 
-                        "We noticed a login from a new location or device. "
-                        "If this wasn't you, please change your password immediately."
-                    )
-                
-                # For student users, if they're trying to access during an exam,
-                # check if they already have an active session elsewhere
-                if user.is_student():
-                    other_active_sessions = UserSession.objects.filter(
-                        user=user,
-                        is_active=True
-                    ).exclude(session_key=request.session.session_key)
+                # Now try to authenticate
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    # Check for suspicious login attempts (different IP or device)
+                    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+                    ip = x_forwarded_for.split(',')[0] if x_forwarded_for else request.META.get('REMOTE_ADDR')
+                    user_agent = request.META.get('HTTP_USER_AGENT', '')
                     
-                    # We'll let them log in, but the SingleDeviceSessionMiddleware will
-                    # invalidate other sessions if they access an exam
-                    if other_active_sessions.exists():
-                        messages.info(
-                            request,
-                            "Note: During exams, you will be automatically logged out from other devices."
+                    # Check recent sessions
+                    previous_sessions = UserSession.objects.filter(
+                        user=user, 
+                        is_active=True
+                    ).order_by('-created_at')[:5]
+                    
+                    suspicious_login = False
+                    for session in previous_sessions:
+                        if session.ip_address != ip and session.user_agent != user_agent:
+                            suspicious_login = True
+                            break
+                    
+                    auth_login(request, user)
+                    
+                    if suspicious_login:
+                        messages.warning(
+                            request, 
+                            "We noticed a login from a new location or device. "
+                            "If this wasn't you, please change your password immediately."
                         )
-                
-                return redirect('Users:dashboard', username=user.username)
-            else:
-                return render(request, 'Users/login.html', 
-                              {'form': form, 'error': 'Invalid credentials'})
+                    
+                    # Check for concurrent sessions for students
+                    if user.is_student():
+                        other_active_sessions = UserSession.objects.filter(
+                            user=user,
+                            is_active=True
+                        ).exclude(session_key=request.session.session_key)
+                        
+                        if other_active_sessions.exists():
+                            messages.info(
+                                request,
+                                "Note: During exams, you will be automatically logged out from other devices."
+                            )
+                    
+                    return redirect('Users:dashboard', username=user.username)
+                else:
+                    messages.error(request, 'Invalid password.')
+                    
+            except User.DoesNotExist:
+                messages.error(request, 'No account found with this username.')
+            
+            return render(request, 'Users/login.html', {'form': form})
     else:
         form = LoginForm()
     return render(request, 'Users/login.html', {'form': form})
@@ -622,3 +651,43 @@ def change_password(request):
             return JsonResponse({'success': False, 'errors': errors})
     
     return JsonResponse({'success': False, 'errors': {'form': 'Invalid request method'}}, status=400)
+
+def resend_verification_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email, is_email_verified=False)
+            
+            # Generate new verification token
+            user.email_verification_token = get_random_string(64)
+            user.email_token_created_at = timezone.now()
+            user.save()
+            
+            # Generate verification URL
+            verification_url = request.build_absolute_uri(
+                reverse('Users:verify-email', args=[user.email_verification_token])
+            )
+            
+            # Create email message
+            email_subject = 'Verify your AI Exam Portal account'
+            email_body = f'''Please click this link to verify your email: {verification_url}
+            Link expires in 24 hours.'''
+            
+            try:
+                email = EmailMessage(
+                    subject=email_subject,
+                    body=email_body,
+                    from_email='noreply@aiexamportal.com',
+                    to=[user.email],
+                )
+                email.send(fail_silently=False)
+                messages.success(request, 'Verification email has been resent. Please check your inbox.')
+                
+            except Exception as e:
+                logger.error(f"Failed to resend verification email: {str(e)}")
+                messages.error(request, 'Failed to resend verification email. Please try again later.')
+                
+        except User.DoesNotExist:
+            messages.error(request, 'No unverified account found with this email address.')
+    
+    return redirect('Users:email_verification_sent')

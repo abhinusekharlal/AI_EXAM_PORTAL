@@ -1,0 +1,256 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Result: {{ result.exam.exam_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% if is_teacher %}
+                <li class="breadcrumb-item"><a href="{% url 'results:teacher_dashboard' %}">Results Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'results:exam_results_list' exam_id=result.exam.id %}">{{ result.exam.exam_name }} Results</a></li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'results:student_results' %}">My Results</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">Result Details</li>
+        </ol>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-header 
+                {% if result.status == 'passed' %}bg-success text-white
+                {% elif result.status == 'failed' %}bg-danger text-white
+                {% elif result.status == 'flagged' %}bg-warning
+                {% elif result.status == 'penalty_applied' %}bg-danger text-white
+                {% else %}bg-secondary text-white{% endif %}">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ result.exam.exam_name }} - Results</h5>
+                {% if is_teacher and result.is_flagged and not result.is_reviewed %}
+                    <a href="{% url 'results:review_flagged_exam' result_id=result.id %}" class="btn btn-sm btn-light">Review Flagged Exam</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Exam Information</h5>
+                    <p><strong>Exam:</strong> {{ result.exam.exam_name }}</p>
+                    <p><strong>Date:</strong> {{ result.exam.exam_date }}</p>
+                    <p><strong>Duration:</strong> {{ result.exam.exam_duration }}</p>
+                    <p><strong>Teacher:</strong> {{ result.exam.teacher.get_full_name|default:result.exam.teacher.username }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Result Summary</h5>
+                    <p><strong>Student:</strong> {{ result.student.get_full_name|default:result.student.username }}</p>
+                    <p><strong>Date Completed:</strong> {{ result.completion_time }}</p>
+                    <p><strong>Time Taken:</strong> {{ result.duration_in_minutes|floatformat:1 }} minutes</p>
+                    <p>
+                        <strong>Status:</strong> 
+                        {% if result.status == 'passed' %}
+                            <span class="badge bg-success">Passed</span>
+                        {% elif result.status == 'failed' %}
+                            <span class="badge bg-danger">Failed</span>
+                        {% elif result.status == 'flagged' %}
+                            <span class="badge bg-warning">Under Review</span>
+                        {% elif result.status == 'penalty_applied' %}
+                            <span class="badge bg-danger">Penalty Applied</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ result.get_status_display }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row align-items-center mb-4">
+                <div class="col-md-7">
+                    <h4>
+                        Score: 
+                        {% if result.original_score %}
+                            <span class="text-decoration-line-through text-muted">{{ result.original_score|floatformat:1 }}%</span> 
+                            <span class="text-danger">{{ result.score|floatformat:1 }}%</span> 
+                            <small class="text-danger">(Penalty: -{{ result.penalty_percentage }}%)</small>
+                        {% else %}
+                            {{ result.score|floatformat:1 }}%
+                        {% endif %}
+                    </h4>
+                    <p><strong>Correct Answers:</strong> {{ result.correct_answers }} out of {{ result.total_questions }}</p>
+                </div>
+                <div class="col-md-5">
+                    <div class="progress" style="height: 30px">
+                        <div class="progress-bar 
+                            {% if result.score >= 60 %}bg-success
+                            {% elif result.score >= 40 %}bg-warning
+                            {% else %}bg-danger{% endif %}" 
+                            role="progressbar" 
+                            style="width: {{ result.score }}%" 
+                            aria-valuenow="{{ result.score }}" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100">{{ result.score|floatformat:1 }}%</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if violations %}
+                <div class="mb-4">
+                    <h5>Violations and Penalties</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Severity</th>
+                                    <th>Penalty</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for violation in violations %}
+                                    <tr>
+                                        <td>{{ violation.get_violation_type_display }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ violation.severity }}">
+                                                {{ violation.get_severity_display }}
+                                            </span>
+                                        </td>
+                                        <td>-{{ violation.penalty_applied }}%</td>
+                                        <td>{{ violation.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if result.teacher_notes and result.is_reviewed %}
+                <div class="mb-4">
+                    <h5>Teacher's Notes</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ result.teacher_notes|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">Questions and Answers</h5>
+        </div>
+        <div class="card-body">
+            <div class="accordion" id="questionsAccordion">
+                {% for qdata in question_data %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ qdata.question.id }}">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" 
+                                    type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse{{ qdata.question.id }}" 
+                                    aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
+                                    aria-controls="collapse{{ qdata.question.id }}">
+                                Question {{ forloop.counter }}: 
+                                {% if qdata.is_correct %}
+                                    <span class="badge bg-success ms-2">Correct</span>
+                                {% else %}
+                                    <span class="badge bg-danger ms-2">Incorrect</span>
+                                {% endif %}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ qdata.question.id }}" 
+                             class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
+                             aria-labelledby="heading{{ qdata.question.id }}" 
+                             data-bs-parent="#questionsAccordion">
+                            <div class="accordion-body">
+                                <p class="fw-bold">{{ qdata.question.question_text }}</p>
+                                
+                                <div class="row mt-3 mb-2">
+                                    <div class="col-12">Options:</div>
+                                </div>
+                                
+                                <div class="list-group">
+                                    <div class="list-group-item {% if qdata.student_answer == '1' and qdata.is_correct %}list-group-item-success{% elif qdata.student_answer == '1' and not qdata.is_correct %}list-group-item-danger{% elif qdata.correct_option == '1' %}list-group-item-success{% endif %}">
+                                        <div class="d-flex w-100">
+                                            <span class="me-2">1.</span>
+                                            <span>{{ qdata.question.option1 }}</span>
+                                            {% if qdata.student_answer == '1' %}
+                                                <span class="ms-auto">
+                                                    <i class="fas fa-check-circle {% if qdata.is_correct %}text-success{% else %}text-danger{% endif %}"></i>
+                                                    Your answer
+                                                </span>
+                                            {% elif qdata.correct_option == '1' %}
+                                                <span class="ms-auto text-success">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Correct answer
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="list-group-item {% if qdata.student_answer == '2' and qdata.is_correct %}list-group-item-success{% elif qdata.student_answer == '2' and not qdata.is_correct %}list-group-item-danger{% elif qdata.correct_option == '2' %}list-group-item-success{% endif %}">
+                                        <div class="d-flex w-100">
+                                            <span class="me-2">2.</span>
+                                            <span>{{ qdata.question.option2 }}</span>
+                                            {% if qdata.student_answer == '2' %}
+                                                <span class="ms-auto">
+                                                    <i class="fas fa-check-circle {% if qdata.is_correct %}text-success{% else %}text-danger{% endif %}"></i>
+                                                    Your answer
+                                                </span>
+                                            {% elif qdata.correct_option == '2' %}
+                                                <span class="ms-auto text-success">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Correct answer
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="list-group-item {% if qdata.student_answer == '3' and qdata.is_correct %}list-group-item-success{% elif qdata.student_answer == '3' and not qdata.is_correct %}list-group-item-danger{% elif qdata.correct_option == '3' %}list-group-item-success{% endif %}">
+                                        <div class="d-flex w-100">
+                                            <span class="me-2">3.</span>
+                                            <span>{{ qdata.question.option3 }}</span>
+                                            {% if qdata.student_answer == '3' %}
+                                                <span class="ms-auto">
+                                                    <i class="fas fa-check-circle {% if qdata.is_correct %}text-success{% else %}text-danger{% endif %}"></i>
+                                                    Your answer
+                                                </span>
+                                            {% elif qdata.correct_option == '3' %}
+                                                <span class="ms-auto text-success">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Correct answer
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="list-group-item {% if qdata.student_answer == '4' and qdata.is_correct %}list-group-item-success{% elif qdata.student_answer == '4' and not qdata.is_correct %}list-group-item-danger{% elif qdata.correct_option == '4' %}list-group-item-success{% endif %}">
+                                        <div class="d-flex w-100">
+                                            <span class="me-2">4.</span>
+                                            <span>{{ qdata.question.option4 }}</span>
+                                            {% if qdata.student_answer == '4' %}
+                                                <span class="ms-auto">
+                                                    <i class="fas fa-check-circle {% if qdata.is_correct %}text-success{% else %}text-danger{% endif %}"></i>
+                                                    Your answer
+                                                </span>
+                                            {% elif qdata.correct_option == '4' %}
+                                                <span class="ms-auto text-success">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Correct answer
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
