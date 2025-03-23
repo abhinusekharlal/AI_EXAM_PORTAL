@@ -1,0 +1,403 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Exam Monitoring - {{ exam.exam_name }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/monitoring_dashboard.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Exam monitoring dashboard for {{ exam.exam_name }}">
+<script src="{% static 'js/exam_monitor.js' %}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize monitoring dashboard
+        window.monitorDashboard = new ExamMonitorDashboard({{ exam.id }});
+        window.monitorDashboard.initialize();
+        window.monitorDashboard.startInactiveCheck();
+        
+        // Set up refresh button
+        document.getElementById('refreshStreamsBtn').addEventListener('click', () => {
+            window.monitorDashboard.refreshStreams();
+        });
+
+        // Set up custom warning message toggle
+        const warningSelect = document.getElementById('warningMessageSelect');
+        const customWarningContainer = document.getElementById('customWarningContainer');
+        warningSelect.addEventListener('change', function() {
+            customWarningContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Set up custom flag reason toggle
+        const flagSelect = document.getElementById('flagReasonSelect');
+        const customFlagContainer = document.getElementById('customFlagContainer');
+        flagSelect.addEventListener('change', function() {
+            customFlagContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Setup view toggles
+        document.getElementById('gridViewBtn').addEventListener('click', function() {
+            document.getElementById('videoGrid').classList.remove('list-view');
+            document.getElementById('videoGrid').classList.add('grid-view');
+            this.classList.add('active');
+            document.getElementById('listViewBtn').classList.remove('active');
+            localStorage.setItem('examMonitorView', 'grid');
+        });
+
+        document.getElementById('listViewBtn').addEventListener('click', function() {
+            document.getElementById('videoGrid').classList.remove('grid-view');
+            document.getElementById('videoGrid').classList.add('list-view');
+            this.classList.add('active');
+            document.getElementById('gridViewBtn').classList.remove('active');
+            localStorage.setItem('examMonitorView', 'list');
+        });
+
+        // Load saved view preference
+        const savedView = localStorage.getItem('examMonitorView') || 'grid';
+        if (savedView === 'list') {
+            document.getElementById('listViewBtn').click();
+        } else {
+            document.getElementById('gridViewBtn').click();
+        }
+
+        // Auto refresh streams every 2 minutes
+        setInterval(() => {
+            const autoRefresh = document.getElementById('autoRefreshToggle');
+            if (autoRefresh.checked) {
+                window.monitorDashboard.refreshStreams();
+            }
+        }, 120000);
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}  <!-- Add CSRF token for AJAX requests -->
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+<!-- Status toast notification area -->
+<div id="toastNotifications" class="toast-container" aria-live="polite"></div>
+
+<div class="monitoring-container">
+    <div class="monitoring-header">
+        <div class="header-main">
+            <h1>Exam Monitoring - {{ exam.exam_name }}</h1>
+            <div class="exam-meta">
+                <div class="meta-item">
+                    <i class="fas fa-users" aria-hidden="true"></i>
+                    <span>Active Students: <strong id="activeStudentsCount">0</strong></span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <span>Exam Duration: <strong>{{ exam.exam_duration }}</strong></span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    <span>Date: <strong>{{ exam.exam_date }}</strong></span>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="view-controls" role="group" aria-label="Change view layout">
+                <button id="gridViewBtn" class="view-btn active" title="Grid View">
+                    <i class="fas fa-th" aria-hidden="true"></i>
+                    <span class="sr-only">Grid View</span>
+                </button>
+                <button id="listViewBtn" class="view-btn" title="List View">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                    <span class="sr-only">List View</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <label for="studentSearch" class="sr-only">Search students</label>
+                <input type="text" id="studentSearch" class="search-input" placeholder="Search students...">
+                <button id="clearSearchBtn" class="clear-search" aria-label="Clear search">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="refresh-controls">
+                <button id="refreshStreamsBtn" class="btn btn-secondary" aria-label="Refresh streams">
+                    <i class="fas fa-sync" aria-hidden="true"></i> Refresh Streams
+                </button>
+                <div class="auto-refresh">
+                    <input type="checkbox" id="autoRefreshToggle" checked>
+                    <label for="autoRefreshToggle">Auto-refresh</label>
+                </div>
+            </div>
+            <span id="connectionStatus" class="connection-status" aria-live="polite">Connecting...</span>
+        </div>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="alerts-panel">
+            <div class="alerts-header">
+                <h3>Alerts <span id="alertCounter" class="alert-count">0</span></h3>
+                <div class="alert-filter">
+                    <label for="alertFilter" class="sr-only">Filter alerts</label>
+                    <select id="alertFilter" class="form-control">
+                        <option value="all">All Alerts</option>
+                        <option value="high">High Severity</option>
+                        <option value="medium">Medium Severity</option>
+                        <option value="low">Low Severity</option>
+                    </select>
+                </div>
+                <button id="clearAllAlertsBtn" class="btn btn-sm btn-outline-secondary" disabled>
+                    Mark All as Reviewed
+                </button>
+            </div>
+            <div class="alerts-list" aria-live="polite"></div>
+            <div class="empty-alerts" id="emptyAlerts">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <p>No alerts to display</p>
+            </div>
+        </div>
+        
+        <div id="videoGrid" class="video-grid grid-view">
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-video-slash" aria-hidden="true"></i>
+                <p>No active student streams</p>
+                <button id="checkAgainBtn" class="btn btn-primary">Check Again</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="monitoring-footer">
+        <div class="monitoring-stats">
+            <div class="stat-card">
+                <h4>Total Alerts</h4>
+                <span id="totalAlerts" class="stat-value">0</span>
+            </div>
+            <div class="stat-card">
+                <h4>Flagged Students</h4>
+                <span id="flaggedStudents" class="stat-value">0</span>
+            </div>
+            <div class="stat-card">
+                <h4>Disconnected Students</h4>
+                <span id="disconnectedStudents" class="stat-value">0</span>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="exportReportBtn">
+                <i class="fas fa-download" aria-hidden="true"></i> Export Report
+            </button>
+            <a href="{% url 'monitoring:examdashboard' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Template for video cards -->
+<template id="videoCardTemplate">
+    <div class="video-card" data-student-id="">
+        <div class="video-header">
+            <span class="student-name"></span>
+            <div class="status-indicators">
+                <span class="activity-indicator" title="Activity Status">
+                    <i class="fas fa-circle" aria-hidden="true"></i>
+                </span>
+                <span class="time-active" title="Time Active"></span>
+            </div>
+            <div class="controls">
+                <button class="focus-btn" title="Focus view">
+                    <i class="fas fa-expand" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="video-content">
+            <img class="student-video" alt="Student webcam stream">
+            <div class="alert-indicator hidden">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                <span class="alert-text"></span>
+            </div>
+            <div class="activity-overlay hidden">
+                <div class="overlay-content"></div>
+            </div>
+        </div>
+        <div class="video-footer">
+            <span class="connection-status">Connected</span>
+            <div class="student-actions">
+                <button class="action-btn pause-exam-btn" title="Pause Exam">
+                    <i class="fas fa-pause" aria-hidden="true"></i>
+                </button>
+                <button class="action-btn send-warning-btn" title="Send Warning">
+                    <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                </button>
+                <button class="action-btn flag-student-btn" title="Flag for Review">
+                    <i class="fas fa-flag" aria-hidden="true"></i>
+                </button>
+                <button class="action-btn view-history-btn" title="View Activity History">
+                    <i class="fas fa-history" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Warning Message Modal -->
+<div id="warningModal" class="modal" role="dialog" aria-labelledby="warningModalTitle" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="warningModalTitle">Send Warning to <span id="warningStudentName"></span></h3>
+            <button class="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Select a warning message to send to the student:</p>
+            <select id="warningMessageSelect" class="form-control" aria-label="Warning message options">
+                <option value="Please focus on the exam">Please focus on the exam</option>
+                <option value="Face not visible">Face not visible</option>
+                <option value="Multiple people detected">Multiple people detected</option>
+                <option value="Suspicious activity detected">Suspicious activity detected</option>
+                <option value="Device usage detected">Device usage detected</option>
+                <option value="Gaze not on screen">Gaze not on screen</option>
+                <option value="custom">Custom message...</option>
+            </select>
+            <div id="customWarningContainer" style="display:none; margin-top:10px;">
+                <textarea id="customWarningMessage" class="form-control" placeholder="Enter custom warning message" aria-label="Custom warning message"></textarea>
+            </div>
+            <div class="priority-container" style="margin-top:15px;">
+                <p>Priority level:</p>
+                <div class="priority-options">
+                    <label><input type="radio" name="warningPriority" value="normal" checked> Normal</label>
+                    <label><input type="radio" name="warningPriority" value="high"> High</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="cancelWarningBtn" class="btn btn-secondary">Cancel</button>
+            <button id="sendWarningBtn" class="btn btn-warning">Send Warning</button>
+        </div>
+    </div>
+</div>
+
+<!-- Flag Student Modal -->
+<div id="flagModal" class="modal" role="dialog" aria-labelledby="flagModalTitle" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="flagModalTitle">Flag <span id="flagStudentName"></span> for Review</h3>
+            <button class="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Please provide a reason for flagging this student:</p>
+            <select id="flagReasonSelect" class="form-control" aria-label="Flag reason options">
+                <option value="Suspicious behavior">Suspicious behavior</option>
+                <option value="Possible cheating attempt">Possible cheating attempt</option>
+                <option value="Unauthorized materials">Unauthorized materials</option>
+                <option value="Left exam area">Left exam area</option>
+                <option value="Technical violation">Technical violation</option>
+                <option value="Multiple face detection">Multiple face detection</option>
+                <option value="No face detection">No face detection</option>
+                <option value="custom">Custom reason...</option>
+            </select>
+            <div id="customFlagContainer" style="display:none; margin-top:10px;">
+                <textarea id="customFlagReason" class="form-control" placeholder="Enter custom reason" aria-label="Custom flag reason"></textarea>
+            </div>
+            <div class="severity-container" style="margin-top:15px;">
+                <p>Severity level:</p>
+                <div class="severity-options">
+                    <label><input type="radio" name="flagSeverity" value="low" checked> Low</label>
+                    <label><input type="radio" name="flagSeverity" value="medium"> Medium</label>
+                    <label><input type="radio" name="flagSeverity" value="high"> High</label>
+                </div>
+            </div>
+            <div class="screenshot-container" style="margin-top:15px;">
+                <div class="form-check">
+                    <input type="checkbox" id="includeScreenshot" class="form-check-input" checked>
+                    <label class="form-check-label" for="includeScreenshot">Include current screenshot</label>
+                </div>
+                <div id="screenshotPreview" class="screenshot-preview"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="cancelFlagBtn" class="btn btn-secondary">Cancel</button>
+            <button id="submitFlagBtn" class="btn btn-danger">Submit Flag</button>
+        </div>
+    </div>
+</div>
+
+<!-- Student Activity Modal -->
+<div id="activityModal" class="modal" role="dialog" aria-labelledby="activityModalTitle" aria-hidden="true">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="activityModalTitle">Student Activity - <span id="activityStudentName"></span></h3>
+            <button class="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="activity-filters">
+                <div class="filter-group">
+                    <label for="activityTypeFilter">Filter by type:</label>
+                    <select id="activityTypeFilter" class="form-control">
+                        <option value="all">All Activities</option>
+                        <option value="alert">Alerts Only</option>
+                        <option value="warning">Warnings Only</option>
+                        <option value="status">Status Changes Only</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="activityTimeRange">Time range:</label>
+                    <select id="activityTimeRange" class="form-control">
+                        <option value="all">All Time</option>
+                        <option value="10" selected>Last 10 Minutes</option>
+                        <option value="30">Last 30 Minutes</option>
+                        <option value="60">Last Hour</option>
+                    </select>
+                </div>
+            </div>
+            <div class="activity-timeline">
+                <div class="timeline-container"></div>
+                <div class="empty-timeline hidden">
+                    <p>No activity recorded in the selected time range</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="exportActivityBtn" class="btn btn-outline-primary">
+                <i class="fas fa-download" aria-hidden="true"></i> Export Activity Log
+            </button>
+            <button id="closeActivityBtn" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Focus View Modal -->
+<div id="focusModal" class="modal" role="dialog" aria-labelledby="focusModalTitle" aria-hidden="true">
+    <div class="modal-content modal-fullscreen">
+        <div class="modal-header">
+            <h3 id="focusModalTitle">Student Focus - <span id="focusStudentName"></span></h3>
+            <button class="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body focus-body">
+            <div class="focus-video-container">
+                <img id="focusVideo" alt="Student webcam stream (focused view)">
+                <div class="focus-overlay hidden"></div>
+            </div>
+            <div class="focus-info">
+                <div class="focus-data">
+                    <div class="data-item">
+                        <span class="data-label">Status:</span>
+                        <span id="focusStatus" class="data-value">Connected</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Time Active:</span>
+                        <span id="focusTimeActive" class="data-value">00:00</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="data-label">Alerts:</span>
+                        <span id="focusAlerts" class="data-value">0</span>
+                    </div>
+                </div>
+                <div class="focus-timeline" id="focusMiniTimeline"></div>
+                <div class="focus-actions">
+                    <button id="focusSendWarningBtn" class="btn btn-warning">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i> Send Warning
+                    </button>
+                    <button id="focusFlagBtn" class="btn btn-danger">
+                        <i class="fas fa-flag" aria-hidden="true"></i> Flag for Review
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

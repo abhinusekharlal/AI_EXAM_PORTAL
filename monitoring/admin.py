@@ -1,3 +1,2 @@
 from django.contrib import admin
-
-# Register your models here.
+# No admin registrations needed as monitoring is handled by teachers directly

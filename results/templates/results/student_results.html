@@ -1,0 +1,71 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}My Exam Results{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">My Exam Results</h1>
+
+    {% if results %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for result in results %}
+                <div class="col">
+                    <div class="card h-100 {% if result.is_flagged %}border-warning{% endif %}">
+                        <div class="card-header 
+                            {% if result.status == 'passed' %}bg-success text-white
+                            {% elif result.status == 'failed' %}bg-danger text-white
+                            {% elif result.status == 'flagged' %}bg-warning
+                            {% elif result.status == 'penalty_applied' %}bg-danger text-white
+                            {% else %}bg-secondary text-white{% endif %}">
+                            <h5 class="card-title mb-0">{{ result.exam.exam_name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <h1 class="display-4 mb-0">{{ result.score|floatformat:1 }}%</h1>
+                                
+                                {% if result.original_score %}
+                                    <p class="text-muted">
+                                        <small><s>Original: {{ result.original_score|floatformat:1 }}%</s> (Penalty: -{{ result.penalty_percentage }}%)</small>
+                                    </p>
+                                {% endif %}
+                                
+                                <p>
+                                    {% if result.status == 'passed' %}
+                                        <span class="badge bg-success">Passed</span>
+                                    {% elif result.status == 'failed' %}
+                                        <span class="badge bg-danger">Failed</span>
+                                    {% elif result.status == 'flagged' %}
+                                        <span class="badge bg-warning">Under Review</span>
+                                    {% elif result.status == 'penalty_applied' %}
+                                        <span class="badge bg-danger">Penalty Applied</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ result.get_status_display }}</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            
+                            <p><strong>Correct Answers:</strong> {{ result.correct_answers }} / {{ result.total_questions }}</p>
+                            <p><strong>Time Taken:</strong> {{ result.duration_in_minutes|floatformat:1 }} minutes</p>
+                            <p><strong>Date:</strong> {{ result.completion_time|date:"M d, Y" }}</p>
+                            
+                            {% if result.is_flagged and not result.is_reviewed %}
+                                <div class="alert alert-warning mt-3">
+                                    <small>This exam has been flagged for review by the teacher.</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'results:result_detail' result_id=result.id %}" class="btn btn-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <p>You haven't completed any exams yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,254 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Identity Verification{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Exam Identity Verification</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle"></i> Exam: {{ exam.exam_name }}</h5>
+                        <p>Please verify your identity before starting the exam.</p>
+                    </div>
+
+                    {% if not user.face_recognition_enabled %}
+                        <div class="alert alert-danger">
+                            <p><strong>Face recognition is not set up for your account.</strong></p>
+                            <p>Please <a href="{% url 'Users:face_registration_page' %}">register your face</a> before attempting to take the exam.</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <p><i class="fas fa-info-circle"></i> <strong>Instructions:</strong></p>
+                            <ol>
+                                <li>Make sure you are in a well-lit environment</li>
+                                <li>Look directly at the camera</li>
+                                <li>Keep your face still until the verification button is enabled</li>
+                                <li>Click "Verify Identity" to proceed to the exam</li>
+                            </ol>
+                        </div>
+
+                        <div class="webcam-container mb-4">
+                            <div class="text-center">
+                                <video id="webcam" autoplay playsinline width="100%" height="auto" class="border rounded"></video>
+                                <canvas id="canvas" style="display:none;"></canvas>
+                            </div>
+                            <div id="motion-status" class="alert alert-warning mt-2">
+                                <i class="fas fa-exclamation-triangle"></i> Keep your face still to enable verification
+                            </div>
+                        </div>
+
+                        <div class="mt-3 text-center">
+                            <button id="verify-btn" class="btn btn-success btn-lg" disabled>
+                                <i class="fas fa-user-check"></i> Verify Identity
+                            </button>
+                            <button id="retry-btn" class="btn btn-secondary btn-lg ml-2" style="display:none;">
+                                <i class="fas fa-redo"></i> Try Again
+                            </button>
+                        </div>
+
+                        <div id="result" class="mt-4" style="display:none;"></div>
+                        
+                        <div id="proceed-container" class="mt-4 text-center" style="display:none;">
+                            <a href="{{ exam_url }}" id="proceed-btn" class="btn btn-primary btn-lg">
+                                <i class="fas fa-play-circle"></i> Proceed to Exam
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        {% if user.face_recognition_enabled %}
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('canvas');
+            const verifyBtn = document.getElementById('verify-btn');
+            const retryBtn = document.getElementById('retry-btn');
+            const resultDiv = document.getElementById('result');
+            const proceedContainer = document.getElementById('proceed-container');
+            const motionStatus = document.getElementById('motion-status');
+            
+            let stream;
+            let isStable = false;
+            let lastFrameData;
+            let motionCheckInterval;
+            let stabilityCounter = 0;
+            
+            // Start webcam
+            async function setupWebcam() {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: 640,
+                            height: 480,
+                            facingMode: "user"
+                        },
+                        audio: false
+                    });
+                    video.srcObject = stream;
+                    
+                    // Set up motion detection once video is ready
+                    video.onloadeddata = () => {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        startMotionDetection();
+                    };
+                    
+                } catch (err) {
+                    console.error("Error accessing webcam:", err);
+                    motionStatus.className = 'alert alert-danger mt-2';
+                    motionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error accessing webcam. Please allow camera access and reload the page.';
+                }
+            }
+            
+            function startMotionDetection() {
+                const ctx = canvas.getContext('2d');
+                
+                // Check for motion every 100ms
+                motionCheckInterval = setInterval(() => {
+                    ctx.drawImage(video, 0, 0);
+                    const currentFrame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    
+                    // If we have a previous frame, compare them
+                    if (lastFrameData) {
+                        const movement = detectMovement(currentFrame.data, lastFrameData.data);
+                        
+                        if (movement < 10) { // Low movement threshold
+                            stabilityCounter++;
+                            if (stabilityCounter >= 15) { // Stable for 1.5 seconds (15 * 100ms)
+                                if (!isStable) {
+                                    isStable = true;
+                                    verifyBtn.disabled = false;
+                                    motionStatus.className = 'alert alert-success mt-2';
+                                    motionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Face is stable - you can verify now';
+                                }
+                            }
+                        } else {
+                            stabilityCounter = 0;
+                            isStable = false;
+                            verifyBtn.disabled = true;
+                            motionStatus.className = 'alert alert-warning mt-2';
+                            motionStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Keep your face still to enable verification';
+                        }
+                    }
+                    
+                    lastFrameData = currentFrame;
+                }, 100);
+            }
+            
+            function detectMovement(current, previous) {
+                let movement = 0;
+                const sampleSize = 10000; // Check only a subset of pixels for performance
+                const pixelStep = Math.floor(current.length / 4 / sampleSize);
+                
+                for (let i = 0; i < current.length; i += pixelStep * 4) {
+                    // Calculate difference for RGB values
+                    const rdiff = Math.abs(current[i] - previous[i]);
+                    const gdiff = Math.abs(current[i + 1] - previous[i + 1]);
+                    const bdiff = Math.abs(current[i + 2] - previous[i + 2]);
+                    
+                    // Average difference for this pixel
+                    const diff = (rdiff + gdiff + bdiff) / 3;
+                    movement += diff;
+                }
+                
+                // Return average movement
+                return movement / sampleSize;
+            }
+            
+            // Verify identity when button is clicked
+            verifyBtn.addEventListener('click', () => {
+                // Draw current frame to canvas
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0);
+                
+                // Convert to base64
+                const imageData = canvas.toDataURL('image/jpeg');
+                
+                // Disable button during processing
+                verifyBtn.disabled = true;
+                verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+                
+                // Send to server
+                fetch('{% url "Users:face_verify" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        image_data: imageData
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        resultDiv.className = 'alert alert-success mt-4';
+                        resultDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                        verifyBtn.style.display = 'none';
+                        proceedContainer.style.display = 'block';
+                        
+                        // Stop webcam stream as verification is complete
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                        if (motionCheckInterval) {
+                            clearInterval(motionCheckInterval);
+                        }
+                    } else {
+                        resultDiv.className = 'alert alert-danger mt-4';
+                        resultDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                        verifyBtn.disabled = false;
+                        verifyBtn.innerHTML = '<i class="fas fa-user-check"></i> Verify Identity';
+                        retryBtn.style.display = 'inline-block';
+                    }
+                    resultDiv.style.display = 'block';
+                })
+                .catch(error => {
+                    resultDiv.className = 'alert alert-danger mt-4';
+                    resultDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error connecting to server: ' + error;
+                    resultDiv.style.display = 'block';
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = '<i class="fas fa-user-check"></i> Verify Identity';
+                });
+            });
+            
+            // Retry button
+            retryBtn.addEventListener('click', () => {
+                resultDiv.style.display = 'none';
+                verifyBtn.style.display = 'inline-block';
+                verifyBtn.innerHTML = '<i class="fas fa-user-check"></i> Verify Identity';
+                retryBtn.style.display = 'none';
+            });
+            
+            // Initialize
+            setupWebcam();
+            
+            // Clean up on page leave
+            window.addEventListener('beforeunload', () => {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                if (motionCheckInterval) {
+                    clearInterval(motionCheckInterval);
+                }
+            });
+        {% endif %}
+    });
+</script>
+{% endblock %}

@@ -1,78 +1,306 @@
 {% extends 'Users/layout.html' %}
 {% load static %}
-{% load exam_tags %}  {# Add this line to load the custom template tags #}
+{% load exam_tags %}
 
-{% block title %}{{ exam.exam_name }}{% endblock %}
+{% block title %}{{ exam.exam_name }} - Exam Interface{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/exam_interface.css' %}">
-    <!-- Define examData first -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Online exam interface for {{ exam.exam_name }}">
+    <script src="{% static 'js/exam_interface.js' %}"></script>
     <script>
         window.examData = {
-            duration: {{ duration_minutes }},
-            totalQuestions: {{ questions|length }},
             examId: "{{ exam.id }}",
-            csrfToken: '{{ csrf_token }}'
+            examName: "{{ exam.exam_name }}",
+            totalQuestions: {{ questions.count }},
+            duration: {{ duration_minutes }},
+            startTime: "{{ start_time }}",
+            submitUrl: "{% url 'classroom:submit_exam' %}",
+            completedUrl: "{% url 'classroom:exam_completed' %}",
+            csrfToken: "{{ csrf_token }}"
         };
-        console.log('examData initialized:', window.examData);
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            let initializationAttempts = 0;
+            const MAX_ATTEMPTS = 3;
+            
+            async function initializeExam() {
+                try {
+                    // Initialize exam interface which contains webcam monitoring
+                    window.examInterface = new ExamInterface(window.examData);
+                } catch (error) {
+                    console.error('Failed to initialize exam:', error);
+                    initializationAttempts++;
+                    
+                    if (initializationAttempts < MAX_ATTEMPTS) {
+                        console.log(`Retrying initialization (attempt ${initializationAttempts + 1} of ${MAX_ATTEMPTS})...`);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        await initializeExam();
+                    } else {
+                        const container = document.querySelector('.container');
+                        if (container) {
+                            container.innerHTML = `
+                                <div class="error-message" role="alert">
+                                    <h2>Initialization Error</h2>
+                                    <p>Failed to initialize exam. Please ensure your camera is connected and you've granted camera permissions.</p>
+                                    <button onclick="location.reload()" class="retry-btn" aria-label="Retry initialization">Retry</button>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+    
+            await initializeExam();
+        });
     </script>
-    <!-- Load exam_interface.js after examData is defined -->
-    <script defer src="{% static 'js/exam_interface.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="container" id="examContainer">
-        <div class="exam-header">
-            <div class="exam-info">
-                <h2>{{ exam.exam_name }}</h2>
-                <p>Duration: {{ exam.exam_duration }}</p>
-            </div>
-            <div class="timer" id="examTimer">⏰ --:--</div>
+    <!-- Monitor Error Display -->
+    <div id="exam-monitor-error" class="error-message" style="display: none;" role="alert" aria-live="assertive"></div>
+    
+    <!-- System Messages -->
+    {% if messages %}
+    <div class="messages" role="alert" aria-live="polite">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
         </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-        <div class="main-content">
-            <div class="question-section">
-                <div class="navigation-buttons">
-                    <button class="prev-btn">Previous</button>
-                    <span class="question-number">Question <span id="currentQuestionNum">1</span></span>
-                    <button class="next-btn">Next</button>
+    <!-- Main Exam Container -->
+    <main class="container" id="examContainer">
+        <!-- Exam Header Section -->
+        <header class="exam-header">
+            <div class="exam-info">
+                <div class="exam-title-area">
+                    <h1>{{ exam.exam_name }}</h1>
+                    {% if exam.classroom %}
+                    <h2 class="course-name">{{ exam.classroom.class_name }}</h2>
+                    {% endif %}
+                </div>
+                <div class="exam-meta">
+                    <div class="timer-display" role="timer">
+                        Time Remaining: <span id="examTimer" aria-live="polite">⏰ --:--</span>
+                    </div>
+                    <div class="student-info">
+                        <span class="student-name">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+                        <span class="student-id">{{ request.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Exam Details Collapsible Panel -->
+        <details class="exam-details-panel">
+            <summary>Exam Details & Instructions</summary>
+            <div class="panel-content">
+                <div class="exam-details">
+                    <h3>About this Exam</h3>
+                    <ul>
+                        <li><strong>Duration:</strong> {{ duration_minutes }} minutes</li>
+                        <li><strong>Total Questions:</strong> {{ questions|length }}</li>
+                        <li><strong>Passing Score:</strong> {{ exam.passing_percentage }}%</li>
+                        {% if exam.shuffled %}
+                        <li><strong>Question Order:</strong> Randomized</li>
+                        {% endif %}
+                    </ul>
                 </div>
                 
-                <div id="questionsContainer">
+                <div class="exam-rules">
+                    <h3>Important Rules</h3>
+                    <ul>
+                        <li>Your webcam must remain active throughout the exam</li>
+                        <li>Do not navigate away from this window</li>
+                        <li>No additional persons should be visible in camera frame</li>
+                        <li>Stay focused on your screen - avoiding looking away for extended periods</li>
+                        <li>Save your answer for each question before moving to the next</li>
+                    </ul>
+                </div>
+            </div>
+        </details>
+
+        <!-- Error Message Display -->
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
+        
+        <!-- Main Content Grid -->
+        <div class="main-content">
+            <!-- Question Section -->
+            <section class="question-section">
+                <!-- Navigation Controls -->
+                <nav class="navigation-controls" aria-label="Question navigation">
+                    <div class="navigation-buttons">
+                        <button class="prev-btn" aria-label="Previous question" data-action="prev">
+                            <span aria-hidden="true">←</span> Previous
+                        </button>
+                        <span class="question-number" aria-live="polite">
+                            Question <span id="currentQuestionNum">1</span> of {{ questions|length }}
+                        </span>
+                        <button class="next-btn" aria-label="Next question" data-action="next">
+                            Next <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Progress Indicators -->
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="examProgress" style="width: 0%;" 
+                                 role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0%</div>
+                        </div>
+                        <div class="progress-indicator" role="navigation" aria-label="Question progress">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- Questions Container -->
+                <div id="questionsContainer" class="questions-wrapper">
                     {% for question in questions %}
                     <div class="question-box {% if forloop.first %}active{% endif %}" 
                          data-question-id="{{ question.id }}"
-                         data-question-number="{{ forloop.counter }}">
+                         data-question-number="{{ forloop.counter }}"
+                         role="region"
+                         aria-label="Question {{ forloop.counter }}"
+                         tabindex="0">
+                        <div class="question-header">
+                            <span class="question-tag">Question {{ forloop.counter }}</span>
+                            {% if question.marks %}
+                            <span class="question-marks">({{ question.marks }} marks)</span>
+                            {% endif %}
+                        </div>
+                        
                         <p class="question-text">{{ question.question_text }}</p>
-                        <div class="options">
+                        
+                        <fieldset class="options" role="radiogroup" aria-label="Answer options">
+                            <legend class="visually-hidden">Select your answer for question {{ forloop.counter }}</legend>
                             {% for option_num, option_text in question|get_options %}
                             <label class="option">
                                 <input type="radio" 
                                        name="question_{{ question.id }}" 
                                        value="{{ option_num }}"
-                                       data-question="{{ question.id }}">
-                                <span>{{ option_text }}</span>
+                                       aria-label="Option {{ option_num }}: {{ option_text }}"
+                                       data-question-id="{{ question.id }}">
+                                <span class="option-text">{{ option_text }}</span>
                             </label>
                             {% endfor %}
+                        </fieldset>
+                        
+                        <div class="answer-actions">
+                            <button class="save-btn" 
+                                    aria-label="Save answer for question {{ forloop.counter }}"
+                                    data-action="save"
+                                    data-question-id="{{ question.id }}">
+                                Save Answer
+                            </button>
+                            <span class="answer-status" id="status-{{ question.id }}"></span>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                
-                <button class="save-btn">Save Answer</button>
-            </div>
 
-            <div class="exam-progress">
-                <h3>Exam Progress</h3>
-                <div class="progress-info">
-                    <span>Questions Answered</span>
-                    <span class="fraction"><span id="answeredCount">0</span>/{{ questions|length }}</span>
+                <!-- Exam Control & Submit -->
+                <div class="exam-controls">
+                    <div class="exam-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Answered:</span>
+                            <span class="summary-value" id="answeredCount">0</span>/<span>{{ questions|length }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Remaining:</span>
+                            <span class="summary-value" id="remainingCount">{{ questions|length }}</span>
+                        </div>
+                    </div>
+                    <button class="submit-btn" 
+                            aria-label="Submit exam"
+                            data-action="submit">
+                        <span class="submit-icon" aria-hidden="true">✓</span> Submit Exam
+                    </button>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" id="progressBar" style="width: 0%"></div>
+            </section>
+
+            <!-- Monitoring Sidebar -->
+            <aside class="monitoring-sidebar">
+                <!-- Video Monitoring -->
+                <div class="monitoring-section">
+                    <h3 class="section-title">Exam Monitoring</h3>
+                    <div class="video-container" aria-label="Proctoring camera feed">
+                        <video id="localVideo" autoplay muted playsinline></video>
+                        <div class="video-status" aria-live="polite"></div>
+                    </div>
+                    <div class="monitoring-status">
+                        <div class="status-item" id="monitoringStatus">
+                            <span class="status-indicator active"></span>
+                            <span class="status-text">Monitoring Active</span>
+                        </div>
+                    </div>
                 </div>
-                <button class="submit-btn">Submit Exam</button>
+                
+                <!-- Activity Log -->
+                <div class="activity-log">
+                    <h3 class="section-title">Activity Log</h3>
+                    <div class="log-container" id="activityLog">
+                        <div class="log-entry">
+                            <span class="log-time">{{ start_time|date:"H:i:s" }}</span>
+                            <span class="log-message">Exam started</span>
+                        </div>
+                        <!-- Additional log entries will be added by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Quick Help -->
+                <div class="help-section">
+                    <h3 class="section-title">Help</h3>
+                    <div class="help-content">
+                        <details>
+                            <summary>Keyboard Shortcuts</summary>
+                            <ul class="shortcuts-list">
+                                <li><kbd>←</kbd> Previous question</li>
+                                <li><kbd>→</kbd> Next question</li>
+                                <li><kbd>1-9</kbd> Select answer option</li>
+                                <li><kbd>S</kbd> Save answer</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Technical Issues?</summary>
+                            <p>If you encounter technical difficulties:</p>
+                            <ol>
+                                <li>Don't refresh the page unless instructed</li>
+                                <li>Wait 10 seconds for automatic recovery</li>
+                                <li>If issues persist, contact your proctor</li>
+                            </ol>
+                        </details>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        
+        <!-- Confirmation Modal (Hidden by Default) -->
+        <div class="modal" id="confirmationModal" role="dialog" aria-labelledby="confirmationTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="confirmationTitle">Submit Exam</h4>
+                        <button class="close-modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body" id="confirmationMessage">
+                        Are you sure you want to submit your exam?
+                    </div>
+                    <div class="modal-footer">
+                        <button id="cancelSubmit" class="btn btn-secondary">Cancel</button>
+                        <button id="confirmSubmit" class="btn btn-danger">Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 {% endblock %}
+

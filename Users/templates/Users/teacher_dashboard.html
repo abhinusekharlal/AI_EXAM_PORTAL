@@ -7,85 +7,178 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/teacher_dashboard2.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
 <main class="main-content">
-        <h2 id="teacher-dashboard-title" class="text-center mb-4">Teacher Dashboard</h2>
-        <div class="welcome-card">
-            <h2 id="welcome-teacher">Welcome,  {{ teacher_name }}</h2>
-            <p>UUID: 12345</p>
-        </div><br>
-
-        <div class="dcard">
-            <h3 id="class-overview-title">Class Overview</h3>
-            <div class="class-info">
-                {% for classroom in classrooms %}
-                <div class="class-item">
-                        <h4>{{classroom.class_name}} ({{ classroom.class_code }}) :</h4>
-                        <h5><span>{{ classroom.students.count }} Students</span>
-                        <a href="{% url 'classroom:manage_students' classroom.id %}" class="btn btn-primary">Manage Students</a>
-                        <form method="post" action="{% url 'classroom:delete_class' classroom.id %}" style="display:inline;" class="delete-class-form">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm delete-class-btn">Delete</button>
-                        </form>    
-                </div>
-                {% empty %}
-                    <h5>No classes found.</h5>
-                {% endfor %}
-                <a href="{% url 'classroom:create_class' %}" id="create-class" class="btn btn-primary">Create New Class</a>
-            </div>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-        <div class="dcard">
-            <h3 id="exam-overview-title">Exam Overview</h3>
-            <div class="exam-item">
-                {% for exam in upcoming_exams %}
-                    <div class="exam-card">
-                        <div class="exam-info">
-                            <div class="exam-title">{{ exam.exam_name }} - {{ exam.exam_class }}</div>
-                            <div class="exam-details">
-                                <div class="exam-date">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E" alt="Calendar">
-                                    {{ exam.exam_date }}
-                                </div>
-                                <div class="exam-time">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E" alt="Clock">
-                                    {{ exam.exam_time }}, {{ exam.exam_duration }} Hours
-                                </div>
+    <h2 id="teacher-dashboard-title">Welcome to Your Dashboard</h2>
+
+    <div class="card welcome-card">
+        <h2>{{ user.get_full_name }}</h2>
+        <p><i class="fas fa-chalkboard-teacher"></i> Teacher ID: {{ user.id }}</p>
+        <div class="welcome-actions">
+            <a href="{% url 'Users:profile' user.username %}" class="btn-primary">
+                <i class="fas fa-user-edit"></i> Manage Profile
+            </a>
+            <a href="{% url 'monitoring:examdashboard' %}" class="btn-primary">
+                <i class="fas fa-desktop"></i> Monitor Exams
+            </a>
+            <a href="{% url 'results:teacher_dashboard' %}" class="btn-primary">
+                <i class="fas fa-chart-line"></i> View Results Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-chalkboard"></i> Your Classes</h3>
+        <div class="class-info">
+            {% for classroom in classrooms %}
+            <div class="class-item">
+                <h4>{{ classroom.class_name }}</h4>
+                <h5><i class="fas fa-users"></i> {{ classroom.students.count }} students</h5>
+                <div class="class-tag">Class Code: {{ classroom.class_code }}</div>
+                <div class="exam-actions">
+                    <a href="{% url 'classroom:manage_students' classroom.id %}" class="btn btn-primary">
+                        <i class="fas fa-user-gear"></i> Manage
+                    </a>
+                    <form method="post" action="{% url 'classroom:delete_class' classroom.id %}" style="display:inline;" class="delete-class-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+                <div class="no-classes">
+                    <h5>No classes found. Create a class to get started!</h5>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'classroom:create_class' %}" id="create-class" class="btn-primary">
+            <i class="fas fa-plus"></i> Create New Class
+        </a>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-clipboard-list"></i> Exam Overview</h3>
+        <div class="exam-cards">
+            {% for exam in upcoming_exams %}
+                <div class="exam-card">
+                    <div class="exam-info">
+                        <div class="exam-title">
+                            <i class="fas fa-file-alt"></i> {{ exam.exam_name }}
+                            <span class="exam-class">{{ exam.exam_class }}</span>
+                        </div>
+                        <div class="exam-details">
+                            <div class="exam-date">
+                                <i class="fas fa-calendar"></i>
+                                {{ exam.exam_date }}
+                            </div>
+                            <div class="exam-time">
+                                <i class="fas fa-clock"></i>
+                                {{ exam.exam_time }}, {{ exam.exam_duration }} Hours
                             </div>
                         </div>
-                        <div class="exam-actions">
-                            <button class="btn edit">Edit</button>
-                            <form method="post" action="{% url 'classroom:delete_exam' exam.id %}" style="display:inline;" class="delete-exam-form">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm delete-exam-btn">Delete</button>
-                            </form> 
-                        </div>
                     </div>
-                {% empty %}
-                    <h5>No exams found.</h5>
-                {% endfor %}
-                <a href="{% url 'classroom:add_exam' %}" id="create-exam" class="btn btn-primary">Create New Quiz</a>
+                    <div class="exam-actions">
+                        <a href="{% url 'classroom:edit_exam' exam.id %}" class="btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'monitoring:exam_monitor' exam.id %}" class="btn-primary">
+                            <i class="fas fa-desktop"></i> Monitor
+                        </a>
+                        <form method="post" action="{% url 'classroom:delete_exam' exam.id %}" style="display:inline;" class="delete-exam-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form> 
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-exams">
+                    <h5>No exams found. Create an exam to get started!</h5>
+                </div>
+            {% endfor %}
+            <a href="{% url 'classroom:add_exam' %}" id="create-exam" class="btn-primary">
+                <i class="fas fa-plus"></i> Create New Quiz
+            </a>
+        </div>
+    </div>
+
+    <div id="feedback" class="card">
+        <h3><i class="fas fa-comment"></i> Feedback</h3>
+        <form method="post" action="{% url 'Users:submit_feedback' %}" id="feedback-form">
+            {% csrf_token %}
+            <textarea id="feedback-textarea" class="feedback-textarea" name="feedback" placeholder="Provide your feedback here..."></textarea>
+            <button type="submit" id="submit-feedback" class="feedback-btn">
+                <i class="fas fa-paper-plane"></i> Submit Feedback
+            </button>
+        </form>
+        <div id="feedback-success" class="alert alert-success" style="display:none; margin-top: 15px;">
+            <i class="fas fa-check-circle"></i> Your feedback has been submitted. Thank you!
+        </div>
+    </div>
+    
+    <div id="help-support" class="help">
+        <h3><i class="fas fa-question-circle"></i> Help & Support</h3>
+        <p>Need assistance? Check our frequently asked questions or contact support.</p>
+        <button id="contact-support" class="help-btn">
+            <i class="fas fa-headset"></i> Contact Support
+        </button>
+    </div>
+
+    <!-- Contact Support Modal -->
+    <div id="support-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3><i class="fas fa-headset"></i> Contact Support</h3>
+            <div class="support-details">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:support@proctoraiexam.com">support@proctoraiexam.com</a></p>
+                <p><i class="fas fa-phone"></i> Toll-Free: <a href="tel:1-800-PROCTOR">1-800-PROCTOR (776-2867)</a></p>
+                <p><i class="fas fa-clock"></i> Hours: Monday - Friday, 8:00 AM - 8:00 PM EST</p>
+                <div class="support-ticket">
+                    <h4>Submit a Support Ticket</h4>
+                    <form id="support-ticket-form">
+                        <div class="form-group">
+                            <label for="issue-type">Issue Type</label>
+                            <select id="issue-type" class="form-control">
+                                <option value="">Select an issue type</option>
+                                <option value="technical">Technical Problem</option>
+                                <option value="account">Account Issue</option>
+                                <option value="exam">Exam Problem</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="issue-description">Description</label>
+                            <textarea id="issue-description" class="form-control" rows="4" placeholder="Please describe your issue in detail..."></textarea>
+                        </div>
+                        <button type="button" id="submit-ticket" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Ticket
+                        </button>
+                    </form>
+                    <div id="ticket-success" class="alert alert-success" style="display:none; margin-top: 15px;">
+                        <i class="fas fa-check-circle"></i> Your support ticket has been submitted. We'll respond shortly.
+                    </div>
+                </div>
             </div>
         </div>
-
-        
-
-        <div id="feedback" class="box">
-            <h3 id="feedback-title" class="section-title">Feedback</h3>
-            <form method="post" action="{% url 'Users:submit_feedback' %}">
-                {% csrf_token %}
-                <textarea id="feedback-textarea" class="feedback-textarea" name="feedback" placeholder="Provide your feedback here..."></textarea>
-                <button type="submit" id="submit-feedback" class="feedback-btn">Submit Feedback</button>
-            </form>
-        </div>
-        
-        <div id="help-support" class="help">
-            <h3 id="help-support-title" class="section-title">Help & Support</h3>
-            <p id="faqs">FAQs for common queries</p>
-            <button id="contact-support" class="help-btn">Contact Support</button>
-        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -99,7 +192,94 @@
                     }
                 });
             });
+            
+            // Initialize tooltips if Bootstrap is available
+            if (typeof bootstrap !== 'undefined') {
+                const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
+            }
+
+            // Feedback form submission with AJAX
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackSuccess = document.getElementById('feedback-success');
+            
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(feedbackForm);
+                const feedbackText = formData.get('feedback').trim();
+                
+                if (!feedbackText) {
+                    alert('Please enter your feedback before submitting.');
+                    return;
+                }
+
+                fetch('{% url "Users:submit_feedback" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('feedback-textarea').value = '';
+                        feedbackSuccess.style.display = 'block';
+                        setTimeout(() => {
+                            feedbackSuccess.style.display = 'none';
+                        }, 5000); // Hide the success message after 5 seconds
+                    } else {
+                        alert('Error submitting feedback. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+            });
+
+            // Contact support modal
+            const supportModal = document.getElementById('support-modal');
+            const contactSupportBtn = document.getElementById('contact-support');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const submitTicketBtn = document.getElementById('submit-ticket');
+            const ticketSuccess = document.getElementById('ticket-success');
+
+            contactSupportBtn.addEventListener('click', function() {
+                supportModal.style.display = 'block';
+            });
+
+            closeModalBtn.addEventListener('click', function() {
+                supportModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target == supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            });
+
+            submitTicketBtn.addEventListener('click', function() {
+                const issueType = document.getElementById('issue-type').value;
+                const issueDescription = document.getElementById('issue-description').value.trim();
+                
+                if (!issueType) {
+                    alert('Please select an issue type.');
+                    return;
+                }
+                
+                if (!issueDescription) {
+                    alert('Please describe your issue.');
+                    return;
+                }
+                
+                // This would normally submit to a backend API
+                document.getElementById('issue-type').value = '';
+                document.getElementById('issue-description').value = '';
+                ticketSuccess.style.display = 'block';
+                
+                setTimeout(() => {
+                    ticketSuccess.style.display = 'none';
+                }, 5000); // Hide the success message after 5 seconds
+            });
         });
-        
     </script>
 {% endblock %}

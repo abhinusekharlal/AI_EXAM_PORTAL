@@ -1,0 +1,309 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+
+{% block title %}Report: {{ exam.exam_name }}{% endblock %}
+{% block head  %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Print button functionality
+        document.getElementById('printReport').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Setup score distribution chart
+        const scoreCtx = document.getElementById('scoreDistributionChart').getContext('2d');
+        
+        // Prepare score distribution data
+        const scoreLabels = ['0-10%', '11-20%', '21-30%', '31-40%', '41-50%', '51-60%', '61-70%', '71-80%', '81-90%', '91-100%'];
+        const scoreData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // Initialize bins
+        
+        {% for result in results %}
+            const score = {{ result.score }};
+            const binIndex = Math.min(Math.floor(score / 10), 9); // 0-9 indices
+            scoreData[binIndex]++;
+        {% endfor %}
+        
+        const scoreDistributionChart = new Chart(scoreCtx, {
+            type: 'bar',
+            data: {
+                labels: scoreLabels,
+                datasets: [{
+                    label: 'Number of Students',
+                    data: scoreData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Score Distribution'
+                    }
+                }
+            }
+        });
+        
+        // Setup passing rate chart
+        const passCtx = document.getElementById('passingRateChart').getContext('2d');
+        const passingRateChart = new Chart(passCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Passed', 'Failed'],
+                datasets: [{
+                    data: [{{ passing_count }}, {{ failing_count }}],
+                    backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Passing vs Failing'
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        {% if alert_stats %}
+        // Setup alert types chart
+        const alertCtx = document.getElementById('alertTypesChart').getContext('2d');
+        const alertTypesChart = new Chart(alertCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for stat in alert_stats %}'{{ stat.type }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: 'Number of Alerts',
+                    data: [{% for stat in alert_stats %}{{ stat.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Alert Types Distribution'
+                    }
+                }
+            }
+        });
+        {% endif %}
+    });
+    </script>
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'results:teacher_dashboard' %}">Results Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'results:exam_results_list' exam_id=exam.id %}">{{ exam.exam_name }} Results</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Exam Report</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Report: {{ exam.exam_name }}</h1>
+        <div>
+            <button class="btn btn-outline-secondary" id="printReport">
+                <i class="fas fa-print"></i> Print Report
+            </button>
+            <a href="{% url 'results:exam_results_list' exam_id=exam.id %}" class="btn btn-primary ms-2">
+                <i class="fas fa-list"></i> View Results List
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Students</h5>
+                    <h2>{{ total_students }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Average Score</h5>
+                    <h2>{{ avg_score }}%</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Passing Rate</h5>
+                    <h2>{{ passing_percentage }}%</h2>
+                    <small>{{ passing_count }} / {{ total_students }} students</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Flagged</h5>
+                    <h2>{{ flagged_count }}</h2>
+                    <small>{{ penalized_count }} with penalties</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Score Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="scoreDistributionChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Passing vs Failing</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="passingRateChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Alert Types</h5>
+                </div>
+                <div class="card-body">
+                    {% if alert_stats %}
+                        <canvas id="alertTypesChart" width="400" height="300"></canvas>
+                    {% else %}
+                        <p class="text-center text-muted my-5">No alerts were recorded during this exam.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">Student Results Summary</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="sticky-top bg-light">
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Score</th>
+                                    <th>Status</th>
+                                    <th>Flags</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results %}
+                                    <tr>
+                                        <td>{{ result.student.get_full_name|default:result.student.username }}</td>
+                                        <td>
+                                            {% if result.original_score %}
+                                                <span class="text-decoration-line-through text-muted">{{ result.original_score|floatformat:1 }}%</span> 
+                                                <span class="text-danger">{{ result.score|floatformat:1 }}%</span>
+                                            {% else %}
+                                                {{ result.score|floatformat:1 }}%
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.status == 'passed' %}
+                                                <span class="badge bg-success">Passed</span>
+                                            {% elif result.status == 'failed' %}
+                                                <span class="badge bg-danger">Failed</span>
+                                            {% elif result.status == 'flagged' %}
+                                                <span class="badge bg-warning">Flagged</span>
+                                            {% elif result.status == 'penalty_applied' %}
+                                                <span class="badge bg-danger">Penalty</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ result.get_status_display }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if result.is_flagged %}
+                                                <span class="badge bg-warning">⚠️</span>
+                                            {% elif result.is_reviewed %}
+                                                <span class="badge bg-success">✓</span>
+                                            {% else %}
+                                                <span>-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">Exam Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Exam Name:</strong> {{ exam.exam_name }}</p>
+                    <p><strong>Date:</strong> {{ exam.exam_date }}</p>
+                    <p><strong>Duration:</strong> {{ exam.exam_duration }}</p>
+                    <p><strong>Questions:</strong> {{ exam.question_set.count }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Created By:</strong> {{ exam.teacher.get_full_name|default:exam.teacher.username }}</p>
+                    <p><strong>Report Generated:</strong> {% now "F j, Y H:i" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

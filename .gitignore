@@ -1,2 +1,11 @@
-env/
+venv/
 __pycache__/
+media/face_recognition/
+media/
+monitoring/__pycache__
+Users/__pycache__
+classroom/__pycache__
+AI_EXAM_PORTAL/__pycache__
+AI_EXAM_PORTAL/__pycache__/settings.cpython-312.pyc
+classroom/__pycache__/views.cpython-312.pyc
+monitoring/__pycache__/models.cpython-312.pyc

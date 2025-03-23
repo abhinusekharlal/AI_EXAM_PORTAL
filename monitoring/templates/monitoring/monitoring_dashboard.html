@@ -1,0 +1,171 @@
+{% extends 'Users/layout.html' %}
+{% load static %}
+{% load monitoring_filters %}
+
+{% block title %}Exam Monitoring Dashboard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/monitoring_dashboard.css' %}">
+<meta name="csrf-token" content="{{ csrf_token }}">
+<script src="{% static 'js/exam_monitoring_dashboard.js' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="container monitoring-dashboard">
+    <header class="dashboard-header">
+        <h1>Exam Monitoring Dashboard</h1>
+        <div class="controls">
+            <select id="examFilter" class="exam-filter">
+                <option value="all">All Exams</option>
+                {% for exam in active_exams %}
+                <option value="{{ exam.id }}">{{ exam.exam_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </header>
+
+    <div class="dashboard-content">
+        <section class="active-exams-section">
+            <h2>Active Exams</h2>
+            {% if active_exams %}
+            <div class="exams-grid">
+                {% for exam in active_exams %}
+                <div class="exam-card" data-exam-id="{{ exam.id }}">
+                    <h3>{{ exam.exam_name }}</h3>
+                    <div class="exam-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Active Students:</span>
+                            <span class="stat-value active-students-count" data-exam-id="{{ exam.id }}">
+                                {{ active_sessions|active_session_count:exam.id }}
+                            </span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Alerts:</span>
+                            <span class="stat-value alert-count" data-exam-id="{{ exam.id }}">0</span>
+                        </div>
+                    </div>
+                    <div class="exam-actions">
+                        <a href="{% url 'monitoring:exam_monitor' exam.id %}" class="monitor-button">
+                            Monitor Exam
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-exams-message">
+                <p>No active exams available for monitoring.</p>
+                <a href="{% url 'classroom:add_exam' %}" class="create-exam-link">Create an Exam</a>
+            </div>
+            {% endif %}
+        </section>
+
+        <section class="sessions-section">
+            <h2>Active Student Sessions</h2>
+            {% if active_sessions %}
+            <div class="sessions-list">
+                <table class="sessions-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Exam</th>
+                            <th>Started</th>
+                            <th>Alerts</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in active_sessions %}
+                        <tr class="session-row" data-session-id="{{ session.id }}" data-exam-id="{{ session.exam.id }}">
+                            <td>{{ session.student.username }}</td>
+                            <td>{{ session.exam.exam_name }}</td>
+                            <td>{{ session.started_at|timesince }} ago</td>
+                            <td class="session-alerts">
+                                <span class="alert-count" data-session-id="{{ session.id }}">
+                                    {{ session.alerts.count }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'monitoring:exam_monitor' session.exam.id %}?student={{ session.student.id }}" 
+                                   class="monitor-link">Monitor</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-sessions-message">
+                <p>No active student sessions at the moment.</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <section class="alerts-section">
+            <h2>Recent Alerts</h2>
+            {% if recent_alerts %}
+            <div class="alerts-list">
+                <table class="alerts-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Exam</th>
+                            <th>Alert Type</th>
+                            <th>Severity</th>
+                            <th>Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alert in recent_alerts %}
+                        <tr class="alert-row {{ alert.severity }}" data-alert-id="{{ alert.id }}">
+                            <td>{{ alert.session.student.username }}</td>
+                            <td>{{ alert.session.exam.exam_name }}</td>
+                            <td>{{ alert.get_alert_type_display }}</td>
+                            <td class="severity-cell {{ alert.severity }}">
+                                {{ alert.get_severity_display }}
+                            </td>
+                            <td>{{ alert.timestamp|timesince }} ago</td>
+                            <td>
+                                <button class="view-alert-btn" data-alert-id="{{ alert.id }}">
+                                    View
+                                </button>
+                                {% if alert.screenshot %}
+                                <a href="{{ alert.screenshot.url }}" target="_blank" class="view-screenshot-btn">
+                                    Screenshot
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-alerts-message">
+                <p>No recent alerts detected.</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+
+    <!-- Alert Details Modal -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="alert-details-container">
+                <h3 class="alert-title">Alert Details</h3>
+                <div class="alert-details">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+                <div class="alert-screenshot">
+                    <!-- Screenshot will be displayed here if available -->
+                </div>
+                <div class="alert-actions">
+                    <button class="mark-reviewed-btn">Mark as Reviewed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

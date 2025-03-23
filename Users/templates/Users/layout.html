@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.js" defer></script>
-    <script src="{% static 'js/main.js' %}" defer></script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -47,9 +46,10 @@
                     {% if request.user.user_type == 'teacher' %}
                         <a href="{% url 'classroom:create_class' %}" class="nav-item">Create Class</a>
                         <a href="{% url 'classroom:add_exam' %}" class="nav-item">Create Exam</a>
-                        <a href="#" class="nav-item">Live Monitoring</a>
+                        <a href="{% url 'Users:monitor_student_sessions' %}" class="nav-item">Monitor Sessions</a>
                     {% endif %}
-                    <a href="#" class="nav-item">Help</a>
+                    <a href="{% url 'Users:manage_sessions' %}" class="nav-item">Manage My Sessions</a>
+                    <a href="{% url 'Users:help' %}" class="nav-item">Help</a>
                     <a href="{% url 'Users:logout' %}" class="nav-item">SignOut</a>
                 </nav>
             {% endif %}

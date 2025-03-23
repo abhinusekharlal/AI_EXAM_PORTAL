@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Exam Closed{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Exam Submission Period Ended</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Submission Closed</h4>
+                <p>The submission period for this exam has ended, and your answers can no longer be submitted.</p>
+            </div>
+            
+            <div class="text-center my-4">
+                <i class="fas fa-clock fa-5x text-danger"></i>
+                <p class="text-muted mt-3">Each exam has a specific window during which it can be taken. This exam's window has closed.</p>
+            </div>
+            
+            <div class="mt-4">
+                <p>Please contact your teacher if you believe this is an error or if you need special accommodation.</p>
+                <a href="{% url 'Users:dashboard' username=request.user.username %}" class="btn btn-primary">
+                    Return to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

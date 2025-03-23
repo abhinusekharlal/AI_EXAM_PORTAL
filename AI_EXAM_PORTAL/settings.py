@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'classroom',
     'monitoring',
     'results',
+    'channels',  # Add Django Channels
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'Users.middleware.RoleBasedAccessControlMiddleware',
+    'Users.middleware.SessionTrackingMiddleware',
+    'Users.middleware.SingleDeviceSessionMiddleware',
 ]
 
 ROOT_URLCONF = 'AI_EXAM_PORTAL.urls'
@@ -75,6 +78,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AI_EXAM_PORTAL.wsgi.application'
 
+# Add after WSGI_APPLICATION
+ASGI_APPLICATION = 'AI_EXAM_PORTAL.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -123,6 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -134,10 +140,89 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'Users.User'
+
+# Email configuration with Mailtrap
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_PORT = 587
+EMAIL_HOST_USER = 'a7e51742133547'
+EMAIL_HOST_PASSWORD = 'e3132b032e4901'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@aiexamportal.com')
+DEFAULT_FROM_EMAIL = 'noreply@aiexamportal.com'
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'monitoring': {
+            'handlers': ['file', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+
+# Channel Layers configuration
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+} if not DEBUG else {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# YOLO model settings
+YOLO_MODEL_DIR = os.path.join(BASE_DIR, 'monitoring', 'models')
+os.makedirs(YOLO_MODEL_DIR, exist_ok=True)
+
+# Frame storage settings
+MONITORING_FRAMES_DIR = os.path.join(MEDIA_ROOT, 'monitoring_frames')
+os.makedirs(MONITORING_FRAMES_DIR, exist_ok=True)
+
+# Monitoring settings
+MONITORING_CONFIG = {
+    'frame_interval': 2000,  # Milliseconds between frame captures
+    'frame_quality': 0.6,    # JPEG compression quality (0-1)
+    'alert_thresholds': {
+        'face_missing': 3,    # Consecutive frames before alert
+        'multiple_faces': 2,
+        'looking_away': 2,
+        'unknown_face': 1,
+        'phone_detected': 1,
+        'unauthorized_object': 1
+    }
+}

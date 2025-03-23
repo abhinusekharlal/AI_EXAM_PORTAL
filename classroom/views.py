@@ -5,10 +5,14 @@ from .models import Classroom, Exam, Question
 from django.contrib.auth.decorators import login_required
 from .forms import ClassroomForm, QuestionForm, ExamForm
 from django import forms
-from django.utils import timezone  # Change this import
-from datetime import timedelta
+from django.utils import timezone
+from datetime import timedelta, datetime
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 import json
+# Import the ExamSession model
+from monitoring.models import ExamSession
+# Import the ExamResult model
+from results.models import ExamResult
 
 import threading
 
@@ -110,6 +114,7 @@ def add_exam(request):
         if exam_form.is_valid():
             exam = exam_form.save(commit=False)
             exam.teacher = request.user
+            exam.status = 'published'  # Set a default status value
             exam.save()
 
             # Save all questions
@@ -161,7 +166,56 @@ def delete_exam(request, exam_id):
     if request.method == 'POST':
         exam.delete()
         return redirect('classroom:schedule')
+
+@login_required
+def edit_exam(request,exam_id):
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
     
+    exam = get_object_or_404(Exam, id=exam_id)
+    questions = Question.objects.filter(exam=exam).order_by('id')
+    
+    if request.method == 'POST':
+        exam_form = ExamForm(request.POST, instance=exam, request=request)
+        questions_data = []
+        
+        # Collect all question forms data
+        i = 0
+        while f'question_{i}-question_text' in request.POST:
+            question_data = {
+                'question_text': request.POST.get(f'question_{i}-question_text'),
+                'option1': request.POST.get(f'question_{i}-option1'),
+                'option2': request.POST.get(f'question_{i}-option2'),
+                'option3': request.POST.get(f'question_{i}-option3'),
+                'option4': request.POST.get(f'question_{i}-option4'),
+                'correct_option': request.POST.get(f'question_{i}-correct_option'),
+            }
+            questions_data.append(question_data)
+            i += 1
+
+        if exam_form.is_valid():
+            exam = exam_form.save(commit=False)
+            exam.teacher = request.user
+            exam.status = 'published'  # Ensure status is set when editing
+            exam.save()
+
+            # Save all questions
+            for question_data in questions_data:
+                question_form = QuestionForm(question_data)
+                if question_form.is_valid():
+                    question = question_form.save(commit=False)
+                    question.exam = exam
+                    question.save()
+
+            return redirect('classroom:schedule')
+    else:
+        exam_form = ExamForm(instance=exam, request=request)
+    
+    return render(request, 'classroom/edit_exam.html', {
+        'exam_form': exam_form,
+        'exam': exam
+    })
+
 @login_required
 def view_exam(request, exam_id):
     if request.user.user_type != 'student':
@@ -185,9 +239,20 @@ def view_exam(request, exam_id):
         'start_time': current_time.isoformat(),
     }
     
-    # Set exam session data
+    # Set exam session data in Django session
     request.session[f'exam_{exam_id}_started'] = True
     request.session[f'exam_{exam_id}_start_time'] = current_time.isoformat()
+    
+    # Create or get an ExamSession record for monitoring
+    exam_session, created = ExamSession.objects.get_or_create(
+        exam=exam,
+        student=request.user,
+        is_active=True,
+        defaults={
+            'started_at': current_time,
+            'last_activity': current_time
+        }
+    )
     
     return render(request, 'classroom/exam_interface.html', context)
 
@@ -204,25 +269,47 @@ def submit_exam(request):
             
             exam = get_object_or_404(Exam, id=exam_id)
             
-            # Save answers and calculate score
-            correct_count = 0
-            total_questions = Question.objects.filter(exam=exam).count()
+            # Try to get the start time from session
+            start_time_str = request.session.get(f'exam_{exam_id}_start_time')
+            start_time = None
+            if start_time_str:
+                try:
+                    start_time = datetime.fromisoformat(start_time_str)
+                except (ValueError, TypeError):
+                    pass
             
-            for question_id, answer in answers.items():
-                question = Question.objects.get(id=question_id)
-                if str(question.correct_option) == str(answer):
-                    correct_count += 1
+            # Get or mark inactive the exam session
+            try:
+                exam_session = ExamSession.objects.get(
+                    exam_id=exam_id,
+                    student=request.user,
+                    is_active=True
+                )
+                exam_session.is_active = False
+                exam_session.save()
+                
+                # Use the session start time if available
+                if not start_time and exam_session.started_at:
+                    start_time = exam_session.started_at
+                    
+            except ExamSession.DoesNotExist:
+                pass  # No active session found, which is unexpected but we can continue
             
-            # Calculate percentage score
-            score = (correct_count / total_questions) * 100 if total_questions > 0 else 0
+            # Create permanent exam result record
+            exam_result = ExamResult.create_from_submission(
+                student=request.user,
+                exam=exam,
+                answers=answers,
+                start_time=start_time
+            )
             
-            # Clear exam session data
-            request.session.pop(f'exam_{exam_id}_started', None)
-            request.session.pop(f'exam_{exam_id}_start_time', None)
+            # Store the result ID and score in the session for the completion page
+            request.session[f'exam_{exam_id}_result_id'] = str(exam_result.id)
+            request.session[f'exam_{exam_id}_score'] = exam_result.score
             
             return JsonResponse({
                 'success': True,
-                'score': score,
+                'score': exam_result.score,
                 'redirect_url': reverse('classroom:exam_completed')
             })
             
@@ -235,10 +322,96 @@ def submit_exam(request):
 
 @login_required
 def exam_completed(request):
-    return render(request, 'classroom/exam_completed.html')
+@login_required
+def exam_completed(request):
+    try:
+        # First try to get the result directly if we have the ID
+        result_id = None
+        exam_id = None
+        
+        # Find the most recent exam result ID from the session
+        for key in request.session.keys():
+            if key.endswith('_result_id'):
+                exam_id = key.split('_')[1]
+                result_id = request.session.get(key)
+                # Clear the session key after retrieving it
+                del request.session[key]
+                break
+        
+        if result_id:
+            try:
+                # Get the stored result and ensure it belongs to this student
+                exam_result = ExamResult.objects.select_related('exam').get(
+                    id=result_id, 
+                    student=request.user
+                )
+                
+                context = {
+                    'exam': exam_result.exam,
+                    'score': exam_result.score,
+                    'completion_time': exam_result.completion_time,
+                    'correct_answers': exam_result.correct_answers,
+                    'total_questions': exam_result.total_questions,
+                    'duration': exam_result.duration_in_minutes,
+                    'status': exam_result.status,
+                    'result': exam_result,
+                }
+                
+                return render(request, 'classroom/exam_completed.html', context)
+                
+            except ExamResult.DoesNotExist:
+                pass
 
-
-
+        # Fallback to the most recent completed exam session
+        last_exam_session = ExamSession.objects.filter(
+            student=request.user,
+            is_active=False
+        ).select_related('exam').order_by('-last_activity').first()
+        
+        if last_exam_session:
+            exam = last_exam_session.exam
+            
+            # Try to find a result for this exam
+            try:
+                exam_result = ExamResult.objects.get(
+                    student=request.user, 
+                    exam=exam
+                )
+                
+                context = {
+                    'exam': exam_result.exam,
+                    'score': exam_result.score,
+                    'completion_time': exam_result.completion_time,
+                    'correct_answers': exam_result.correct_answers,
+                    'total_questions': exam_result.total_questions,
+                    'duration': exam_result.duration_in_minutes,
+                    'status': exam_result.status,
+                    'result': exam_result,
+                }
+                
+                return render(request, 'classroom/exam_completed.html', context)
+                
+            except ExamResult.DoesNotExist:
+                # If no result exists, use session data
+                score = request.session.get(f'exam_{exam.id}_score', 0)
+                completion_time = last_exam_session.last_activity
+                
+                context = {
+                    'exam': exam,
+                    'score': score,
+                    'completion_time': completion_time
+                }
+                
+                return render(request, 'classroom/exam_completed.html', context)
+                
+    except Exception as e:
+        # Log the exception
+        print(f"Error in exam_completed view: {str(e)}")
+    
+    # If we get here, either there's no completed exam or an error occurred
+    return render(request, 'classroom/exam_completed.html', {
+        'generic_completion': True
+    })
 
 
 # Open video source
