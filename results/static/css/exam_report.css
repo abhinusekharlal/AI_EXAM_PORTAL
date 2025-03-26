@@ -1,0 +1,194 @@
+/* Exam Report Styles */
+.container {
+    max-width: 1200px;
+}
+
+h1.mb-4, h2.mb-4 {
+    color: #303030;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 25px !important;
+}
+
+h1.mb-4:after, h2.mb-4:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #007bff;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+}
+
+.card-header.bg-primary {
+    background: linear-gradient(45deg, #007bff, #6610f2) !important;
+}
+
+.card-header.bg-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+}
+
+.card-header.bg-info {
+    background: linear-gradient(45deg, #17a2b8, #0dcaf0) !important;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px;
+    width: 100%;
+}
+
+/* Custom colors for charts */
+.chart-colors-primary {
+    background-color: rgba(0, 123, 255, 0.7);
+    border-color: rgb(0, 123, 255);
+}
+
+.chart-colors-success {
+    background-color: rgba(40, 167, 69, 0.7);
+    border-color: rgb(40, 167, 69);
+}
+
+.chart-colors-danger {
+    background-color: rgba(220, 53, 69, 0.7);
+    border-color: rgb(220, 53, 69);
+}
+
+.chart-colors-warning {
+    background-color: rgba(255, 193, 7, 0.7);
+    border-color: rgb(255, 193, 7);
+}
+
+.chart-colors-info {
+    background-color: rgba(23, 162, 184, 0.7);
+    border-color: rgb(23, 162, 184);
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 12px 15px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.85em;
+    font-weight: 500;
+}
+
+.progress {
+    height: 12px;
+    border-radius: 6px;
+    background-color: #e9ecef;
+    margin-bottom: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    border-radius: 6px;
+}
+
+.stats-box {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.stats-box:hover {
+    background-color: #e9ecef;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.stats-box h3 {
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.stats-box p {
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .card-body {
+        padding: 15px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+    
+    .stats-box h3 {
+        font-size: 2rem;
+    }
+}

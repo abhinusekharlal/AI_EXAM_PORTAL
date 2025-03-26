@@ -19,4 +19,5 @@ urlpatterns = [
     path('classroom/delete-question/', views.delete_question, name='delete_question'),
     path('classroom/submit-exam/', views.submit_exam, name='submit_exam'),
     path('classroom/exam-completed/', views.exam_completed, name='exam_completed'),
+    path('classroom/exam-results/<int:exam_id>/', views.exam_results, name='exam_results'),
 ]

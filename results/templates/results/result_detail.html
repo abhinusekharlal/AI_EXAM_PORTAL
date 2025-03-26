@@ -1,7 +1,11 @@
 {% extends 'Users/layout.html' %}
 {% load static %}
 
-{% block title %}Result: {{ result.exam.exam_name }}{% endblock %}
+{% block title %}Result Detail:{{ result.exam.exam_name }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/result_detail.css' %}">
+{% endblock %}
+
 
 {% block content %}
 <div class="container mt-4">

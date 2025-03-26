@@ -6,132 +6,293 @@
 {% endblock %}
 
 {% block head %}
+    <!-- Make sure we're loading the correct paths for CSS files -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_exam.css' %}">
-    <script src="{% static 'js/create_exam.js' %}"></script>
-    <script src="{% static 'js/question_validation.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Add HTMX directly in this template -->
     <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <!-- Add global CSRF protection for HTMX requests -->
     <script>
-        document.body.addEventListener('htmx:configRequest', function(evt) {
-            evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('htmx:configRequest', function(evt) {
+                evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+            });
         });
     </script>
+    <script src="{% static 'js/create_exam.js' %}"></script>
+    <script src="{% static 'js/question_validation.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <!-- Main Content -->
-    <div class="main-content">
-        <div class="exam-form">
-            <h1>Edit Exam</h1>
-            
-            <section class="exam-details">
-                <h2>Exam Details</h2>
-                <form method="post" action="{% url 'classroom:edit_exam' exam.id %}">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <label for="exam_name">Exam Name</label>
-                        {{ exam_form.exam_name }}
-                        {% if exam_form.exam_name.errors %}
-                            <div class="error">{{ exam_form.exam_name.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_class">Class</label>
-                        {{ exam_form.exam_class }}
-                        {% if exam_form.exam_class.errors %}
-                            <div class="error">{{ exam_form.exam_class.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_date">Date</label>
-                        {{ exam_form.exam_date }}
-                        {% if exam_form.exam_date.errors %}
-                            <div class="error">{{ exam_form.exam_date.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_time">Time</label>
-                        {{ exam_form.exam_time }}
-                        {% if exam_form.exam_time.errors %}
-                            <div class="error">{{ exam_form.exam_time.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_duration">Duration (HH:MM:SS)</label>
-                        {{ exam_form.exam_duration }}
-                        {% if exam_form.exam_duration.errors %}
-                            <div class="error">{{ exam_form.exam_duration.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <section class="questions-section">
-                        <div class="questions-header">
-                            <h2>Questions</h2>
-                            <button type="button" 
-                                    class="btn-add-question"
-                                    hx-get="{% url 'classroom:add_question_form' %}"
-                                    hx-target="#questions-container"
-                                    hx-swap="beforeend"
-                                    hx-vals='js:{count: document.querySelectorAll(".question-card").length}'>
-                                + Add Question
-                            </button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm rounded-lg mt-4 mb-4">
+                    <div class="card-header bg-white border-bottom-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h2 class="mb-0 fw-bold text-primary">
+                                <i class="fas fa-edit me-2"></i>Edit Exam
+                            </h2>
                         </div>
-                        
-                        <div id="questions-container" hx-target="this">
-                            <!-- Existing questions will be displayed here -->
-                            {% for question in questions %}
-                                <div class="question-card" data-number="{{ question.number }}">
-                                    <div class="question-header">
-                                        <span>Question {{ question.number }}</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="{% url 'classroom:edit_exam' exam.id %}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Exam Name Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_name.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-heading me-1"></i> Exam Name
+                                </label>
+                                {{ exam_form.exam_name }}
+                                {% if exam_form.exam_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Class Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_class.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-chalkboard me-1"></i> Class
+                                </label>
+                                {{ exam_form.exam_class }}
+                                {% if exam_form.exam_class.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_class.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Date Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_date.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-calendar-alt me-1"></i> Date
+                                </label>
+                                {{ exam_form.exam_date }}
+                                {% if exam_form.exam_date.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Start Time Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_time.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-clock me-1"></i> Start Time
+                                </label>
+                                {{ exam_form.exam_time }}
+                                {% if exam_form.exam_time.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_time.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- End Time Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_end_time.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-hourglass-end me-1"></i> End Time
+                                </label>
+                                {{ exam_form.exam_end_time }}
+                                {% if exam_form.exam_end_time.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_end_time.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Status Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.status.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-toggle-on me-1"></i> Status
+                                </label>
+                                {{ exam_form.status }}
+                                <small class="form-text text-muted d-block mt-1">{{ exam_form.status.help_text }}</small>
+                                {% if exam_form.status.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.status.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Visibility Field -->
+                            <div class="form-group mb-5">
+                                <label class="form-label fw-bold d-block mb-2">
+                                    <i class="fas fa-eye me-1"></i> Visibility
+                                </label>
+                                <div class="form-check">
+                                    {{ exam_form.visibility_to_students }}
+                                    <label class="form-check-label" for="{{ exam_form.visibility_to_students.id_for_label }}">
+                                        Visible to Students Before Start Time
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted d-block mt-1">{{ exam_form.visibility_to_students.help_text }}</small>
+                                {% if exam_form.visibility_to_students.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.visibility_to_students.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Questions Section -->
+                            <div class="card shadow-sm mb-5 border">
+                                <div class="card-header bg-light">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h3 class="mb-0 fs-5 fw-bold text-dark">
+                                            <i class="fas fa-question-circle me-2"></i>Questions
+                                        </h3>
                                         <button type="button" 
-                                                class="btn-delete" 
-                                                hx-delete="{% url 'classroom:delete_question' %}"
+                                                class="btn btn-sm btn-primary"
+                                                hx-get="{% url 'classroom:add_question_form' %}"
+                                                hx-target="#questions-container"
+                                                hx-swap="beforeend"
                                                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                                hx-target="closest .question-card" 
-                                                hx-swap="outerHTML"
-                                                hx-trigger="click">
-                                            🗑
+                                                hx-vals='js:{count: document.querySelectorAll(".question-card").length}'>
+                                            <i class="fas fa-plus me-1"></i> Add Question
                                         </button>
                                     </div>
-                                    <div class="question-content">
-                                        <!-- Add a hidden input to store the question ID for existing questions -->
-                                        <input type="hidden" name="question_{{ forloop.counter0 }}-id" value="{{ question.id }}">
-                                        
-                                        <div class="form-group">
-                                            {{ question.form.question_text.label_tag }}
-                                            {{ question.form.question_text }}
-                                        </div>
-                                        <div class="options-container">
-                                            <div class="form-group">
-                                                {{ question.form.option1.label_tag }}
-                                                {{ question.form.option1 }}
-                                            </div>
-                                            <div class="form-group">
-                                                {{ question.form.option2.label_tag }}
-                                                {{ question.form.option2 }}
-                                            </div>
-                                            <div class="form-group">
-                                                {{ question.form.option3.label_tag }}
-                                                {{ question.form.option3 }}
-                                            </div>
-                                            <div class="form-group">
-                                                {{ question.form.option4.label_tag }}
-                                                {{ question.form.option4 }}
+                                </div>
+                                <div class="card-body py-4" id="questions-container" hx-target="this">
+                                    <!-- Existing questions will be displayed here -->
+                                    {% for question in exam.questions.all %}
+                                    <div class="question-card shadow-sm border rounded mb-4" id="question-{{ forloop.counter }}">
+                                        <div class="card-header bg-light py-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h3 class="mb-0 fs-6 fw-bold">
+                                                    <i class="fas fa-question-circle me-2"></i>Question {{ forloop.counter }}
+                                                </h3>
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        hx-delete="{% url 'classroom:delete_question' %}"
+                                                        hx-target="#question-{{ forloop.counter }}"
+                                                        hx-swap="outerHTML"
+                                                        hx-confirm="Are you sure you want to remove this question?"
+                                                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                                                    <i class="fas fa-trash me-1"></i> Delete
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            {{ question.form.correct_option.label_tag }}
-                                            {{ question.form.correct_option }}
+                                        <div class="card-body">
+                                            <!-- Add a hidden input to store the question ID for existing questions -->
+                                            <input type="hidden" name="question_{{ forloop.counter0 }}-id" value="{{ question.id }}">
+                                            
+                                            <div class="form-group mb-3">
+                                                <label class="form-label fw-bold">
+                                                    <i class="fas fa-edit me-1"></i> Question Text
+                                                </label>
+                                                <textarea 
+                                                    class="form-control" 
+                                                    name="question_{{ forloop.counter0 }}-question_text"
+                                                    placeholder="Enter question text"
+                                                    required>{{ question.question_text }}</textarea>
+                                            </div>
+                                            
+                                            <div class="options-section">
+                                                <label class="form-label fw-bold mb-3">
+                                                    <i class="fas fa-list me-1"></i> Options
+                                                </label>
+                                                <div class="option-grid">
+                                                    <div class="option-item mb-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-text">
+                                                                <input type="radio" 
+                                                                    name="question_{{ forloop.counter0 }}-correct_option" 
+                                                                    value="1" 
+                                                                    id="question_{{ forloop.counter0 }}-correct_option_1"
+                                                                    class="correct-option-radio"
+                                                                    {% if question.correct_option == '1' %}checked{% endif %}
+                                                                    required>
+                                                            </div>
+                                                            <input type="text" 
+                                                                class="form-control"
+                                                                placeholder="Enter option 1"
+                                                                name="question_{{ forloop.counter0 }}-option1" 
+                                                                id="question_{{ forloop.counter0 }}-option1"
+                                                                value="{{ question.option1 }}"
+                                                                required>
+                                                        </div>
+                                                        <small class="form-text text-muted">Option 1 (select radio button for correct answer)</small>
+                                                    </div>
+                                                    <div class="option-item mb-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-text">
+                                                                <input type="radio" 
+                                                                    name="question_{{ forloop.counter0 }}-correct_option" 
+                                                                    value="2" 
+                                                                    id="question_{{ forloop.counter0 }}-correct_option_2"
+                                                                    class="correct-option-radio"
+                                                                    {% if question.correct_option == '2' %}checked{% endif %}
+                                                                    required>
+                                                            </div>
+                                                            <input type="text" 
+                                                                class="form-control"
+                                                                placeholder="Enter option 2"
+                                                                name="question_{{ forloop.counter0 }}-option2" 
+                                                                id="question_{{ forloop.counter0 }}-option2"
+                                                                value="{{ question.option2 }}"
+                                                                required>
+                                                        </div>
+                                                        <small class="form-text text-muted">Option 2</small>
+                                                    </div>
+                                                    <div class="option-item mb-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-text">
+                                                                <input type="radio" 
+                                                                    name="question_{{ forloop.counter0 }}-correct_option" 
+                                                                    value="3" 
+                                                                    id="question_{{ forloop.counter0 }}-correct_option_3"
+                                                                    class="correct-option-radio"
+                                                                    {% if question.correct_option == '3' %}checked{% endif %}
+                                                                    required>
+                                                            </div>
+                                                            <input type="text" 
+                                                                class="form-control"
+                                                                placeholder="Enter option 3"
+                                                                name="question_{{ forloop.counter0 }}-option3" 
+                                                                id="question_{{ forloop.counter0 }}-option3"
+                                                                value="{{ question.option3 }}"
+                                                                required>
+                                                        </div>
+                                                        <small class="form-text text-muted">Option 3</small>
+                                                    </div>
+                                                    <div class="option-item mb-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-text">
+                                                                <input type="radio" 
+                                                                    name="question_{{ forloop.counter0 }}-correct_option" 
+                                                                    value="4" 
+                                                                    id="question_{{ forloop.counter0 }}-correct_option_4"
+                                                                    class="correct-option-radio"
+                                                                    {% if question.correct_option == '4' %}checked{% endif %}
+                                                                    required>
+                                                            </div>
+                                                            <input type="text" 
+                                                                class="form-control"
+                                                                placeholder="Enter option 4"
+                                                                name="question_{{ forloop.counter0 }}-option4" 
+                                                                id="question_{{ forloop.counter0 }}-option4"
+                                                                value="{{ question.option4 }}"
+                                                                required>
+                                                        </div>
+                                                        <small class="form-text text-muted">Option 4</small>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% empty %}
+                                    <div class="text-center py-4 text-muted" id="no-questions-message">
+                                        <i class="fas fa-question-circle fa-3x mb-3"></i>
+                                        <p>No questions added yet. Click "Add Question" to start.</p>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                            {% endfor %}
-                        </div>
-                    </section>
-                    <button type="submit" class="btn btn-primary">Update Exam</button>
-                </form>
-            </section>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i>Update Exam
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
+
+
 

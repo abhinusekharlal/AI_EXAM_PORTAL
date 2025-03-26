@@ -1,42 +1,73 @@
-<div class="question-card" data-number="{{ number }}">
-    <div class="question-header">
-        <span>Question {{ number }}</span>
-        <button type="button" 
-                class="btn-delete" 
-                hx-delete="{% url 'classroom:delete_question' %}"
-                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                hx-target="closest .question-card" 
-                hx-swap="outerHTML"
-                hx-trigger="click">
-            🗑
-        </button>
+<div class="question-card shadow-sm border rounded mb-4" id="question-{{ number }}">
+    <div class="card-header bg-light py-3">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 fs-6 fw-bold">
+                <i class="fas fa-question-circle me-2"></i>Question {{ number }}
+            </h3>
+            <button type="button" 
+                    class="btn btn-sm btn-outline-danger"
+                    hx-delete="{% url 'classroom:delete_question' %}"
+                    hx-target="#question-{{ number }}"
+                    hx-swap="outerHTML"
+                    hx-confirm="Are you sure you want to remove this question?"
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                <i class="fas fa-trash me-1"></i> Delete
+            </button>
+        </div>
     </div>
-    <div class="question-content">
-        <div class="form-group">
-            {{ form.question_text.label_tag }}
+    <div class="card-body">
+        <div class="form-group mb-3">
+            <label class="form-label fw-bold">
+                <i class="fas fa-edit me-1"></i> Question Text
+            </label>
             {{ form.question_text }}
+            {% if form.question_text.errors %}
+                <div class="invalid-feedback d-block">{{ form.question_text.errors }}</div>
+            {% endif %}
         </div>
-        <div class="options-container">
-            <div class="form-group">
-                {{ form.option1.label_tag }}
-                {{ form.option1 }}
+        
+        <div class="options-section">
+            <label class="form-label fw-bold mb-3">
+                <i class="fas fa-list me-1"></i> Options
+            </label>
+            <div class="option-grid">
+                {% for i in "1234" %}
+                <div class="option-item mb-3">
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input type="radio" 
+                                   name="{{ prefix }}-correct_option" 
+                                   value="{{ i }}" 
+                                   id="{{ prefix }}-correct_option_{{ i }}"
+                                   class="correct-option-radio"
+                                   {% if form.correct_option.value == i %}checked{% endif %}
+                                   required>
+                        </div>
+                        <input type="text" 
+                               class="form-control"
+                               placeholder="Enter option {{ i }}"
+                               name="{{ prefix }}-option{{ i }}" 
+                               id="{{ prefix }}-option{{ i }}"
+                               value="{{ form.initial.option|default:'' }}">
+                    </div>
+                    <small class="form-text text-muted">Option {{ i }}{% if i == '1' %} (select radio button for correct answer){% endif %}</small>
+                </div>
+                {% endfor %}
             </div>
-            <div class="form-group">
-                {{ form.option2.label_tag }}
-                {{ form.option2 }}
-            </div>
-            <div class="form-group">
-                {{ form.option3.label_tag }}
-                {{ form.option3 }}
-            </div>
-            <div class="form-group">
-                {{ form.option4.label_tag }}
-                {{ form.option4 }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form.correct_option.label_tag }}
-            {{ form.correct_option }}
         </div>
     </div>
 </div>
+
+<style>
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .option-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

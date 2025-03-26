@@ -17,6 +17,7 @@ import json
 import logging
 import smtplib
 from socket import gaierror
+from results.models import ExamResult
 from django.urls import reverse
 
 # Get a logger instance
@@ -301,7 +302,43 @@ def student_dashboard(request, username):
         return redirect('Users:access_denied')
     
     enrolled_classes = Classroom.objects.filter(students=request.user)
-    upcoming_exams = Exam.objects.filter(exam_class__students=request.user).order_by('exam_date')
+    
+    # Get the completed exams (that have results)
+    completed_exam_ids = ExamResult.objects.filter(student=request.user).values_list('exam_id', flat=True)
+    
+    # Get upcoming exams that haven't been completed
+    upcoming_exams = Exam.objects.filter(
+        exam_class__students=request.user
+    ).exclude(
+        id__in=completed_exam_ids
+    ).order_by('exam_date')
+    
+    # Get exam results for past exams
+    past_exam_results = ExamResult.objects.filter(
+        student=request.user
+    ).select_related('exam').order_by('-completion_time')
+    
+    # Get performance trend data
+    performance_trend = []
+    if past_exam_results:
+        for i, result in enumerate(past_exam_results[:5]):  # Last 5 exams
+            performance_trend.append({
+                'exam_name': result.exam.exam_name,
+                'score': result.score
+            })
+        performance_trend.reverse()  # Show oldest to newest
+        
+    # Calculate overall statistics
+    total_exams = past_exam_results.count()
+    if total_exams > 0:
+        passed_exams = past_exam_results.filter(status='passed').count()
+        failed_exams = past_exam_results.filter(status='failed').count()
+        flagged_exams = past_exam_results.filter(is_flagged=True).count()
+        avg_score = sum(result.score for result in past_exam_results) / total_exams
+    else:
+        passed_exams = failed_exams = flagged_exams = 0
+        avg_score = 0
+    
     context = {
         'groups': request.user.groups.all(),
         'permissions': request.user.user_permissions.all(),
@@ -313,6 +350,13 @@ def student_dashboard(request, username):
         'uuid': request.user.id,
         'classrooms': enrolled_classes,
         'upcoming_exams': upcoming_exams,
+        'past_exam_results': past_exam_results,
+        'total_exams': total_exams,
+        'passed_exams': passed_exams,
+        'failed_exams': failed_exams,
+        'flagged_exams': flagged_exams,
+        'avg_score': round(avg_score, 1),
+        'performance_trend': performance_trend,
     }
     return render(request, 'Users/student_dashboard.html', context)
 

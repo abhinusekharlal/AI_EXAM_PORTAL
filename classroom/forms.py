@@ -8,12 +8,34 @@ from django.core.exceptions import ValidationError
 
 
 class ClassroomForm(forms.ModelForm):
+    class_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter class name'
+        })
+    )
+    class_description = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter class description',
+            'rows': 3
+        }),
+        required=False
+    )
+    
     class Meta:
         model = Classroom
         fields = ['class_name', 'class_description']
 
 class JoinClassForm(forms.Form):
-    class_code = forms.CharField(max_length=10, required=True)
+    class_code = forms.CharField(
+        max_length=10, 
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter class code'
+        })
+    )
 
 class QuestionForm(forms.ModelForm):
     question_text = forms.CharField(
@@ -76,9 +98,16 @@ def validate_future_date(value):
         raise ValidationError("The date cannot be in the past.")
 
 class ExamForm(forms.ModelForm):
+    exam_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter exam name'
+        })
+    )
     exam_date = forms.DateField(
         widget=forms.DateInput(format="%Y-%m-%d",
                                attrs={'type': 'date',
+                                      'class': 'form-control',
                                       'min': str(timezone.now().date()),
                                       'max': str((timezone.now() + timedelta(days=365)).date())}),
         help_text='Select a date',
@@ -86,22 +115,43 @@ class ExamForm(forms.ModelForm):
         validators=[validate_future_date],
     )
     exam_time = forms.TimeField(
-        widget=forms.TimeInput(attrs={'type': 'time'}),
-        help_text='Select a time'
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'form-control'
+        }),
+        help_text='Select start time'
     )
-    exam_duration = forms.DurationField(
-        help_text='Enter duration in the format HH:MM:SS'
+    exam_end_time = forms.TimeField(
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'form-control'
+        }),
+        help_text='Select end time'
+    )
+    visibility_to_students = forms.BooleanField(
+        required=False,
+        initial=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        help_text='Make exam visible to students before start time'
+    )
+    status = forms.ChoiceField(
+        choices=Exam.STATUS_CHOICES,
+        initial='draft',
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text='Set exam status'
     )
     exam_class = forms.ModelChoiceField(
         queryset=Classroom.objects.none(),
         required=True,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        help_text='Select a class for this exam'
     )
     questions = forms.ModelMultipleChoiceField(
         queryset=Question.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
+    
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
@@ -110,7 +160,18 @@ class ExamForm(forms.ModelForm):
 
     class Meta:
         model = Exam
-        fields = ['exam_name', 'exam_class', 'exam_date', 'exam_time', 'exam_duration']
+        fields = ['exam_name', 'exam_class', 'exam_date', 'exam_time', 'exam_end_time', 
+                 'visibility_to_students', 'status']
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        exam_time = cleaned_data.get('exam_time')
+        exam_end_time = cleaned_data.get('exam_end_time')
+        
+        if exam_time and exam_end_time and exam_time >= exam_end_time:
+            raise forms.ValidationError("End time must be after start time.")
+            
+        return cleaned_data
 
 
 

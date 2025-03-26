@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, F
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_protect
@@ -11,7 +11,7 @@ from django.contrib import messages
 from classroom.models import Exam, Question
 from Users.models import User
 from Users.middleware import UserSession
-from monitoring.models import ExamSession, Alert, StreamFrame
+from monitoring.models import ExamSession, Alert, StreamFrame,Flag,Warning
 from .frame_processor import FrameProcessor
 import datetime
 import json
@@ -360,21 +360,23 @@ def api_exam_sessions(request, exam_id):
                 is_active=True
             ).select_related('student')
             
-            # Format sessions for JSON response
+            # Format sessions for JSON response - use ISO format strings for dates
             sessions_data = []
             for session in active_sessions:
                 # Calculate time inactive in seconds
-                inactive_seconds = (timezone.now() - session.last_activity).total_seconds() if session.last_activity else None
+                inactive_seconds = 0
+                if session.last_activity:
+                    inactive_seconds = (timezone.now() - session.last_activity).total_seconds()
                 
                 sessions_data.append({
                     'id': session.id,
                     'student_id': session.student.id,
                     'student_name': session.student.get_full_name() or session.student.username,
-                    'started_at': session.started_at.isoformat(),
+                    'started_at': session.started_at.isoformat() if session.started_at else None,
                     'last_activity': session.last_activity.isoformat() if session.last_activity else None,
                     'inactive_seconds': inactive_seconds,
                     'is_active': session.is_active,
-                    'is_connected': inactive_seconds is not None and inactive_seconds < 120
+                    'is_connected': inactive_seconds < 120 if session.last_activity else False
                 })
         except Exception as e:
             logger.error(f"Error fetching active sessions: {str(e)}", exc_info=True)
@@ -398,7 +400,7 @@ def api_exam_sessions(request, exam_id):
                     'description': alert.description,
                     'severity': alert.severity,
                     'confidence': alert.confidence,
-                    'timestamp': alert.timestamp.isoformat(),
+                    'timestamp': alert.timestamp.isoformat() if alert.timestamp else None,
                     'has_screenshot': bool(alert.screenshot)
                 })
         except Exception as e:
@@ -408,11 +410,11 @@ def api_exam_sessions(request, exam_id):
         # Calculate stats
         stats = {
             'total_students': len(sessions_data),
-            'connected_students': sum(1 for session in sessions_data if session['is_connected']),
+            'connected_students': sum(1 for session in sessions_data if session.get('is_connected', False)),
             'alert_count': len(alerts_data),
-            'high_severity_count': sum(1 for alert in alerts_data if alert['severity'] == 'critical'),
-            'medium_severity_count': sum(1 for alert in alerts_data if alert['severity'] == 'warning'),
-            'low_severity_count': sum(1 for alert in alerts_data if alert['severity'] == 'info')
+            'high_severity_count': sum(1 for alert in alerts_data if alert.get('severity') == 'critical'),
+            'medium_severity_count': sum(1 for alert in alerts_data if alert.get('severity') == 'warning'),
+            'low_severity_count': sum(1 for alert in alerts_data if alert.get('severity') == 'info')
         }
         
         return JsonResponse({
@@ -425,6 +427,49 @@ def api_exam_sessions(request, exam_id):
     except Exception as e:
         logger.error(f"Unexpected error in api_exam_sessions: {str(e)}", exc_info=True)
         return JsonResponse({'error': 'Internal server error'}, status=500)
+
+@login_required
+@require_GET
+def api_exam_details(request, exam_id):
+    """API endpoint to get exam details including end time"""
+    # Check if user is a teacher
+    if request.user.user_type != 'teacher':
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    try:
+        # Get exam object and verify ownership
+        exam = get_object_or_404(Exam, id=exam_id)
+        if exam.teacher != request.user:
+            return JsonResponse({'error': 'Access denied - not the exam owner'}, status=403)
+        
+        # Calculate end time based on exam date, time and duration
+        start_datetime = datetime.datetime.combine(
+            exam.exam_date,
+            exam.exam_time
+        ).replace(tzinfo=timezone.get_current_timezone())
+        
+        # Calculate end time - no need to create a new timedelta if exam_duration is already a timedelta
+        if isinstance(exam.exam_duration, datetime.timedelta):
+            end_time = start_datetime + exam.exam_duration
+        else:
+            # If exam_duration is stored as minutes (integer), convert to timedelta
+            end_time = start_datetime + datetime.timedelta(minutes=exam.exam_duration)
+        
+        # Return exam details
+        return JsonResponse({
+            'id': exam.id,
+            'name': exam.exam_name,
+            'date': exam.exam_date.isoformat(),
+            'time': exam.exam_time.isoformat(),
+            'duration': str(exam.exam_duration),
+            'start_time': start_datetime.isoformat(),
+            'end_time': end_time.isoformat(),
+            'status': exam.status
+        })
+        
+    except Exception as e:
+        logger.error(f"Error fetching exam details: {str(e)}", exc_info=True)
+        return JsonResponse({'error': 'Failed to fetch exam details'}, status=500)
 
 @login_required
 @require_GET
@@ -755,5 +800,222 @@ def export_session_data(request, exam_id):
                     session.ended_at,
                     'N/A', 'No alerts', 'N/A', 'N/A', 'N/A'
                 ])
+        
+        return response
+
+@login_required
+@require_GET
+def get_alert_screenshot(request, alert_id):
+    """View to serve alert screenshots"""
+    alert = get_object_or_404(Alert, id=alert_id)
+    
+    # Check permissions - only teacher who owns the exam can view screenshots
+    if not alert.session.exam.teacher == request.user:
+        return JsonResponse({'error': 'Access denied'}, status=403)
+        
+    if not alert.screenshot:
+        return JsonResponse({'error': 'No screenshot available'}, status=404)
+        
+    try:
+        with open(os.path.join(settings.MEDIA_ROOT, alert.screenshot.name), 'rb') as f:
+            return HttpResponse(f.read(), content_type='image/jpeg')
+    except FileNotFoundError:
+        return JsonResponse({'error': 'Screenshot file not found'}, status=404)
+    except Exception as e:
+        logger.error(f"Error serving screenshot for alert {alert_id}: {str(e)}")
+        return JsonResponse({'error': 'Error serving screenshot'}, status=500)
+
+@login_required
+@csrf_protect
+@require_POST
+def api_pause_exam(request, session_id):
+    """API endpoint to pause a student's exam"""
+    # Check if user is a teacher
+    if request.user.user_type != 'teacher':
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    # Get session object
+    session = get_object_or_404(ExamSession, id=session_id)
+    
+    # Verify that this session belongs to an exam that the teacher owns
+    if session.exam.teacher != request.user:
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    try:
+        # Record that the exam was paused
+        session.is_paused = True
+        session.paused_at = timezone.now()
+        session.paused_by = request.user
+        session.save()
+        
+        # In a real implementation, this would notify the student's exam interface
+        # to pause their exam through WebSockets or similar technology
+        
+        return JsonResponse({
+            'success': True,
+            'paused_at': session.paused_at.isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error pausing exam: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+@login_required
+@csrf_protect
+@require_POST
+def api_reject_alert(request, alert_id):
+    """API endpoint to reject an alert (mark as false positive)"""
+    # Check if user is a teacher
+    if request.user.user_type != 'teacher':
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    # Get alert object
+    alert = get_object_or_404(Alert, id=alert_id)
+    
+    # Verify that this alert belongs to an exam that the teacher owns
+    if alert.session.exam.teacher != request.user:
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    try:
+        data = json.loads(request.body)
+        reason = data.get('reason', 'Manually rejected by proctor')
+        
+        # Mark alert as reviewed with a special status
+        alert.is_reviewed = True
+        alert.reviewed_at = timezone.now()
+        alert.reviewed_by = request.user
+        alert.review_notes = f"Rejected: {reason}"
+        alert.is_false_positive = True
+        alert.save()
+        
+        return JsonResponse({
+            'success': True,
+            'alert_id': alert.id,
+            'rejected_at': alert.reviewed_at.isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error rejecting alert: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+@login_required
+@require_GET
+def export_student_activity(request, session_id):
+    """Export activity data for a specific student session"""
+    # Check if user is a teacher
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
+        
+    # Get session object
+    session = get_object_or_404(ExamSession, id=session_id)
+    
+    # Verify that this session belongs to an exam that the teacher owns
+    if session.exam.teacher != request.user:
+        return redirect('Users:access_denied')
+    
+    # Export format depends on requested format (csv or json)
+    export_format = request.GET.get('format', 'csv')
+    
+    # Get alerts for this session
+    alerts = Alert.objects.filter(session=session).order_by('-timestamp')
+    
+    # Get warnings sent to this student
+    warnings = Warning.objects.filter(session=session).order_by('-sent_at')
+    
+    # Get flags for this session
+    flags = Flag.objects.filter(session=session).order_by('-flagged_at')
+    
+    if export_format == 'json':
+        # Generate JSON export
+        data = {
+            'student': {
+                'name': session.student.get_full_name() or session.student.username,
+                'email': session.student.email,
+                'id': session.student.id
+            },
+            'exam': {
+                'name': session.exam.exam_name,
+                'date': session.exam.exam_date.isoformat(),
+                'id': session.exam.id
+            },
+            'session': {
+                'id': session.id,
+                'started_at': session.started_at.isoformat(),
+                'ended_at': session.ended_at.isoformat() if session.ended_at else None,
+                'is_active': session.is_active,
+                'last_activity': session.last_activity.isoformat() if session.last_activity else None
+            },
+            'alerts': [{
+                'id': alert.id,
+                'type': alert.alert_type,
+                'description': alert.description,
+                'severity': alert.severity,
+                'timestamp': alert.timestamp.isoformat(),
+                'is_reviewed': alert.is_reviewed,
+                'has_screenshot': bool(alert.screenshot)
+            } for alert in alerts],
+            'warnings': [{
+                'id': warning.id,
+                'message': warning.message,
+                'priority': warning.priority,
+                'sent_at': warning.sent_at.isoformat(),
+                'sent_by': warning.sent_by.get_full_name() or warning.sent_by.username
+            } for warning in warnings],
+            'flags': [{
+                'id': flag.id,
+                'reason': flag.reason,
+                'severity': flag.severity,
+                'flagged_at': flag.flagged_at.isoformat(),
+                'flagged_by': flag.flagged_by.get_full_name() or flag.flagged_by.username
+            } for flag in flags]
+        }
+        
+        response = JsonResponse(data, json_dumps_params={'indent': 2})
+        student_name = session.student.get_full_name() or session.student.username
+        sanitized_name = ''.join(char for char in student_name if char.isalnum() or char == ' ').replace(' ', '_')
+        response['Content-Disposition'] = f'attachment; filename="{sanitized_name}_activity.json"'
+        return response
+    else:
+        # Generate CSV export (default)
+        import csv
+        from django.http import HttpResponse
+        
+        response = HttpResponse(content_type='text/csv')
+        student_name = session.student.get_full_name() or session.student.username
+        sanitized_name = ''.join(char for char in student_name if char.isalnum() or char == ' ').replace(' ', '_')
+        response['Content-Disposition'] = f'attachment; filename="{sanitized_name}_activity.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Activity Type', 'Timestamp', 'Description', 'Severity', 'Is Reviewed'])
+        
+        # Write alerts
+        for alert in alerts:
+            writer.writerow([
+                'Alert',
+                alert.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                f"{alert.alert_type}: {alert.description}",
+                alert.severity,
+                'Yes' if alert.is_reviewed else 'No'
+            ])
+        
+        # Write warnings
+        for warning in warnings:
+            writer.writerow([
+                'Warning',
+                warning.sent_at.strftime('%Y-%m-%d %H:%M:%S'),
+                warning.message,
+                warning.priority,
+                'N/A'
+            ])
+        
+        # Write flags
+        for flag in flags:
+            writer.writerow([
+                'Flag',
+                flag.flagged_at.strftime('%Y-%m-%d %H:%M:%S'),
+                flag.reason,
+                flag.severity,
+                'N/A'
+            ])
         
         return response

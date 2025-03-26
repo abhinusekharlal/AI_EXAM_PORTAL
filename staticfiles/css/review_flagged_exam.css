@@ -1,0 +1,158 @@
+/* Review Flagged Exam Styles */
+.container {
+    max-width: 1200px;
+}
+
+h1.mb-4 {
+    color: #3a3a3a;
+    font-weight: 700;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 25px !important;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-header.bg-warning {
+    background-color: #fff3cd !important;
+    color: #856404;
+    border-bottom: 1px solid #ffeeba;
+}
+
+.card-header.bg-primary {
+    background-color: #007bff !important;
+    border-bottom: 1px solid #0062cc;
+}
+
+.card-header.bg-danger {
+    background-color: #f8d7da !important;
+    color: #721c24;
+    border-bottom: 1px solid #f5c6cb;
+}
+
+.card-header.bg-info {
+    background-color: #d1ecf1 !important;
+    color: #0c5460;
+    border-bottom: 1px solid #bee5eb;
+}
+
+.evidence-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+}
+
+.alert-item {
+    border-left: 4px solid #ffc107;
+    padding-left: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.violation-form {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.frame-thumbnail {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    cursor: pointer;
+    margin: 5px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.frame-thumbnail:hover {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.selected-frame {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.btn {
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger {
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+}
+
+.btn-success {
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(0, 123, 255, 0.05);
+    color: #0056b3;
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+#modalImage {
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom form styles */
+.form-select, .form-control {
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+}
+
+.form-select:focus, .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .row > [class*="col-"] {
+        margin-bottom: 15px;
+    }
+    
+    .evidence-container {
+        max-height: 300px;
+    }
+}

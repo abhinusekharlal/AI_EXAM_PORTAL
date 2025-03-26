@@ -1,26 +1,90 @@
 {% extends 'Users/layout.html' %}
+{% load static %}
 
 {% block title %}
     Manage Students
 {% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/classroom_forms.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
 {% block content %}
-    <div class="container mt-5">
-        <h2>Manage Students for {{ classroom.class_name }} ({{ classroom.class_code }})</h2>
-        <button id="send-invitations" class="btn btn-primary">Send Invitations</button>
-        <section id="joined-students" class="mt-4">
-            <h3>Joined Students</h3>
-            <ul class="list-group">
-                {% for student in joined_students %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ student.get_full_name }} ({{ student.email }})
-                        <form method="post" action="{% url 'classroom:remove_student' classroom.id student.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                        </form>
-                    </li>
-                {% endfor %}
-            </ul>
-        </section>
+    <div class="manage-students-container">
+        <div class="manage-students-header">
+            <h2>
+                <i class="fas fa-users"></i>
+                Manage Students
+                <span class="class-code">{{ classroom.class_name }}</span>
+            </h2>
+            <span class="class-code">Class Code: {{ classroom.class_code }}</span>
+        </div>
+        
+        <div class="manage-students-actions">
+            <button id="copy-class-code" class="btn" data-code="{{ classroom.class_code }}">
+                <i class="fas fa-copy"></i> Copy Class Code
+            </button>
+            <a href="{% url 'Users:dashboard' request.user.username %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="students-section">
+            <h3><i class="fas fa-user-graduate"></i> Enrolled Students</h3>
+            
+            {% if joined_students %}
+                <div class="students-list">
+                    {% for student in joined_students %}
+                        <div class="student-item">
+                            <div class="student-info">
+                                <div class="student-avatar">
+                                    {{ student.first_name|slice:":1" }}{{ student.last_name|slice:":1" }}
+                                </div>
+                                <div class="student-details">
+                                    <div class="student-name">{{ student.get_full_name }}</div>
+                                    <div class="student-email">{{ student.email }}</div>
+                                </div>
+                            </div>
+                            <div class="student-actions">
+                                <form method="post" action="{% url 'classroom:remove_student' classroom.id student.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-danger">
+                                        <i class="fas fa-user-minus"></i> Remove
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-user-friends"></i>
+                    <h4>No students enrolled yet</h4>
+                    <p>Send invitations to get students to join your class.</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
+    
+    <script>
+        document.getElementById('copy-class-code').addEventListener('click', function() {
+            const classCode = this.getAttribute('data-code');
+            navigator.clipboard.writeText(classCode).then(() => {
+                // Change button text temporarily to indicate success
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                this.classList.add('copied');
+                
+                // Revert button text after 2 seconds
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+                alert('Failed to copy. Class code: ' + classCode);
+            });
+        });
+    </script>
 {% endblock %}

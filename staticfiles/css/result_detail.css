@@ -1,0 +1,134 @@
+/* Result Detail Styles */
+.container {
+    max-width: 1200px;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #333;
+    font-weight: 600;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    border: none;
+}
+
+.card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+}
+
+.card-header.bg-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+}
+
+.card-header.bg-danger {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b) !important;
+}
+
+.card-header.bg-warning {
+    background: linear-gradient(45deg, #ffc107, #ffda6a) !important;
+    color: #856404;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+hr {
+    border-color: #eee;
+    margin: 25px 0;
+}
+
+.progress {
+    height: 30px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+}
+
+.progress-bar {
+    font-weight: 600;
+    line-height: 30px;
+    transition: width 1s ease;
+    font-size: 0.9rem;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.7em;
+    font-weight: 500;
+}
+
+.list-group-item {
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.list-group-item.list-group-item-success {
+    border-left-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.list-group-item.list-group-item-danger {
+    border-left-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.table {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-top: none;
+}
+
+.accordion-button {
+    padding: 15px;
+    font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.125);
+    background-color: rgba(0, 123, 255, 0.05);
+    color: #0d6efd;
+}
+
+.accordion-body {
+    padding: 20px;
+    background-color: #fdfdfd;
+}
+
+.text-decoration-line-through {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.breadcrumb {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .card-body {
+        padding: 15px;
+    }
+    
+    .row > div {
+        margin-bottom: 15px;
+    }
+}

@@ -7,6 +7,165 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/student_dashboard.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
+    
+            // Feedback form submission with AJAX
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackSuccess = document.getElementById('feedback-success');
+            
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(feedbackForm);
+                const feedbackText = formData.get('feedback').trim();
+                
+                if (!feedbackText) {
+                    alert('Please enter your feedback before submitting.');
+                    return;
+                }
+    
+                fetch('{% url "Users:submit_feedback" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('feedback-textarea').value = '';
+                        feedbackSuccess.style.display = 'block';
+                        setTimeout(() => {
+                            feedbackSuccess.style.display = 'none';
+                        }, 5000); // Hide the success message after 5 seconds
+                    } else {
+                        alert('Error submitting feedback. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+            });
+    
+            // Contact support modal
+            const supportModal = document.getElementById('support-modal');
+            const contactSupportBtn = document.getElementById('contact-support');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const submitTicketBtn = document.getElementById('submit-ticket');
+            const ticketSuccess = document.getElementById('ticket-success');
+    
+            contactSupportBtn.addEventListener('click', function() {
+                supportModal.style.display = 'block';
+            });
+    
+            closeModalBtn.addEventListener('click', function() {
+                supportModal.style.display = 'none';
+            });
+    
+            window.addEventListener('click', function(event) {
+                if (event.target == supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            });
+    
+            submitTicketBtn.addEventListener('click', function() {
+                const issueType = document.getElementById('issue-type').value;
+                const issueDescription = document.getElementById('issue-description').value.trim();
+                
+                if (!issueType) {
+                    alert('Please select an issue type.');
+                    return;
+                }
+                
+                if (!issueDescription) {
+                    alert('Please describe your issue.');
+                    return;
+                }
+                
+                // This would normally submit to a backend API
+                document.getElementById('issue-type').value = '';
+                document.getElementById('issue-description').value = '';
+                ticketSuccess.style.display = 'block';
+                
+                setTimeout(() => {
+                    ticketSuccess.style.display = 'none';
+                }, 5000); // Hide the success message after 5 seconds
+            });
+            
+            // Initialize performance chart if it exists
+            const performanceChartCanvas = document.getElementById('performanceChart');
+            if (performanceChartCanvas) {
+                {% if performance_trend %}
+                const performanceData = {
+                    labels: [{% for item in performance_trend %}'{{ item.exam_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    scores: [{% for item in performance_trend %}{{ item.score }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+                };
+                
+                new Chart(performanceChartCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: performanceData.labels,
+                        datasets: [{
+                            label: 'Score (%)',
+                            data: performanceData.scores,
+                            backgroundColor: 'rgba(0, 102, 255, 0.1)',
+                            borderColor: '#0066ff',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            pointBackgroundColor: '#0066ff',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Score (%)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Exams'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleFont: {
+                                    size: 14
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Score: ${context.parsed.y}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                {% endif %}
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -52,6 +211,43 @@
         </div>
     </div>
 
+    <!-- New Performance Overview Section -->
+    {% if total_exams > 0 %}
+    <div class="card">
+        <h3><i class="fas fa-chart-line"></i> Performance Overview</h3>
+        <div class="performance-overview">
+            <div class="performance-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Exams</span>
+                    <span class="stat-value">{{ total_exams }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Passed</span>
+                    <span class="stat-value passed-value">{{ passed_exams }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Failed</span>
+                    <span class="stat-value failed-value">{{ failed_exams }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Flagged</span>
+                    <span class="stat-value flagged-value">{{ flagged_exams }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Avg. Score</span>
+                    <span class="stat-value">{{ avg_score }}%</span>
+                </div>
+            </div>
+            
+            {% if performance_trend %}
+            <div class="performance-chart">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
     <div class="card">
         <h3><i class="fas fa-graduation-cap"></i> Classes Enrolled</h3>
         <div class="classes-grid">
@@ -80,6 +276,15 @@
                         <div class="exam-title">
                             <i class="fas fa-file-alt"></i> {{ exam.exam_name }}
                             <span class="exam-class">{{ exam.exam_class }}</span>
+                            {% if exam.status == 'published' %}
+                                <span class="exam-status status-published">
+                                    <i class="fas fa-check-circle"></i> Published
+                                </span>
+                            {% else %}
+                                <span class="exam-status status-draft">
+                                    <i class="fas fa-pencil-alt"></i> Draft
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="exam-details">
                             <div class="exam-date">
@@ -91,7 +296,7 @@
                             <div class="exam-time">
                                 <i class="fas fa-clock"></i>
                                 {% localtime on %}
-                                {{ exam.exam_time|time:"H:i" }}, {{ exam.exam_duration }}
+                                {{ exam.exam_time|time:"H:i" }} - {{ exam.exam_end_time|time:"H:i" }}
                                 {% endlocaltime %}
                             </div>
                         </div>
@@ -100,9 +305,15 @@
                         <button class="btn-scheduled">
                             <i class="fas fa-check-circle"></i> Scheduled
                         </button>
-                        <a href="{% url 'Users:face_verification_page' exam_id=exam.id %}" class="btn-start">
-                            <i class="fas fa-play"></i> Start Exam
-                        </a>
+                        {% if exam.status == 'published' %}
+                            <a href="{% url 'Users:face_verification_page' exam_id=exam.id %}" class="btn-start">
+                                <i class="fas fa-play"></i> Start Exam
+                            </a>
+                        {% else %}
+                            <button class="btn-not-available" disabled>
+                                <i class="fas fa-lock"></i> Not Available
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             {% empty %}
@@ -111,33 +322,96 @@
         </div>
     </div>
 
+    <!-- Enhanced Past Exams Section -->
     <div class="card">
-        <h3><i class="fas fa-clock"></i> Past Exams</h3>
-        <div class="result-cards">
-            {% for exam in past_exams %}
-                <div class="result-card">
-                    <div class="result-info">
-                        <div class="result-title">{{ exam.title }}</div>
-                        <div class="result-details">
-                            <div class="result-date">
-                                <i class="fas fa-calendar"></i>
-                                {{ exam.date }}
-                            </div>  
-                            <div class="result-score">
-                                <i class="fas fa-star"></i>
-                                {{ exam.score }} / {{ exam.total_marks }}
-                            </div>
+        <h3><i class="fas fa-history"></i> Past Exams</h3>
+        
+        {% if past_exam_results %}
+        <div class="past-exams-container">
+            {% for result in past_exam_results %}
+                <div class="result-card {% if result.is_flagged %}flagged{% endif %} {% if result.status == 'penalty_applied' %}penalized{% endif %}">
+                    <div class="result-header">
+                        <div class="result-title">{{ result.exam.exam_name }}</div>
+                        <div class="result-status status-{{ result.status }}">
+                            {% if result.status == 'passed' %}
+                                <i class="fas fa-check-circle"></i> Passed
+                            {% elif result.status == 'failed' %}
+                                <i class="fas fa-times-circle"></i> Failed
+                            {% elif result.status == 'flagged' %}
+                                <i class="fas fa-flag"></i> Flagged
+                            {% elif result.status == 'under_review' %}
+                                <i class="fas fa-search"></i> Under Review
+                            {% elif result.status == 'penalty_applied' %}
+                                <i class="fas fa-exclamation-triangle"></i> Penalty Applied
+                            {% else %}
+                                <i class="fas fa-question-circle"></i> {{ result.get_status_display }}
+                            {% endif %}
                         </div>
                     </div>
+                    
+                    <div class="result-info">
+                        <div class="result-details">
+                            <div class="result-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>{{ result.completion_time|date:"M d, Y" }}</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ result.duration_in_minutes|floatformat:0 }} minutes</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <i class="fas fa-tasks"></i>
+                                <span>{{ result.correct_answers }}/{{ result.total_questions }}</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <i class="fas fa-star"></i>
+                                <span class="{% if result.score >= 60 %}passed-score{% else %}failed-score{% endif %}">
+                                    {{ result.score|floatformat:1 }}%
+                                </span>
+                                {% if result.original_score %}
+                                <span class="original-score">(Original: {{ result.original_score|floatformat:1 }}%)</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {% if result.is_flagged or result.status == 'penalty_applied' or result.status == 'under_review' %}
+                        <div class="result-warning">
+                            {% if result.is_flagged and not result.is_reviewed %}
+                                <div class="flag-notice">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    This exam has been flagged for suspicious activity and is awaiting review.
+                                </div>
+                            {% elif result.status == 'penalty_applied' %}
+                                <div class="penalty-notice">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    A penalty of {{ result.penalty_percentage|floatformat:1 }}% was applied to this exam.
+                                </div>
+                            {% elif result.status == 'under_review' %}
+                                <div class="review-notice">
+                                    <i class="fas fa-search"></i>
+                                    This exam is currently being reviewed by your instructor.
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
                     <div class="result-actions">
-                        <a href="{% url 'results:result_detail' result_id=exam.id %}" class="btn-view">
-                            <i class="fas fa-chart-bar"></i> View Report
+                        <a href="{% url 'results:result_detail' result_id=result.id %}" class="btn-view">
+                            <i class="fas fa-chart-bar"></i> View Detailed Report
                         </a>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    </div>        
+        {% else %}
+            <p class="no-results">You haven't completed any exams yet.</p>
+        {% endif %}
+    </div>
+    
     <div class="card" id="feedback">
         <h3><i class="fas fa-comment"></i> Feedback</h3>
         <form method="post" action="{% url 'Users:submit_feedback' %}" id="feedback-form">
@@ -204,98 +478,5 @@
         </div>
     </div>
 </main>
-
-{% block scripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize tooltips
-        const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        tooltips.forEach(tooltip => new bootstrap.Tooltip(tooltip));
-
-        // Feedback form submission with AJAX
-        const feedbackForm = document.getElementById('feedback-form');
-        const feedbackSuccess = document.getElementById('feedback-success');
-        
-        feedbackForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(feedbackForm);
-            const feedbackText = formData.get('feedback').trim();
-            
-            if (!feedbackText) {
-                alert('Please enter your feedback before submitting.');
-                return;
-            }
-
-            fetch('{% url "Users:submit_feedback" %}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('feedback-textarea').value = '';
-                    feedbackSuccess.style.display = 'block';
-                    setTimeout(() => {
-                        feedbackSuccess.style.display = 'none';
-                    }, 5000); // Hide the success message after 5 seconds
-                } else {
-                    alert('Error submitting feedback. Please try again.');
-                }
-            })
-            .catch(error => {
-                alert('Error: ' + error);
-            });
-        });
-
-        // Contact support modal
-        const supportModal = document.getElementById('support-modal');
-        const contactSupportBtn = document.getElementById('contact-support');
-        const closeModalBtn = document.querySelector('.close-modal');
-        const submitTicketBtn = document.getElementById('submit-ticket');
-        const ticketSuccess = document.getElementById('ticket-success');
-
-        contactSupportBtn.addEventListener('click', function() {
-            supportModal.style.display = 'block';
-        });
-
-        closeModalBtn.addEventListener('click', function() {
-            supportModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', function(event) {
-            if (event.target == supportModal) {
-                supportModal.style.display = 'none';
-            }
-        });
-
-        submitTicketBtn.addEventListener('click', function() {
-            const issueType = document.getElementById('issue-type').value;
-            const issueDescription = document.getElementById('issue-description').value.trim();
-            
-            if (!issueType) {
-                alert('Please select an issue type.');
-                return;
-            }
-            
-            if (!issueDescription) {
-                alert('Please describe your issue.');
-                return;
-            }
-            
-            // This would normally submit to a backend API
-            document.getElementById('issue-type').value = '';
-            document.getElementById('issue-description').value = '';
-            ticketSuccess.style.display = 'block';
-            
-            setTimeout(() => {
-                ticketSuccess.style.display = 'none';
-            }, 5000); // Hide the success message after 5 seconds
-        });
-    });
-</script>
-{% endblock %}
-
 {% endblock %}
 
