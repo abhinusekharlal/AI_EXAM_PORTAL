@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from Users.views import access_denied
+from .views import video_feed, admin_feed
 
 app_name = 'classroom'
 
@@ -20,4 +21,3 @@ urlpatterns = [
     path('classroom/submit-exam/', views.submit_exam, name='submit_exam'),
     path('classroom/exam-completed/', views.exam_completed, name='exam_completed'),
     path('classroom/exam-results/<int:exam_id>/', views.exam_results, name='exam_results'),
-]

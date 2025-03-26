@@ -14,6 +14,10 @@ from monitoring.models import ExamSession
 # Import the ExamResult model
 from results.models import ExamResult
 
+import threading
+
+from django.http import StreamingHttpResponse
+import cv2
 
 class JoinClassForm(forms.Form):
     class_code = forms.CharField(max_length=10, label='Class Code')
@@ -401,6 +405,7 @@ def submit_exam(request):
     
     return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
+
 @login_required
 def exam_completed(request):
     try:
@@ -492,6 +497,7 @@ def exam_completed(request):
         'generic_completion': True
     })
 
+
 @login_required
 def exam_results(request, exam_id):
     """
@@ -535,3 +541,4 @@ def exam_results(request, exam_id):
     }
     
     return render(request, 'classroom/exam_results.html', context)
+
