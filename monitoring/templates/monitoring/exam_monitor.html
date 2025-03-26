@@ -4,7 +4,7 @@
 {% block title %}Exam Monitoring - {{ exam.exam_name }}{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/monitoring_dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/exam_monitor.css' %}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Exam monitoring dashboard for {{ exam.exam_name }}">
 <script src="{% static 'js/exam_monitor.js' %}"></script>
@@ -67,6 +67,32 @@
                 window.monitorDashboard.refreshStreams();
             }
         }, 120000);
+        
+        // Setup keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Only apply shortcuts when not in input fields
+            if (['input', 'textarea', 'select'].includes(document.activeElement.tagName.toLowerCase())) {
+                return;
+            }
+            
+            if (e.key === 'r' && !e.ctrlKey && !e.metaKey) {
+                // R key for refresh
+                window.monitorDashboard.refreshStreams();
+            } else if (e.key === 'f') {
+                // F key to focus on search
+                e.preventDefault();
+                document.getElementById('studentSearch').focus();
+            } else if (e.key === 'g') {
+                // G key to toggle grid view
+                document.getElementById('gridViewBtn').click();
+            } else if (e.key === 'l') {
+                // L key to toggle list view
+                document.getElementById('listViewBtn').click();
+            } else if (e.key === 'h') {
+                // H key to toggle shortcuts help
+                document.getElementById('shortcutsHelpBtn').click();
+            }
+        });
     });
 </script>
 {% endblock %}
@@ -89,34 +115,51 @@
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-clock" aria-hidden="true"></i>
-                    <span>Exam Duration: <strong>{{ exam.exam_duration }}</strong></span>
+                    <span>Exam Duration: <strong>{{ exam.exam_duration }} minutes</strong></span>
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-calendar" aria-hidden="true"></i>
                     <span>Date: <strong>{{ exam.exam_date }}</strong></span>
                 </div>
+                <div class="meta-item">
+                    <i class="fas fa-hourglass-half" aria-hidden="true"></i>
+                    <span>Time Remaining: <strong id="examTimeRemaining">Calculating...</strong></span>
+                </div>
             </div>
         </div>
         <div class="controls">
             <div class="view-controls" role="group" aria-label="Change view layout">
-                <button id="gridViewBtn" class="view-btn active" title="Grid View">
+                <button id="gridViewBtn" class="view-btn active" title="Grid View (G)">
                     <i class="fas fa-th" aria-hidden="true"></i>
                     <span class="sr-only">Grid View</span>
                 </button>
-                <button id="listViewBtn" class="view-btn" title="List View">
+                <button id="listViewBtn" class="view-btn" title="List View (L)">
                     <i class="fas fa-list" aria-hidden="true"></i>
                     <span class="sr-only">List View</span>
                 </button>
+                <button id="shortcutsHelpBtn" class="view-btn" title="Keyboard Shortcuts (H)">
+                    <i class="fas fa-keyboard" aria-hidden="true"></i>
+                    <span class="sr-only">Keyboard Shortcuts</span>
+                </button>
             </div>
             <div class="search-container">
-                <label for="studentSearch" class="sr-only">Search students</label>
-                <input type="text" id="studentSearch" class="search-input" placeholder="Search students...">
+                <label for="studentSearch" class="sr-only">Search students (Press F to focus)</label>
+                <input type="text" id="studentSearch" class="search-input" placeholder="Search students... (F)">
                 <button id="clearSearchBtn" class="clear-search" aria-label="Clear search">
                     <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
             </div>
+            <div class="filter-container">
+                <label for="studentFilter" class="sr-only">Filter students</label>
+                <select id="studentFilter" class="filter-select" aria-label="Filter students by status">
+                    <option value="all">All Students</option>
+                    <option value="active">Active Only</option>
+                    <option value="disconnected">Disconnected Only</option>
+                    <option value="flagged">Flagged Only</option>
+                </select>
+            </div>
             <div class="refresh-controls">
-                <button id="refreshStreamsBtn" class="btn btn-secondary" aria-label="Refresh streams">
+                <button id="refreshStreamsBtn" class="btn btn-secondary" aria-label="Refresh streams (R)">
                     <i class="fas fa-sync" aria-hidden="true"></i> Refresh Streams
                 </button>
                 <div class="auto-refresh">
@@ -212,6 +255,12 @@
             </div>
             <div class="activity-overlay hidden">
                 <div class="overlay-content"></div>
+            </div>
+            <div class="connection-overlay hidden">
+                <div class="overlay-content">
+                    <i class="fas fa-wifi-slash"></i>
+                    <p>Connection Lost</p>
+                </div>
             </div>
         </div>
         <div class="video-footer">
@@ -394,9 +443,63 @@
                     <button id="focusFlagBtn" class="btn btn-danger">
                         <i class="fas fa-flag" aria-hidden="true"></i> Flag for Review
                     </button>
+                    <button id="focusRejectAlertBtn" class="btn btn-success">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i> Reject Alert
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Keyboard shortcuts help modal -->
+<div id="shortcutsModal" class="modal" role="dialog" aria-labelledby="shortcutsModalTitle" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="shortcutsModalTitle">Keyboard Shortcuts</h3>
+            <button class="close-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="shortcuts-list">
+                <div class="shortcut-item">
+                    <kbd>R</kbd>
+                    <span>Refresh streams</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>F</kbd>
+                    <span>Focus on search</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>G</kbd>
+                    <span>Switch to grid view</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>L</kbd>
+                    <span>Switch to list view</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>H</kbd>
+                    <span>Show this help</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Esc</kbd>
+                    <span>Close modal windows</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="closeShortcutsBtn" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Error retry overlay -->
+<div id="connectionErrorOverlay" class="error-overlay hidden">
+    <div class="error-content">
+        <i class="fas fa-exclamation-circle"></i>
+        <h3>Connection Error</h3>
+        <p>We're having trouble connecting to the monitoring server.</p>
+        <button id="retryConnectionBtn" class="btn btn-primary">Retry Connection</button>
     </div>
 </div>
 {% endblock %}

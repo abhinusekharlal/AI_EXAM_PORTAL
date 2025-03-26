@@ -77,9 +77,65 @@ def remove_student(request, class_id, student_id):
     classroom.students.remove(student)
     return redirect('classroom:manage_students', class_id=class_id)
 
+@login_required
 def view_texams(request):
+    """
+    Display all exams created by the teacher with proper filtering and sorting
+    """
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
+    
+    # Get all exams created by this teacher
     exams = Exam.objects.filter(teacher=request.user)
-    return render(request,'classroom/Exam_Schedule.html',{'exams':exams})
+    
+    # Get filter parameters from request
+    status_filter = request.GET.get('status', '')
+    class_filter = request.GET.get('class', '')
+    date_filter = request.GET.get('date', '')
+    
+    # Apply filters if provided
+    if status_filter:
+        exams = exams.filter(status=status_filter)
+    
+    if class_filter:
+        exams = exams.filter(exam_class__id=class_filter)
+    
+    if date_filter:
+        try:
+            filter_date = datetime.strptime(date_filter, '%Y-%m-%d').date()
+            exams = exams.filter(exam_date=filter_date)
+        except ValueError:
+            # Invalid date format, ignore this filter
+            pass
+    
+    # Sort exams by date (descending) and time
+    exams = exams.order_by('-exam_date', 'exam_time')
+    
+    # Get classes for filter dropdown
+    teacher_classes = Classroom.objects.filter(teacher=request.user)
+    
+    # Count exams by status for summary
+    draft_count = exams.filter(status='draft').count()
+    published_count = exams.filter(status='published').count()
+    completed_count = exams.filter(status='completed').count()
+    
+    # Check if any exams are happening today
+    today = timezone.now().date()
+    today_exams = exams.filter(exam_date=today).count()
+    
+    context = {
+        'exams': exams,
+        'teacher_classes': teacher_classes,
+        'draft_count': draft_count,
+        'published_count': published_count, 
+        'completed_count': completed_count,
+        'today_exams': today_exams,
+        'status_filter': status_filter,
+        'class_filter': class_filter,
+        'date_filter': date_filter,
+    }
+    
+    return render(request, 'classroom/Exam_Schedule.html', context)
 
 @login_required
 def add_exam(request):
@@ -92,15 +148,8 @@ def add_exam(request):
         
         # Collect all question forms data
         i = 0
-        # while f'question_text_{i}' in request.POST:
         while f'question_{i}-question_text' in request.POST:
             question_data = {
-                # 'question_text': request.POST.get(f'question_text_{i}'),
-                # 'option1': request.POST.get(f'option1_{i}'),
-                # 'option2': request.POST.get(f'option2_{i}'),
-                # 'option3': request.POST.get(f'option3_{i}'),
-                # 'option4': request.POST.get(f'option4_{i}'),
-                # 'correct_option': request.POST.get(f'correct_option_{i}'),
                 'question_text': request.POST.get(f'question_{i}-question_text'),
                 'option1': request.POST.get(f'question_{i}-option1'),
                 'option2': request.POST.get(f'question_{i}-option2'),
@@ -114,14 +163,14 @@ def add_exam(request):
         if exam_form.is_valid():
             exam = exam_form.save(commit=False)
             exam.teacher = request.user
-            exam.status = 'published'  # Set a default status value
+            # Use the status from the form instead of hardcoding to published
+            exam.status = exam_form.cleaned_data.get('status', 'draft')
+            # Visibility to students is handled by the form field directly
             exam.save()
 
             # Save all questions
-            print(questions_data)
             for question_data in questions_data:
                 question_form = QuestionForm(question_data)
-                # print(question_data)
                 if question_form.is_valid():
                     question = question_form.save(commit=False)
                     question.exam = exam
@@ -158,6 +207,10 @@ def delete_question(request):
     """Handle question deletion via HTMX"""
     if request.method == 'DELETE':
         # Since we're just removing the form element, no need to actually delete from DB
+        # Just return a successful response
+        return HttpResponse(status=200)
+    elif request.method == 'POST':
+        # Allow POST as a fallback method for HTMX
         return HttpResponse(status=200)
     return HttpResponseBadRequest()
 
@@ -168,7 +221,7 @@ def delete_exam(request, exam_id):
         return redirect('classroom:schedule')
 
 @login_required
-def edit_exam(request,exam_id):
+def edit_exam(request, exam_id):
     if request.user.user_type != 'teacher':
         return redirect('Users:access_denied')
     
@@ -178,10 +231,12 @@ def edit_exam(request,exam_id):
     if request.method == 'POST':
         exam_form = ExamForm(request.POST, instance=exam, request=request)
         questions_data = []
+        question_ids = []
         
-        # Collect all question forms data
+        # Collect all question forms data and IDs
         i = 0
         while f'question_{i}-question_text' in request.POST:
+            question_id = request.POST.get(f'question_{i}-id', None)
             question_data = {
                 'question_text': request.POST.get(f'question_{i}-question_text'),
                 'option1': request.POST.get(f'question_{i}-option1'),
@@ -190,23 +245,43 @@ def edit_exam(request,exam_id):
                 'option4': request.POST.get(f'question_{i}-option4'),
                 'correct_option': request.POST.get(f'question_{i}-correct_option'),
             }
-            questions_data.append(question_data)
+            questions_data.append((question_id, question_data))
+            if question_id:
+                question_ids.append(int(question_id))
             i += 1
 
         if exam_form.is_valid():
+            # Save exam data
             exam = exam_form.save(commit=False)
             exam.teacher = request.user
-            exam.status = 'published'  # Ensure status is set when editing
+            exam.status = exam_form.cleaned_data.get('status', 'draft')
             exam.save()
-
-            # Save all questions
-            for question_data in questions_data:
+            
+            # Delete questions that were removed from the form
+            questions.exclude(id__in=question_ids).delete()
+            
+            # Update or create questions
+            for question_id, question_data in questions_data:
                 question_form = QuestionForm(question_data)
                 if question_form.is_valid():
-                    question = question_form.save(commit=False)
-                    question.exam = exam
-                    question.save()
-
+                    if question_id:
+                        # Update existing question
+                        try:
+                            question = Question.objects.get(id=question_id, exam=exam)
+                            for key, value in question_data.items():
+                                setattr(question, key, value)
+                            question.save()
+                        except Question.DoesNotExist:
+                            # If the question ID doesn't exist, create a new one
+                            question = question_form.save(commit=False)
+                            question.exam = exam
+                            question.save()
+                    else:
+                        # Create new question
+                        question = question_form.save(commit=False)
+                        question.exam = exam
+                        question.save()
+            
             return redirect('classroom:schedule')
     else:
         exam_form = ExamForm(instance=exam, request=request)
@@ -222,10 +297,20 @@ def view_exam(request, exam_id):
         return redirect('Users:access_denied')
     
     exam = get_object_or_404(Exam, id=exam_id)
+    
+    # Check if the exam is visible to students
+    current_datetime = timezone.now()
+    exam_start_datetime = datetime.combine(exam.exam_date, exam.exam_time)
+    exam_start_datetime = timezone.make_aware(exam_start_datetime)
+    
+    # If exam is not published, or not visible and hasn't started yet, redirect
+    if exam.status != 'published' or (not exam.visibility_to_students and current_datetime < exam_start_datetime):
+        return redirect('Users:dashboard', username=request.user.username)
+    
     questions = Question.objects.filter(exam=exam).order_by('id')
     
-    # Calculate duration in minutes
-    duration_minutes = int(exam.exam_duration.total_seconds() / 60)
+    # Use the duration property which calculates from start and end time
+    duration_minutes = int(exam.duration.total_seconds() / 60)
     
     # Get current time using Django's timezone
     current_time = timezone.now()
@@ -320,8 +405,7 @@ def submit_exam(request):
     
     return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
-@login_required
-def exam_completed(request):
+
 @login_required
 def exam_completed(request):
     try:
@@ -414,37 +498,47 @@ def exam_completed(request):
     })
 
 
-# Open video source
-camera = cv2.VideoCapture(0)
-frame_lock = threading.Lock()
-current_frame = None
+@login_required
+def exam_results(request, exam_id):
+    """
+    Display results for a specific exam
+    """
+    if request.user.user_type != 'teacher':
+        return redirect('Users:access_denied')
+    
+    # Get the exam and verify ownership
+    exam = get_object_or_404(Exam, id=exam_id, teacher=request.user)
+    
+    # Get all results for this exam
+    from results.models import ExamResult
+    results = ExamResult.objects.filter(exam=exam).select_related('student')
+    
+    # Calculate summary statistics
+    total_students = results.count()
+    if total_students > 0:
+        avg_score = sum(result.score for result in results) / total_students
+        passed_students = results.filter(status='passed').count()
+        pass_rate = (passed_students / total_students) * 100 if total_students > 0 else 0
+    else:
+        avg_score = 0
+        passed_students = 0
+        pass_rate = 0
+    
+    # Get class information
+    classroom = exam.exam_class
+    enrolled_students = classroom.students.count() if classroom else 0
+    completion_rate = (total_students / enrolled_students) * 100 if enrolled_students > 0 else 0
+    
+    context = {
+        'exam': exam,
+        'results': results,
+        'total_students': total_students,
+        'avg_score': round(avg_score, 2),
+        'pass_rate': round(pass_rate, 2),
+        'passed_students': passed_students,
+        'enrolled_students': enrolled_students,
+        'completion_rate': round(completion_rate, 2),
+    }
+    
+    return render(request, 'classroom/exam_results.html', context)
 
-# Capture frames in a background thread
-def capture_frames():
-    global current_frame
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-        with frame_lock:
-            current_frame = frame
-
-# Start the capture thread
-threading.Thread(target=capture_frames, daemon=True).start()
-
-# Frame generator for streaming
-def generate_frames():
-    while True:
-        with frame_lock:
-            if current_frame is None:
-                continue
-            _, buffer = cv2.imencode('.jpg', current_frame)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
-
-# Streaming views
-def video_feed(request):
-    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
-
-def admin_feed(request):
-    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')

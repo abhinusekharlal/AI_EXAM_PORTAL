@@ -6,87 +6,167 @@
 {% endblock %}
 
 {% block head %}
+    <!-- Make sure we're loading the correct paths for CSS files -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/add_exam.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Add HTMX directly in this template -->
     <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <!-- Add global CSRF protection for HTMX requests -->
     <script>
-        document.body.addEventListener('htmx:configRequest', function(evt) {
-            evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.addEventListener('htmx:configRequest', function(evt) {
+                evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+            });
         });
     </script>
+    <script src="{% static 'js/create_exam.js' %}"></script>
+    <script src="{% static 'js/question_validation.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <!-- Main Content -->
-    <div class="main-content">
-        <div class="exam-form">
-            <h1>Create New Exam</h1>
-            
-            <section class="exam-details">
-                <h2>Exam Details</h2>
-                <form method="post" action="{% url 'classroom:add_exam' %}">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <label for="exam_name">Exam Name</label>
-                        {{ exam_form.exam_name }}
-                        {% if exam_form.exam_name.errors %}
-                            <div class="error">{{ exam_form.exam_name.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_class">Class</label>
-                        {{ exam_form.exam_class }}
-                        {% if exam_form.exam_class.errors %}
-                            <div class="error">{{ exam_form.exam_class.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_date">Date</label>
-                        {{ exam_form.exam_date }}
-                        {% if exam_form.exam_date.errors %}
-                            <div class="error">{{ exam_form.exam_date.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_time">Time</label>
-                        {{ exam_form.exam_time }}
-                        {% if exam_form.exam_time.errors %}
-                            <div class="error">{{ exam_form.exam_time.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="input-group">
-                        <label for="exam_duration">Duration (HH:MM:SS)</label>
-                        {{ exam_form.exam_duration }}
-                        {% if exam_form.exam_duration.errors %}
-                            <div class="error">{{ exam_form.exam_duration.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <section class="questions-section">
-                        <div class="questions-header">
-                            <h2>Questions</h2>
-                            <button type="button" 
-                                    class="btn-add-question"
-                                    hx-get="{% url 'classroom:add_question_form' %}"
-                                    hx-target="#questions-container"
-                                    hx-swap="beforeend"
-                                    hx-vals='js:{count: document.querySelectorAll(".question-card").length}'>
-                                + Add Question
-                            </button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm rounded-lg mt-4 mb-4">
+                    <div class="card-header bg-white border-bottom-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h2 class="mb-0 fw-bold text-primary">
+                                <i class="fas fa-file-alt me-2"></i>Create New Exam
+                            </h2>
                         </div>
-                        
-                        <div id="questions-container" hx-target="this">
-                            <!-- Questions will be added here dynamically -->
-                        </div>
-                    </section>
-                    <button type="submit" class="btn btn-primary">Create Exam</button>
-                </form>
-            </section>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="{% url 'classroom:add_exam' %}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Exam Name Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_name.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-heading me-1"></i> Exam Name
+                                </label>
+                                {{ exam_form.exam_name }}
+                                {% if exam_form.exam_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Class Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_class.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-chalkboard me-1"></i> Class
+                                </label>
+                                {{ exam_form.exam_class }}
+                                {% if exam_form.exam_class.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_class.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Date Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_date.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-calendar-alt me-1"></i> Date
+                                </label>
+                                {{ exam_form.exam_date }}
+                                {% if exam_form.exam_date.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_date.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Start Time Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_time.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-clock me-1"></i> Start Time
+                                </label>
+                                {{ exam_form.exam_time }}
+                                {% if exam_form.exam_time.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_time.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- End Time Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.exam_end_time.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-hourglass-end me-1"></i> End Time
+                                </label>
+                                {{ exam_form.exam_end_time }}
+                                {% if exam_form.exam_end_time.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.exam_end_time.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Status Field -->
+                            <div class="form-group mb-4">
+                                <label for="{{ exam_form.status.id_for_label }}" class="form-label fw-bold">
+                                    <i class="fas fa-toggle-on me-1"></i> Status
+                                </label>
+                                {{ exam_form.status }}
+                                <small class="form-text text-muted d-block mt-1">{{ exam_form.status.help_text }}</small>
+                                {% if exam_form.status.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.status.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Visibility Field -->
+                            <div class="form-group mb-5">
+                                <label class="form-label fw-bold d-block mb-2">
+                                    <i class="fas fa-eye me-1"></i> Visibility
+                                </label>
+                                <div class="form-check">
+                                    {{ exam_form.visibility_to_students }}
+                                    <label class="form-check-label" for="{{ exam_form.visibility_to_students.id_for_label }}">
+                                        Visible to Students Before Start Time
+                                    </label>
+                                </div>
+                                <small class="form-text text-muted d-block mt-1">{{ exam_form.visibility_to_students.help_text }}</small>
+                                {% if exam_form.visibility_to_students.errors %}
+                                    <div class="invalid-feedback d-block">{{ exam_form.visibility_to_students.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Questions Section -->
+                            <div class="card shadow-sm mb-5 border">
+                                <div class="card-header bg-light">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h3 class="mb-0 fs-5 fw-bold text-dark">
+                                            <i class="fas fa-question-circle me-2"></i>Questions
+                                        </h3>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-primary"
+                                                hx-get="{% url 'classroom:add_question_form' %}"
+                                                hx-target="#questions-container"
+                                                hx-swap="beforeend"
+                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                hx-vals='js:{count: document.querySelectorAll(".question-card").length}'>
+                                            <i class="fas fa-plus me-1"></i> Add Question
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body py-4" id="questions-container" hx-target="this">
+                                    <!-- Questions will be added here dynamically -->
+                                    <div class="text-center py-4 text-muted" id="no-questions-message">
+                                        <i class="fas fa-question-circle fa-3x mb-3"></i>
+                                        <p>No questions added yet. Click "Add Question" to start.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i>Create Exam
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 
-{% block script %}
-    <script src="{% static 'js/create_exam.js' %}"></script>
-    <script src="{% static 'js/question_validation.js' %}"></script>
-{% endblock %}
+
+
+
+

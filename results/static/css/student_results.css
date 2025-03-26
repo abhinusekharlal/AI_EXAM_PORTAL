@@ -1,0 +1,176 @@
+/* Student Results Styles */
+.student-results-page {
+    max-width: 100%;
+}
+
+.student-results-page h1.mb-4 {
+    color: #303030;
+    font-weight: 700;
+    margin-bottom: 25px !important;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.student-results-page h1.mb-4:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #007bff;
+}
+
+.student-results-page .card {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.student-results-page .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.student-results-page .card.border-warning {
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
+}
+
+.student-results-page .card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.student-results-page .card-header.bg-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+}
+
+.student-results-page .card-header.bg-danger {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b) !important;
+}
+
+.student-results-page .card-header.bg-warning {
+    background: linear-gradient(45deg, #ffc107, #ffda6a) !important;
+    color: #856404;
+}
+
+.student-results-page .card-body {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.student-results-page .card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+    padding: 15px;
+}
+
+.student-results-page .display-4 {
+    font-weight: 700;
+    margin-bottom: 10px !important;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.student-results-page .badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.85em;
+    font-weight: 500;
+    border-radius: 30px;
+}
+
+.student-results-page .exam-details {
+    margin-top: 10px;
+    margin-bottom: auto;
+}
+
+.student-results-page .exam-details p {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.student-results-page .exam-details p strong {
+    margin-right: 5px;
+}
+
+.student-results-page .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.student-results-page .view-details-btn.btn-primary {
+    background: linear-gradient(45deg, #007bff, #5cb6f9);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.student-results-page .view-details-btn.btn-primary:hover {
+    background: linear-gradient(45deg, #0069d9, #007bff);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.student-results-page .alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .student-results-page .row-cols-md-3 > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .student-results-page .card {
+        margin-bottom: 15px;
+    }
+    
+    .student-results-page .display-4 {
+        font-size: 2rem;
+    }
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.student-results-page .row-cols-1 .col {
+    animation: fadeInUp 0.6s ease backwards;
+}
+
+.student-results-page .row-cols-1 .col:nth-child(1) { animation-delay: 0.1s; }
+.student-results-page .row-cols-1 .col:nth-child(2) { animation-delay: 0.2s; }
+.student-results-page .row-cols-1 .col:nth-child(3) { animation-delay: 0.3s; }
+.student-results-page .row-cols-1 .col:nth-child(4) { animation-delay: 0.4s; }
+.student-results-page .row-cols-1 .col:nth-child(5) { animation-delay: 0.5s; }
+.student-results-page .row-cols-1 .col:nth-child(6) { animation-delay: 0.6s; }

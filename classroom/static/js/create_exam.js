@@ -1,71 +1,82 @@
-let questionCounter = 1;
-        const questionsContainer = document.getElementById('questions-container');
-        const addQuestionBtn = document.querySelector('.btn-add-question');
-
-        function addQuestion() {
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question-card';
-            questionDiv.innerHTML = `
-
-                <div class="question-header">
-                    <span>Question ${questionCounter + 1}</span>
-                    <button type="button" class="btn-delete" onclick="deleteQuestion(this)">🗑</button>
-                </div>
+// JavaScript for the Create Exam page with HTMX
+document.addEventListener('DOMContentLoaded', function() {
+    // Get references to DOM elements
+    const questionsContainer = document.getElementById('questions-container');
+    const noQuestionsMessage = document.getElementById('no-questions-message');
     
-                <div class="question-text">
-                    {{ question_form.question_text }}
-                </div>    
-        
-                <div class="options-container">
-                    <div class="option">
-                        <label for="option1">Option 1</label>
-                        {{ question_form.option1 }}
-                    </div>
-                    <div class="option">
-                        <label for="option2">Option 2</label>
-                        {{ question_form.option2 }}
-                    </div>
-                    <div class="option">
-                        <label for="option3">Option 3</label>
-                        {{ question_form.option3 }}
-                    </div>
-                    <div class="option">
-                        <label for="option4">Option 4</label>
-                        {{ question_form.option4 }}
-                    </div>
-                </div>
-    
-                <div class="option">
-                    <label for="correct_option">Correct Option</label>
-                    {{ question_form.correct_option }}
-                </div>
-    
-                <button type="button" class="btn-add-option" onclick="addOption(this)">+ Add Option</button>
-            `;
-
-            questionsContainer.appendChild(questionDiv);
-            questionCounter++;
-        }
-
-        function deleteQuestion(button) {
-            const questionCard = button.closest('.question-card');
-            questionCard.remove();
-        }
-
-        function addOption(button) {
-            const optionsContainer = button.previousElementSibling;
-            const optionCount = optionsContainer.children.length + 1;
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.innerHTML = `
-                <input type="text" name="option${optionCount}" placeholder="Option ${optionCount}">
-            `;
-            optionsContainer.appendChild(optionDiv);
-        }
-
-        // 初始化第一个题目
-        document.addEventListener('DOMContentLoaded', () => {
-            if (questionsContainer.children.length === 0) {
-                addQuestion();
+    // Only proceed with DOM operations if the elements exist
+    if (questionsContainer) {
+        // Handle showing/hiding the no-questions message
+        const updateNoQuestionsMessage = function() {
+            const questionCards = document.querySelectorAll('.question-card');
+            
+            if (noQuestionsMessage) {
+                if (questionCards.length > 0) {
+                    noQuestionsMessage.style.display = 'none';
+                } else {
+                    noQuestionsMessage.style.display = 'block';
+                }
             }
+        };
+
+        // Initialize the page
+        updateNoQuestionsMessage();
+
+        // Handle HTMX events for question management
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            // Update the no questions message visibility
+            updateNoQuestionsMessage();
+            
+            // Update the form validation on new questions
+            initializeFormValidation();
         });
+
+        // Add event listener for form submission
+        const examForm = document.querySelector('form');
+        if (examForm) {
+            examForm.addEventListener('submit', function(e) {
+                // Form validation could be added here if needed
+                console.log("Form submitted");
+            });
+        }
+    }
+
+    // Function to initialize form validation
+    function initializeFormValidation() {
+        // Add validation for required fields
+        const requiredFields = document.querySelectorAll('input[required], textarea[required], select[required]');
+        requiredFields.forEach(field => {
+            field.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+
+        // Add validation for correct option selection
+        const correctOptionRadios = document.querySelectorAll('.correct-option-radio');
+        correctOptionRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Find the form group this radio belongs to
+                const questionCard = this.closest('.question-card');
+                if (questionCard) {
+                    const radioName = this.name;
+                    
+                    // Mark all radios in this group as valid (remove any previous error styling)
+                    questionCard.querySelectorAll(`input[name="${radioName}"]`).forEach(r => {
+                        if (r.parentElement) {
+                            r.parentElement.classList.remove('is-invalid');
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    // Initialize form validation if we're on a page with form elements
+    if (document.querySelector('form')) {
+        initializeFormValidation();
+    }
+});

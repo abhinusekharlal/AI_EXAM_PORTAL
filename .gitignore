@@ -9,3 +9,4 @@ AI_EXAM_PORTAL/__pycache__
 AI_EXAM_PORTAL/__pycache__/settings.cpython-312.pyc
 classroom/__pycache__/views.cpython-312.pyc
 monitoring/__pycache__/models.cpython-312.pyc
+.vscode/settings.json

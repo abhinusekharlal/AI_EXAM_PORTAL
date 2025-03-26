@@ -8,11 +8,14 @@ class ExamMonitorDashboard {
         this.activeStudents = new Map();
         this.inactiveCheckInterval = null;
         this.autoRefreshInterval = null;
+        this.examTimerInterval = null;
         this.lastRefreshTime = new Date();
         this.isRefreshing = false;
         this.currentView = localStorage.getItem('examMonitorView') || 'grid';
         this.currentFilter = 'all';
+        this.currentStudentFilter = 'all';
         this.searchQuery = '';
+        this.examEndTime = null;
         
         // DOM elements
         this.videoGrid = document.getElementById('videoGrid');
@@ -27,13 +30,17 @@ class ExamMonitorDashboard {
         this.disconnectedStudents = document.getElementById('disconnectedStudents');
         this.studentSearch = document.getElementById('studentSearch');
         this.alertFilter = document.getElementById('alertFilter');
+        this.studentFilter = document.getElementById('studentFilter');
         this.clearSearchBtn = document.getElementById('clearSearchBtn');
+        this.examTimeRemaining = document.getElementById('examTimeRemaining');
+        this.connectionErrorOverlay = document.getElementById('connectionErrorOverlay');
         
-        // Warning and flag modals
+        // Modals
         this.warningModal = document.getElementById('warningModal');
         this.flagModal = document.getElementById('flagModal');
         this.activityModal = document.getElementById('activityModal');
         this.focusModal = document.getElementById('focusModal');
+        this.shortcutsModal = document.getElementById('shortcutsModal');
         
         // Get CSRF token for AJAX requests
         this.csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -42,12 +49,19 @@ class ExamMonitorDashboard {
         this.refreshStreams = this.refreshStreams.bind(this);
         this.searchStudents = this.searchStudents.bind(this);
         this.filterAlerts = this.filterAlerts.bind(this);
+        this.filterStudents = this.filterStudents.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
         this.sendWarning = this.sendWarning.bind(this);
         this.flagStudent = this.flagStudent.bind(this);
         this.showStudentActivity = this.showStudentActivity.bind(this);
         this.showFocusView = this.showFocusView.bind(this);
+        this.updateExamTimer = this.updateExamTimer.bind(this);
+        this.showKeyboardShortcuts = this.showKeyboardShortcuts.bind(this);
+        this.handleRetryConnection = this.handleRetryConnection.bind(this);
+        
+        // Error tracking
+        this.consecutiveErrors = 0;
     }
     
     /**
@@ -61,14 +75,19 @@ class ExamMonitorDashboard {
             // Update connection status
             this.updateConnectionStatus('connecting');
             
+            // Setup event listeners
+            this.setupEventListeners();
+            
             // Load initial data
             await this.loadActiveStudents();
+            await this.loadExamDetails();
             
             // Update connection status
             this.updateConnectionStatus('connected');
+            this.consecutiveErrors = 0;
             
-            // Setup event listeners
-            this.setupEventListeners();
+            // Start timers
+            this.startExamTimer();
             
             // Start auto-refresh if enabled
             const autoRefreshToggle = document.getElementById('autoRefreshToggle');
@@ -88,7 +107,130 @@ class ExamMonitorDashboard {
         } catch (error) {
             console.error('Error initializing dashboard:', error);
             this.updateConnectionStatus('error');
-            this.showToast('Failed to initialize monitoring dashboard. Please refresh the page.', 'error');
+            this.showToast('Failed to initialize monitoring dashboard. Please check your connection.', 'error');
+            this.consecutiveErrors++;
+            
+            if (this.consecutiveErrors > 2) {
+                this.showConnectionError();
+            }
+        }
+    }
+    
+    /**
+     * Load exam details including end time
+     */
+    async loadExamDetails() {
+        try {
+            const response = await fetch(`/monitoring/api/exam/${this.examId}/details/`, {
+                headers: {
+                    'X-CSRFToken': this.csrfToken,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin'
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Failed to load exam details: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            if (data.end_time) {
+                this.examEndTime = new Date(data.end_time);
+                this.updateExamTimer();
+            }
+        } catch (error) {
+            console.error('Error loading exam details:', error);
+            this.showToast('Failed to load exam details', 'warning');
+        }
+    }
+    
+    /**
+     * Start exam countdown timer
+     */
+    startExamTimer() {
+        if (this.examTimerInterval) {
+            clearInterval(this.examTimerInterval);
+        }
+        
+        this.examTimerInterval = setInterval(this.updateExamTimer, 1000);
+    }
+    
+    /**
+     * Update exam countdown timer
+     */
+    updateExamTimer() {
+        if (!this.examEndTime || !this.examTimeRemaining) return;
+        
+        const now = new Date();
+        const timeRemaining = this.examEndTime - now;
+        
+        if (timeRemaining <= 0) {
+            this.examTimeRemaining.textContent = "Exam Ended";
+            this.examTimeRemaining.classList.add('critical');
+            clearInterval(this.examTimerInterval);
+            return;
+        }
+        
+        // Format time remaining
+        const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        this.examTimeRemaining.textContent = formattedTime;
+        
+        // Add warning classes for low time
+        this.examTimeRemaining.classList.remove('warning', 'critical');
+        if (timeRemaining < 5 * 60 * 1000) { // Less than 5 minutes
+            this.examTimeRemaining.classList.add('critical');
+        } else if (timeRemaining < 15 * 60 * 1000) { // Less than 15 minutes
+            this.examTimeRemaining.classList.add('warning');
+        }
+    }
+    
+    /**
+     * Show connection error overlay
+     */
+    showConnectionError() {
+        if (this.connectionErrorOverlay) {
+            this.connectionErrorOverlay.classList.remove('hidden');
+        }
+    }
+    
+    /**
+     * Hide connection error overlay
+     */
+    hideConnectionError() {
+        if (this.connectionErrorOverlay) {
+            this.connectionErrorOverlay.classList.add('hidden');
+        }
+    }
+    
+    /**
+     * Handle retry connection button click
+     */
+    async handleRetryConnection() {
+        this.hideConnectionError();
+        this.updateConnectionStatus('connecting');
+        this.showToast('Retrying connection...', 'info');
+        
+        try {
+            await this.refreshStreams();
+            this.consecutiveErrors = 0;
+        } catch (error) {
+            console.error('Error retrying connection:', error);
+            this.showToast('Still having trouble connecting. Please check your network.', 'error');
+            this.showConnectionError();
+        }
+    }
+    
+    /**
+     * Show keyboard shortcuts modal
+     */
+    showKeyboardShortcuts() {
+        if (this.shortcutsModal) {
+            this.shortcutsModal.style.display = 'block';
         }
     }
     
@@ -164,6 +306,7 @@ class ExamMonitorDashboard {
             // Focus modal action buttons
             const focusSendWarningBtn = document.getElementById('focusSendWarningBtn');
             const focusFlagBtn = document.getElementById('focusFlagBtn');
+            const focusRejectAlertBtn = document.getElementById('focusRejectAlertBtn');
             
             if (focusSendWarningBtn) {
                 focusSendWarningBtn.addEventListener('click', () => {
@@ -178,6 +321,14 @@ class ExamMonitorDashboard {
                     const studentId = this.focusModal.dataset.studentId;
                     const studentName = document.getElementById('focusStudentName').textContent;
                     this.openFlagModal(studentId, studentName);
+                });
+            }
+            
+            if (focusRejectAlertBtn) {
+                focusRejectAlertBtn.addEventListener('click', () => {
+                    const studentId = this.focusModal.dataset.studentId;
+                    const sessionId = this.focusModal.dataset.sessionId;
+                    this.rejectCurrentAlert(studentId, sessionId);
                 });
             }
         }
@@ -253,6 +404,145 @@ class ExamMonitorDashboard {
                 });
             }
         });
+        
+        // Student filter
+        if (this.studentFilter) {
+            this.studentFilter.addEventListener('change', this.filterStudents);
+        }
+        
+        // Shortcuts help button
+        const shortcutsHelpBtn = document.getElementById('shortcutsHelpBtn');
+        if (shortcutsHelpBtn) {
+            shortcutsHelpBtn.addEventListener('click', this.showKeyboardShortcuts);
+        }
+        
+        // Close shortcuts modal
+        const closeShortcutsBtn = document.getElementById('closeShortcutsBtn');
+        if (closeShortcutsBtn) {
+            closeShortcutsBtn.addEventListener('click', () => this.closeModal(this.shortcutsModal));
+        }
+        
+        // Retry connection button
+        const retryConnectionBtn = document.getElementById('retryConnectionBtn');
+        if (retryConnectionBtn) {
+            retryConnectionBtn.addEventListener('click', this.handleRetryConnection);
+        }
+        
+        // Enable clicking on alerts to focus on student
+        document.addEventListener('click', event => {
+            const alertItem = event.target.closest('.alert-item');
+            if (alertItem && alertItem.dataset.sessionId) {
+                const sessionId = alertItem.dataset.sessionId;
+                const studentId = alertItem.dataset.studentId;
+                const studentName = alertItem.querySelector('.alert-student')?.textContent;
+                
+                // Remove focus from any previously focused alert
+                document.querySelectorAll('.alert-item.focused').forEach(el => {
+                    el.classList.remove('focused');
+                });
+                
+                // Add focus to clicked alert
+                alertItem.classList.add('focused');
+                
+                // Find the corresponding student card
+                const studentCard = this.videoGrid.querySelector(`.video-card[data-session-id="${sessionId}"]`);
+                if (studentCard) {
+                    // Scroll to the student card
+                    studentCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight effect to the card
+                    studentCard.classList.add('highlight-pulse');
+                    setTimeout(() => {
+                        studentCard.classList.remove('highlight-pulse');
+                    }, 2000);
+                }
+                
+                // If student name is present, show focus view
+                if (studentName && studentId) {
+                    this.showFocusView(studentId, studentName);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Filter students by status
+     */
+    filterStudents() {
+        if (!this.studentFilter || !this.videoGrid) return;
+        
+        const filterValue = this.studentFilter.value;
+        this.currentStudentFilter = filterValue;
+        
+        const cards = this.videoGrid.querySelectorAll('.video-card');
+        let visibleCount = 0;
+        
+        cards.forEach(card => {
+            let show = false;
+            
+            switch (filterValue) {
+                case 'all':
+                    show = true;
+                    break;
+                case 'active':
+                    show = !card.classList.contains('disconnected');
+                    break;
+                case 'disconnected':
+                    show = card.classList.contains('disconnected');
+                    break;
+                case 'flagged':
+                    show = card.classList.contains('alert-critical') || 
+                           card.classList.contains('alert-warning');
+                    break;
+            }
+            
+            // Also apply search filter if there's an active search
+            if (show && this.searchQuery) {
+                const studentName = card.querySelector('.student-name').textContent.toLowerCase();
+                show = studentName.includes(this.searchQuery.toLowerCase());
+            }
+            
+            card.style.display = show ? '' : 'none';
+            
+            if (show) {
+                visibleCount++;
+            }
+        });
+        
+        // Show empty state if no students match the filter
+        if (visibleCount === 0) {
+            if (this.emptyState) {
+                this.emptyState.style.display = 'flex';
+                let message = 'No students match the current filter';
+                
+                if (this.searchQuery) {
+                    message += ` and search "${this.searchQuery}"`;
+                }
+                
+                this.emptyState.innerHTML = `
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                    <p>${message}</p>
+                    <button id="clearFiltersBtn" class="btn btn-secondary">Clear Filters</button>
+                `;
+                
+                // Add event listener to clear button
+                document.getElementById('clearFiltersBtn')?.addEventListener('click', () => {
+                    // Reset student filter
+                    if (this.studentFilter) {
+                        this.studentFilter.value = 'all';
+                        this.currentStudentFilter = 'all';
+                    }
+                    
+                    // Reset search
+                    this.clearSearch();
+                    
+                    // Apply filters
+                    this.filterStudents();
+                });
+            }
+        } else {
+            this.hideEmptyState();
+        }
     }
     
     /**
@@ -275,6 +565,10 @@ class ExamMonitorDashboard {
             }
             
             const data = await response.json();
+            
+            // Reset error counter since we have a successful response
+            this.consecutiveErrors = 0;
+            this.hideConnectionError();
             
             // Update dashboard statistics
             if (data.stats) {
@@ -350,6 +644,9 @@ class ExamMonitorDashboard {
                 this.searchStudents({ target: { value: this.searchQuery } });
             }
             
+            // Apply current student filter
+            this.filterStudents();
+            
             // Apply current alert filter
             this.filterAlerts();
             
@@ -367,6 +664,12 @@ class ExamMonitorDashboard {
             console.error('Error loading active students:', error);
             this.updateConnectionStatus('error');
             this.showToast('Failed to load active students. Will retry automatically.', 'error');
+            this.consecutiveErrors++;
+            
+            if (this.consecutiveErrors > 2) {
+                this.showConnectionError();
+            }
+            
             throw error;
         }
     }
@@ -405,6 +708,12 @@ class ExamMonitorDashboard {
             activityIndicator.classList.remove('active', 'inactive', 'disconnected');
             activityIndicator.classList.add(isConnected ? 'active' : 'disconnected');
             activityIndicator.title = isConnected ? 'Active' : 'Disconnected';
+        }
+        
+        // Show/hide connection overlay
+        const connectionOverlay = card.querySelector('.connection-overlay');
+        if (connectionOverlay) {
+            connectionOverlay.classList.toggle('hidden', isConnected);
         }
         
         // Update time active
@@ -545,6 +854,8 @@ class ExamMonitorDashboard {
         const alertElement = document.createElement('div');
         alertElement.className = `alert-item ${alert.severity}`;
         alertElement.dataset.alertId = alert.id;
+        alertElement.dataset.studentId = alert.student_id;
+        alertElement.dataset.sessionId = alert.session_id;
         
         alertElement.innerHTML = `
             <div class="alert-header">
@@ -563,12 +874,24 @@ class ExamMonitorDashboard {
                        title="View Screenshot">
                         <i class="fas fa-image" aria-hidden="true"></i> View
                     </a>` : ''}
+                <button class="focus-student-btn" title="Focus on this student">
+                    <i class="fas fa-search" aria-hidden="true"></i> Focus
+                </button>
             </div>
         `;
         
         // Add event listener for the mark as reviewed button
-        alertElement.querySelector('.mark-reviewed-btn').addEventListener('click', () => {
+        alertElement.querySelector('.mark-reviewed-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             this.markAlertReviewed(alert.id, alertElement);
+        });
+        
+        // Add event listener for focus button
+        alertElement.querySelector('.focus-student-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (alert.student_id && alert.student_name) {
+                this.showFocusView(alert.student_id, alert.student_name);
+            }
         });
         
         this.alertsList.prepend(alertElement);
@@ -581,6 +904,15 @@ class ExamMonitorDashboard {
         // Show notification for high severity alerts
         if (alert.severity === 'critical') {
             this.showToast(`Critical alert: ${alert.student_name} - ${alert.description}`, 'error');
+            
+            // Flash the corresponding student card
+            const studentCard = this.videoGrid.querySelector(`.video-card[data-student-id="${alert.student_id}"]`);
+            if (studentCard) {
+                studentCard.classList.add('alert-flash');
+                setTimeout(() => {
+                    studentCard.classList.remove('alert-flash');
+                }, 2000);
+            }
         }
     }
     
@@ -649,8 +981,9 @@ class ExamMonitorDashboard {
      */
     async markAllAlertsReviewed() {
         const clearAllBtn = document.getElementById('clearAllAlertsBtn');
+        const originalText = clearAllBtn ? clearAllBtn.textContent : 'Clear All Alerts';
+        
         if (clearAllBtn) {
-            const originalText = clearAllBtn.textContent;
             clearAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             clearAllBtn.disabled = true;
         }
@@ -808,38 +1141,12 @@ class ExamMonitorDashboard {
         
         if (!this.videoGrid) return;
         
-        const cards = this.videoGrid.querySelectorAll('.video-card');
-        let hasVisibleCards = false;
-        
-        cards.forEach(card => {
-            const studentName = card.querySelector('.student-name').textContent.toLowerCase();
-            
-            if (query === '' || studentName.includes(query)) {
-                card.style.display = '';
-                hasVisibleCards = true;
-            } else {
-                card.style.display = 'none';
-            }
-        });
+        // Apply both search query and current filter
+        this.filterStudents();
         
         // Toggle clear search button
         if (this.clearSearchBtn) {
             this.clearSearchBtn.style.display = query ? 'block' : 'none';
-        }
-        
-        // Show/hide empty state
-        if (!hasVisibleCards && this.emptyState) {
-            this.emptyState.style.display = 'flex';
-            this.emptyState.innerHTML = `
-                <i class="fas fa-search" aria-hidden="true"></i>
-                <p>No students matching "${query}"</p>
-                <button id="clearSearchBtn2" class="btn btn-secondary">Clear Search</button>
-            `;
-            
-            // Add event listener to the new clear button
-            document.getElementById('clearSearchBtn2')?.addEventListener('click', this.clearSearch);
-        } else if (hasVisibleCards && this.emptyState) {
-            this.emptyState.style.display = 'none';
         }
     }
     
@@ -864,6 +1171,7 @@ class ExamMonitorDashboard {
                 <i class="fas fa-video-slash" aria-hidden="true"></i>
                 <p>No active student streams</p>
                 <button id="checkAgainBtn" class="btn btn-primary">Check Again</button>
+                <p class="empty-note">Students will appear here when they connect to the exam</p>
             `;
             
             // Add event listener to the new button
@@ -1300,7 +1608,15 @@ class ExamMonitorDashboard {
         if (!this.warningModal) return;
         
         const studentId = this.warningModal.dataset.studentId;
-        const sessionId = this.activeStudents.get(studentId)?.element?.dataset.sessionId;
+        
+        // Get the session ID correctly from the card's dataset
+        const card = this.videoGrid.querySelector(`.video-card[data-student-id="${studentId}"]`);
+        if (!card) {
+            this.showToast('Could not identify student card', 'error');
+            return;
+        }
+        
+        const sessionId = card.dataset.sessionId;
         
         if (!sessionId) {
             this.showToast('Could not identify student session', 'error');
@@ -1387,7 +1703,15 @@ class ExamMonitorDashboard {
         if (!this.flagModal) return;
         
         const studentId = this.flagModal.dataset.studentId;
-        const sessionId = this.activeStudents.get(studentId)?.element?.dataset.sessionId;
+        
+        // Get the session ID correctly - use the card's dataset instead
+        const card = this.videoGrid.querySelector(`.video-card[data-student-id="${studentId}"]`);
+        if (!card) {
+            this.showToast('Could not identify student card', 'error');
+            return;
+        }
+        
+        const sessionId = card.dataset.sessionId;
         
         if (!sessionId) {
             this.showToast('Could not identify student session', 'error');
@@ -1612,9 +1936,9 @@ class ExamMonitorDashboard {
         buttons.forEach(btn => {
             btn.disabled = false;
             if (btn.classList.contains('btn-warning')) {
-                btn.textContent = 'Send Warning';
+                btn.innerHTML = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Send Warning';
             } else if (btn.classList.contains('btn-danger')) {
-                btn.textContent = 'Submit Flag';
+                btn.innerHTML = '<i class="fas fa-flag" aria-hidden="true"></i> Submit Flag';
             }
         });
     }
@@ -1689,14 +2013,166 @@ class ExamMonitorDashboard {
         this.isRefreshing = true;
         this.updateConnectionStatus('refreshing');
         
+        const refreshBtn = document.getElementById('refreshStreamsBtn');
+        if (refreshBtn) {
+            const originalHTML = refreshBtn.innerHTML;
+            refreshBtn.innerHTML = '<i class="fas fa-sync fa-spin" aria-hidden="true"></i> Refreshing...';
+            refreshBtn.disabled = true;
+        }
+        
         try {
             await this.loadActiveStudents();
             this.updateConnectionStatus('connected');
+            
+            if (refreshBtn) {
+                refreshBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Refreshed';
+                setTimeout(() => {
+                    refreshBtn.innerHTML = '<i class="fas fa-sync" aria-hidden="true"></i> Refresh Streams';
+                    refreshBtn.disabled = false;
+                }, 1000);
+            }
         } catch (error) {
             console.error('Error refreshing streams:', error);
             this.updateConnectionStatus('error');
+            
+            if (refreshBtn) {
+                refreshBtn.innerHTML = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Failed';
+                setTimeout(() => {
+                    refreshBtn.innerHTML = '<i class="fas fa-sync" aria-hidden="true"></i> Refresh Streams';
+                    refreshBtn.disabled = false;
+                }, 1000);
+            }
         } finally {
             this.isRefreshing = false;
+        }
+    }
+    
+    /**
+     * Add CSS for pulse animation on alert flash
+     */
+    // addStyles() {
+    //     // Add styles for alert flash animation if not already added
+    //     if (!document.getElementById('monitorDashboardStyles')) {
+    //         const style = document.createElement('style');
+    //         style.id = 'monitorDashboardStyles';
+    //         style.textContent = `
+    //             @keyframes alert-flash {
+    //                 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+    //                 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+    //                 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+    //             }
+                
+    //             .alert-flash {
+    //                 animation: alert-flash 1s ease-in-out 3;
+    //             }
+                
+    //             .highlight-pulse {
+    //                 transition: transform 0.3s ease, box-shadow 0.3s ease;
+    //                 transform: translateY(-2px);
+    //                 box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
+    //             }
+    //         `;
+    //         document.head.appendChild(style);
+    //     }
+    // }
+    
+    /**
+     * Reject current alert for a student (mark as false positive)
+     */
+    async rejectCurrentAlert(studentId, sessionId) {
+        if (!sessionId) {
+            const card = this.videoGrid.querySelector(`.video-card[data-student-id="${studentId}"]`);
+            sessionId = card?.dataset.sessionId;
+        }
+        
+        if (!sessionId) {
+            this.showToast('Could not identify student session', 'error');
+            return;
+        }
+        
+        // Find the latest alert for this student
+        const alerts = this.alertsList?.querySelectorAll(`.alert-item[data-student-id="${studentId}"]`);
+        if (!alerts || alerts.length === 0) {
+            this.showToast('No active alerts to reject', 'warning');
+            return;
+        }
+        
+        // The most recent alert will be the first one (alerts are sorted newest to oldest)
+        const latestAlert = alerts[0];
+        const alertId = latestAlert.dataset.alertId;
+        
+        if (!alertId) {
+            this.showToast('Could not identify alert', 'error');
+            return;
+        }
+        
+        // Update button state
+        const rejectBtn = document.getElementById('focusRejectAlertBtn');
+        if (rejectBtn) {
+            rejectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rejecting...';
+            rejectBtn.disabled = true;
+        }
+        
+        try {
+            const response = await fetch(`/monitoring/alert/${alertId}/reject/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': this.csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reason: 'Manually rejected by proctor'
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to reject alert');
+            }
+            
+            // Remove the alert from UI with animation
+            latestAlert.classList.add('removing');
+            setTimeout(() => {
+                if (latestAlert.parentNode) {
+                    latestAlert.parentNode.removeChild(latestAlert);
+                    this.updateAlertCounter();
+                    
+                    // Show empty alerts message if no alerts left
+                    if (this.alertsList.children.length === 0) {
+                        this.showEmptyAlerts();
+                    }
+                }
+            }, 300);
+            
+            // Update display in focus view
+            const focusAlerts = document.getElementById('focusAlerts');
+            if (focusAlerts) {
+                const currentCount = parseInt(focusAlerts.textContent) || 0;
+                if (currentCount > 0) {
+                    focusAlerts.textContent = currentCount - 1;
+                }
+            }
+            
+            // Reset button
+            if (rejectBtn) {
+                rejectBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reject Alert';
+                rejectBtn.disabled = false;
+            }
+            
+            this.showToast('Alert rejected successfully', 'success');
+            
+            // Refresh the mini timeline in focus view
+            this.fetchFocusData(sessionId);
+            
+        } catch (error) {
+            console.error('Error rejecting alert:', error);
+            
+            // Reset button
+            if (rejectBtn) {
+                rejectBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reject Alert';
+                rejectBtn.disabled = false;
+            }
+            
+            this.showToast('Failed to reject alert', 'error');
         }
     }
 }

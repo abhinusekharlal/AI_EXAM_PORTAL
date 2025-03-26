@@ -38,18 +38,32 @@ class Exam(models.Model):
     exam_class = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     exam_date = models.DateField()
     exam_time = models.TimeField()
-    exam_duration = models.DurationField()
+    exam_end_time = models.TimeField(default='23:59:59', help_text="When the exam ends")  # Added default value
+    visibility_to_students = models.BooleanField(default=True, help_text="Whether students can see this exam before it starts")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     teacher = models.ForeignKey('Users.User', on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='published')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')  # Default changed to draft
     
     def __str__(self):
         return self.exam_name
-
+    
     class Meta:
         verbose_name_plural = 'Exams'
         ordering = ['-exam_date']
+        
+    @property
+    def duration(self):
+        """Calculate the duration from start time to end time"""
+        from datetime import datetime, timedelta
+        start_datetime = datetime.combine(self.exam_date, self.exam_time)
+        end_datetime = datetime.combine(self.exam_date, self.exam_end_time)
+        
+        # Handle if end time is on the next day
+        if end_datetime < start_datetime:
+            end_datetime = end_datetime + timedelta(days=1)
+            
+        return end_datetime - start_datetime
 
 OPTION_CHOICES = (
     ('1', 'Option 1'),

@@ -20,7 +20,4 @@ urlpatterns = [
     path('classroom/delete-question/', views.delete_question, name='delete_question'),
     path('classroom/submit-exam/', views.submit_exam, name='submit_exam'),
     path('classroom/exam-completed/', views.exam_completed, name='exam_completed'),
-    #video streaming
-    path('classroom/video_feed', video_feed, name='video_feed'),
-    path('classroom/admin_feed', admin_feed, name='admin_feed'),
-]
+    path('classroom/exam-results/<int:exam_id>/', views.exam_results, name='exam_results'),

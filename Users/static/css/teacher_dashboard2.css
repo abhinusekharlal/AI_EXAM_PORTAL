@@ -684,9 +684,6 @@ img {
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
-    body {
-        background-color: #f5f5f5;
-    }
 
     .card, .dcard, .box, .help {
         background: #fff;

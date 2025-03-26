@@ -7,11 +7,12 @@
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/base_components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/classroom_forms.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
-    <div class="card form-card">
+    <div class="form-card">
         <h2><i class="fas fa-plus-circle"></i> Create a New Class</h2>
         <form method="post" action="{% url 'classroom:create_class' %}">
             {% csrf_token %}

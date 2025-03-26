@@ -3,6 +3,7 @@
 
 {% block title %}Report: {{ exam.exam_name }}{% endblock %}
 {% block head  %}
+    <link rel="stylesheet" href="{% static 'css/exam_report.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {

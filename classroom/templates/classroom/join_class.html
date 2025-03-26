@@ -7,20 +7,25 @@
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/base_components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/classroom_forms.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
-    <div class="card form-card">
+    <div class="form-card">
         <h2><i class="fas fa-door-open"></i> Join a Class</h2>
         <form method="post" action="{% url 'classroom:join_class' %}">
             {% csrf_token %}
             {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ error }}
+                </div>
             {% endif %}
             <div class="form-group">
                 <label for="id_class_code" class="form-label">Class Code</label>
                 {{ form.class_code|add_class:"form-control" }}
+                <small class="form-text text-muted">Enter the class code provided by your teacher</small>
             </div>
             <button type="submit" class="btn-primary">
                 <i class="fas fa-sign-in-alt"></i> Join Class

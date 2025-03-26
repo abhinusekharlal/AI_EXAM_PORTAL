@@ -1,0 +1,352 @@
+/**
+ * Classroom Management Forms Styling
+ * Styles for create_class, join_class, and manage_students pages
+ */
+
+/* General Form Styling */
+.form-card {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-card h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.form-card h2 i {
+    color: #0066ff;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0066ff;
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+}
+
+.form-card .btn-primary {
+    background: #0066ff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.form-card .btn-primary:hover {
+    background: #0052cc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
+}
+
+/* Alert Styling */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.alert-danger {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #fecaca;
+}
+
+/* Manage Students Page Styling */
+.manage-students-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.manage-students-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.manage-students-header h2 {
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.manage-students-header .class-code {
+    background: #f0f7ff;
+    color: #0066ff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.manage-students-actions {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.manage-students-actions .btn {
+    background: #0066ff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.manage-students-actions .btn:hover {
+    background: #0052cc;
+    transform: translateY(-2px);
+}
+
+.manage-students-actions .btn-secondary {
+    background: #f3f4f6;
+    color: #444;
+}
+
+.manage-students-actions .btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.students-section {
+    margin-top: 2rem;
+}
+
+.students-section h3 {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.students-section h3 i {
+    color: #0066ff;
+}
+
+.students-list {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.student-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.2s ease;
+}
+
+.student-item:last-child {
+    border-bottom: none;
+}
+
+.student-item:hover {
+    background: #f9fafb;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.student-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.student-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.student-email {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.student-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-danger {
+    background: #f87171;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-danger:hover {
+    background: #ef4444;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    color: #64748b;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+.empty-state h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+}
+
+/* Copy Class Code Button Styling */
+#copy-class-code {
+    background: #0066ff;
+    transition: all 0.3s ease;
+}
+
+#copy-class-code:hover {
+    background: #0052cc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
+}
+
+#copy-class-code.copied {
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+#copy-class-code.copied i {
+    animation: pulse 1.5s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-card,
+    .manage-students-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .manage-students-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .student-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .student-actions {
+        align-self: stretch;
+    }
+    
+    .btn-danger {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -1,7 +1,10 @@
 {% extends 'Users/layout.html' %}
 {% load static %}
 
-{% block title %}Exam Results Dashboard{% endblock %}
+{% block title %}Results Dashboard{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/teacher_dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container mt-4">

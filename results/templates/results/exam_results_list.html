@@ -1,7 +1,10 @@
 {% extends 'Users/layout.html' %}
 {% load static %}
 
-{% block title %}Results for {{ exam.exam_name }}{% endblock %}
+{% block title %}{{ exam.exam_name }} Results{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/exam_results_list.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
