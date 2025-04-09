@@ -318,3 +318,413 @@ ERROR 2025-03-26 21:38:32,240 log 588897 140571366926016 Internal Server Error: 
 ERROR 2025-03-26 21:38:32,241 basehttp 588897 140571366926016 "POST /classroom/submit-exam/ HTTP/1.1" 500 114
 ERROR 2025-03-26 21:38:34,263 log 588897 140568013293248 Internal Server Error: /classroom/submit-exam/
 ERROR 2025-03-26 21:38:34,264 basehttp 588897 140568013293248 "POST /classroom/submit-exam/ HTTP/1.1" 500 114
+ERROR 2025-03-26 22:56:09,929 log 916636 128267260806848 Internal Server Error: /results/review/8/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/results/views.py", line 155, in review_flagged_exam
+    return render(request, 'results/review_flagged_exam.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 1537, in do_with
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'with' received an invalid token: '=='
+ERROR 2025-03-26 22:56:09,933 basehttp 916636 128267260806848 "GET /results/review/8/ HTTP/1.1" 500 365090
+ERROR 2025-03-26 22:58:57,401 log 925972 139056443049664 Internal Server Error: /results/review/8/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/results/views.py", line 155, in review_flagged_exam
+    return render(request, 'results/review_flagged_exam.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 1537, in do_with
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'with' received an invalid token: '=='
+ERROR 2025-03-26 22:58:57,404 basehttp 925972 139056443049664 "GET /results/review/8/ HTTP/1.1" 500 365090
+ERROR 2025-03-26 22:58:59,834 log 925972 139056443049664 Internal Server Error: /results/review/8/
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/results/views.py", line 155, in review_flagged_exam
+    return render(request, 'results/review_flagged_exam.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 295, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 862, in do_for
+    nodelist_loop = parser.parse(
+                    ^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/venv/lib/python3.12/site-packages/django/template/defaulttags.py", line 1537, in do_with
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: 'with' received an invalid token: '=='
+ERROR 2025-03-26 22:58:59,836 basehttp 925972 139056443049664 "GET /results/review/8/ HTTP/1.1" 500 365090
+ERROR 2025-03-27 06:02:13,697 log 264316 140659843675840 Internal Server Error: /classroom/submit-exam/
+ERROR 2025-03-27 06:02:13,698 basehttp 264316 140659843675840 "POST /classroom/submit-exam/ HTTP/1.1" 500 114
+ERROR 2025-03-27 06:02:15,744 log 264316 140656479561408 Internal Server Error: /classroom/submit-exam/
+ERROR 2025-03-27 06:02:15,745 basehttp 264316 140656479561408 "POST /classroom/submit-exam/ HTTP/1.1" 500 114
+ERROR 2025-03-27 06:03:27,872 views 264316 140659805910720 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 06:03:27,875 log 264316 140659805910720 Internal Server Error: /monitoring/api/exam/2/details/
+ERROR 2025-03-27 06:03:27,876 basehttp 264316 140659805910720 "GET /monitoring/api/exam/2/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 06:16:36,057 views 264316 140659835283136 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 06:16:36,059 log 264316 140659835283136 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 06:16:36,059 basehttp 264316 140659835283136 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 06:20:14,068 views 264316 140659852068544 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 06:20:14,070 log 264316 140659852068544 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 06:20:14,071 basehttp 264316 140659852068544 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 11:43:08,423 views 6244 123638909249216 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 11:43:08,426 log 6244 123638909249216 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 11:43:08,427 basehttp 6244 123638909249216 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 17:48:06,156 views 14279 138265944667840 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 17:48:06,161 log 14279 138265944667840 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 17:48:06,170 basehttp 14279 138265944667840 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 17:51:39,095 views 14279 138265944667840 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 17:51:39,105 log 14279 138265944667840 Internal Server Error: /monitoring/api/exam/1/details/
+ERROR 2025-03-27 17:51:39,105 basehttp 14279 138265944667840 "GET /monitoring/api/exam/1/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 18:00:10,158 views 14279 138265868891840 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 18:00:10,160 log 14279 138265868891840 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 18:00:10,160 basehttp 14279 138265868891840 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 18:01:01,121 views 14279 138265944667840 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 18:01:01,123 log 14279 138265944667840 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 18:01:01,124 basehttp 14279 138265944667840 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 18:14:19,055 frame_processor 116078 133875486705344 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 18:14:19,056 frame_processor 116078 133875405682368 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:17:02,798 views 116078 133875365836480 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 452, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 18:17:02,800 log 116078 133875365836480 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 18:17:02,801 basehttp 116078 133875365836480 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 18:23:04,933 views 150011 132153283159744 Error fetching exam details: 'Exam' object has no attribute 'exam_duration'
+Traceback (most recent call last):
+  File "/home/abhinusekharlal/Desktop/ai_exam_portal/AI_EXAM_PORTAL/monitoring/views.py", line 454, in api_exam_details
+    if isinstance(exam.exam_duration, datetime.timedelta):
+                  ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Exam' object has no attribute 'exam_duration'
+ERROR 2025-03-27 18:23:04,936 log 150011 132153283159744 Internal Server Error: /monitoring/api/exam/3/details/
+ERROR 2025-03-27 18:23:04,936 basehttp 150011 132153283159744 "GET /monitoring/api/exam/3/details/ HTTP/1.1" 500 41
+ERROR 2025-03-27 18:23:05,935 frame_processor 150011 132157326763712 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:23:05,967 frame_processor 150011 132154543544000 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:23:09,438 frame_processor 150011 132157335156416 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:36:50,962 frame_processor 201636 138284963743424 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 18:36:50,963 frame_processor 201636 138284942763712 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:36:51,166 frame_processor 201636 138281049818816 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 18:36:51,175 frame_processor 201636 138281058211520 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:37:26,893 frame_processor 201636 138280859330240 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:37:31,349 frame_processor 201636 138280850937536 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:37:31,350 frame_processor 201636 138284942763712 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:37:31,475 frame_processor 201636 138280867722944 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:54:13,704 frame_processor 266268 131148682639040 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 18:54:13,718 frame_processor 266268 131147958838976 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:54:13,819 frame_processor 266268 131145095939776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:54:14,038 frame_processor 266268 131144712451776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:54:14,052 frame_processor 266268 131148674246336 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:54:14,070 frame_processor 266268 131145112725184 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:59:05,579 frame_processor 286784 127303990294208 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 18:59:05,595 frame_processor 286784 127303981901504 DeepFace verification error: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.
+ERROR 2025-03-27 18:59:36,770 frame_processor 286784 127305562883776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:59:37,203 frame_processor 286784 127306133944000 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:59:37,326 frame_processor 286784 127306142336704 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:59:38,554 frame_processor 286784 127303981901504 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 18:59:46,399 frame_processor 286784 127301924681408 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 18:59:46,532 frame_processor 286784 127303990294208 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:09,627 frame_processor 286784 127305562883776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:17,516 frame_processor 286784 127306133944000 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 19:00:17,636 frame_processor 286784 127306142336704 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:17,983 frame_processor 286784 127303981901504 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:18,355 frame_processor 286784 127301924681408 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:19,023 frame_processor 286784 127303990294208 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:58,489 frame_processor 286784 127305562883776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:58,601 frame_processor 286784 127301924681408 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 19:00:58,622 frame_processor 286784 127303981901504 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:58,652 frame_processor 286784 127306133944000 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:00:58,675 frame_processor 286784 127306142336704 DeepFace verification error: {{function_node __wrapped__Mul_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:Mul] name: 
+ERROR 2025-03-27 19:01:09,135 frame_processor 286784 127303990294208 DeepFace verification error: {{function_node __wrapped__AddV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} failed to allocate memory [Op:AddV2] name: 
+ERROR 2025-03-27 19:01:30,398 frame_processor 286784 127305562883776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:01:31,274 frame_processor 286784 127301924681408 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:01:31,902 frame_processor 286784 127306133944000 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:01:31,941 frame_processor 286784 127303981901504 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:01:40,568 frame_processor 286784 127306142336704 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:01:50,508 frame_processor 286784 127303990294208 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:02:01,580 frame_processor 286784 127305562883776 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 
+ERROR 2025-03-27 19:02:03,012 frame_processor 286784 127301924681408 DeepFace verification error: {{function_node __wrapped__StatelessRandomUniformV2_device_/job:localhost/replica:0/task:0/device:GPU:0}} OOM when allocating tensor with shape[7,7,512,4096] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:StatelessRandomUniformV2] name: 

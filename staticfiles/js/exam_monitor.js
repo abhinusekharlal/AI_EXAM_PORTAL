@@ -135,13 +135,81 @@ class ExamMonitorDashboard {
             }
             
             const data = await response.json();
+            
+            // Look for end_time in the response, with fallback to ensure backwards compatibility
             if (data.end_time) {
                 this.examEndTime = new Date(data.end_time);
                 this.updateExamTimer();
+            } else {
+                // If we don't have an end_time directly, try to calculate it from other fields
+                console.log("No direct end_time found, attempting to calculate from other fields");
+                
+                // Try to use start_time and duration if available
+                if (data.start_time && data.duration) {
+                    const startTime = new Date(data.start_time);
+                    
+                    // Parse duration (format: "HH:MM:SS" or similar)
+                    let durationMs = 0;
+                    if (typeof data.duration === 'string') {
+                        const durationParts = data.duration.split(':');
+                        if (durationParts.length === 3) {
+                            // Format is likely "HH:MM:SS"
+                            const hours = parseInt(durationParts[0], 10);
+                            const minutes = parseInt(durationParts[1], 10);
+                            const seconds = parseInt(durationParts[2], 10);
+                            durationMs = (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
+                        } else {
+                            // Try to parse as minutes
+                            durationMs = parseInt(data.duration, 10) * 60 * 1000;
+                        }
+                    } else if (typeof data.duration === 'number') {
+                        // Assume duration is in minutes
+                        durationMs = data.duration * 60 * 1000;
+                    }
+                    
+                    if (durationMs > 0) {
+                        this.examEndTime = new Date(startTime.getTime() + durationMs);
+                        this.updateExamTimer();
+                    }
+                }
+                
+                // If we still don't have an end time, set a default (2 hours from now)
+                if (!this.examEndTime) {
+                    console.warn("Could not determine exam end time from API response, using fallback");
+                    this.examEndTime = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours from now
+                    this.updateExamTimer();
+                }
             }
+            
+            // Update exam name and other details if available
+            if (data.name && this.examName) {
+                this.examName.textContent = data.name;
+            }
+            
+            // Update exam metadata in the header
+            const examDate = document.querySelector('.meta-item .exam-date');
+            const examTime = document.querySelector('.meta-item .exam-time');
+            const examDuration = document.querySelector('.meta-item .exam-duration');
+            
+            if (examDate && data.date) {
+                examDate.textContent = new Date(data.date).toLocaleDateString();
+            }
+            
+            if (examTime && data.time) {
+                examTime.textContent = data.time;
+            }
+            
+            if (examDuration && data.duration) {
+                examDuration.textContent = data.duration;
+            }
+            
         } catch (error) {
             console.error('Error loading exam details:', error);
-            this.showToast('Failed to load exam details', 'warning');
+            this.showToast('Failed to load exam details. Using default exam timer.', 'warning');
+            
+            // Set a default end time (2 hours from now) so the UI doesn't break
+            this.examEndTime = new Date(Date.now() + 2 * 60 * 60 * 1000);
+            this.updateExamTimer();
         }
     }
     

@@ -442,18 +442,23 @@ def api_exam_details(request, exam_id):
         if exam.teacher != request.user:
             return JsonResponse({'error': 'Access denied - not the exam owner'}, status=403)
         
-        # Calculate end time based on exam date, time and duration
+        # Calculate start and end datetime objects
         start_datetime = datetime.datetime.combine(
             exam.exam_date,
             exam.exam_time
         ).replace(tzinfo=timezone.get_current_timezone())
         
-        # Calculate end time - no need to create a new timedelta if exam_duration is already a timedelta
-        if isinstance(exam.exam_duration, datetime.timedelta):
-            end_time = start_datetime + exam.exam_duration
-        else:
-            # If exam_duration is stored as minutes (integer), convert to timedelta
-            end_time = start_datetime + datetime.timedelta(minutes=exam.exam_duration)
+        end_datetime = datetime.datetime.combine(
+            exam.exam_date,
+            exam.exam_end_time
+        ).replace(tzinfo=timezone.get_current_timezone())
+        
+        # Handle if end time is on the next day
+        if end_datetime < start_datetime:
+            end_datetime = end_datetime + datetime.timedelta(days=1)
+        
+        # Calculate duration as the difference between end and start times
+        duration = end_datetime - start_datetime
         
         # Return exam details
         return JsonResponse({
@@ -461,9 +466,9 @@ def api_exam_details(request, exam_id):
             'name': exam.exam_name,
             'date': exam.exam_date.isoformat(),
             'time': exam.exam_time.isoformat(),
-            'duration': str(exam.exam_duration),
+            'end_time': end_datetime.isoformat(),
             'start_time': start_datetime.isoformat(),
-            'end_time': end_time.isoformat(),
+            'duration': str(duration),
             'status': exam.status
         })
         

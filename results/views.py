@@ -229,7 +229,12 @@ def process_review(request, result_id):
         else:
             return JsonResponse({'success': False, 'error': 'Invalid action'}, status=400)
         
-        return JsonResponse({'success': True, 'message': message})
+        # Include the exam ID in the response for redirect
+        return JsonResponse({
+            'success': True, 
+            'message': message,
+            'exam_id': result.exam.id
+        })
         
     except json.JSONDecodeError:
         return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
@@ -343,3 +348,56 @@ def generate_exam_report(request, exam_id):
     }
     
     return render(request, 'results/exam_report.html', context)
+
+@login_required
+def review_frames(request, result_id):
+    """AJAX endpoint to fetch more monitoring frames for a result"""
+    # Check if user is a teacher
+    if request.user.user_type != 'teacher':
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
+    
+    # Get the exam result
+    result = get_object_or_404(ExamResult, id=result_id)
+    
+    # Ensure this teacher owns the exam
+    if result.exam.teacher != request.user:
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
+    
+    # Get page number from request
+    page = int(request.GET.get('page', 1))
+    frames_per_page = 20
+    
+    # Calculate offset
+    offset = (page - 1) * frames_per_page
+    
+    # Get session and frames
+    try:
+        session = ExamSession.objects.get(student=result.student, exam=result.exam)
+        frames = StreamFrame.objects.filter(session=session).order_by('timestamp')[offset:offset + frames_per_page]
+        
+        # Check if there are more frames
+        total_frames = StreamFrame.objects.filter(session=session).count()
+        has_more = (offset + frames_per_page) < total_frames
+        
+        # Format frame data
+        frame_data = []
+        for frame in frames:
+            frame_data.append({
+                'frame_path': frame.frame_path,
+                'timestamp': frame.timestamp.strftime('%H:%M:%S'),
+                'id': frame.id
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'frames': frame_data,
+            'has_more': has_more
+        })
+        
+    except ExamSession.DoesNotExist:
+        return JsonResponse({
+            'success': False, 
+            'error': 'No exam session found', 
+            'frames': [],
+            'has_more': False
+        })

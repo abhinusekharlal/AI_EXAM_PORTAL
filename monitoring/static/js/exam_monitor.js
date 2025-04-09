@@ -1292,11 +1292,38 @@ class ExamMonitorDashboard {
             toast.classList.add('show');
         }, 10);
         
-        // Auto-remove after 5 seconds for non-error toasts
-        if (type !== 'error') {
+        // Set timeout durations based on toast type and message length
+        let timeout = 0;
+        
+        switch (type) {
+            case 'success':
+                // Short duration for success messages
+                timeout = 3000; 
+                break;
+            case 'info':
+                // Medium duration for info messages
+                timeout = 4000;
+                break;
+            case 'warning':
+                // Longer duration for warnings to ensure they're seen
+                timeout = 6000;
+                break;
+            case 'error':
+                // Even longer for critical errors - but still auto-dismiss
+                timeout = 8000;
+                break;
+        }
+        
+        // Adjust duration based on message length (longer messages need more time to read)
+        if (message.length > 50) {
+            timeout += 2000; // Add 2 seconds for longer messages
+        }
+        
+        // Auto-remove after the calculated timeout
+        if (timeout > 0) {
             setTimeout(() => {
                 this.removeToast(toast);
-            }, 5000);
+            }, timeout);
         }
     }
     
